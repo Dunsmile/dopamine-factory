@@ -337,21 +337,21 @@
           </button>
         </div>
         <div class="text-center my-6">
-          <div class="text-6xl font-black">127명</div>
+          <div class="text-6xl font-black"><span id="totalWinners">0</span>명</div>
           <div class="text-base opacity-90 mt-2">나왔어요!</div>
         </div>
         <div class="bg-white/20 rounded-xl p-4 backdrop-blur-sm text-sm space-y-2">
           <div class="flex justify-between items-center">
             <span>5등</span>
-            <span class="font-bold text-lg">89명</span>
+            <span class="font-bold text-lg"><span id="winners5th">0</span>명</span>
           </div>
           <div class="flex justify-between items-center">
             <span>4등</span>
-            <span class="font-bold text-lg">32명</span>
+            <span class="font-bold text-lg"><span id="winners4th">0</span>명</span>
           </div>
           <div class="flex justify-between items-center">
             <span>3등</span>
-            <span class="font-bold text-lg">6명</span>
+            <span class="font-bold text-lg"><span id="winners3rd">0</span>명</span>
           </div>
         </div>
       </div>
@@ -607,6 +607,27 @@
     </div>
   </div>
 
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase 초기화 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDw9j_3Di_Zn1kI_5KyQbGUV5o3I2APwkI",
+      authDomain: "hoxy-number.firebaseapp.com",
+      projectId: "hoxy-number",
+      storageBucket: "hoxy-number.firebasestorage.app",
+      messagingSenderId: "311606639114",
+      appId: "1:311606639114:web:ea5d008da413abb9d33df3",
+      measurementId: "G-PN7SF35WR6"
+    };
+
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 
   <script src="js/app.js"></script>
 </body>

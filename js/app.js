@@ -416,12 +416,31 @@
       for (let i = 0; i < count; i++) {
         const numbers = generateLottoNumbers();
         addToRecent(numbers);
+
+        // Firebase에 저장
+        saveToFirebase(numbers);
       }
       useQuota(count);
       updateUI();
-      
+
       const modalEl = document.getElementById('generatedModal');
       if (modalEl) modalEl.classList.add('active');
+    }
+
+    // Firebase에 번호 저장
+    function saveToFirebase(numbers) {
+      try {
+        const winning = getWinningNumbers();
+        db.collection('generated_numbers').add({
+          numbers: numbers,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          week: winning.drawNumber,
+          createdAt: new Date().toISOString()
+        });
+        console.log('번호가 Firebase에 저장되었습니다:', numbers);
+      } catch (error) {
+        console.error('Firebase 저장 오류:', error);
+      }
     }
 
     function closeGeneratedModal() {
@@ -714,8 +733,54 @@
 
     // ==================== 당첨 통계 업데이트 ====================
     
-    function updateWinningStats() {
-      // Green card 삭제로 인해 비활성화됨
+    async function updateWinningStats() {
+      try {
+        const winning = getWinningNumbers();
+
+        // Firebase에서 현재 회차 데이터 가져오기
+        const snapshot = await db.collection('generated_numbers')
+          .where('week', '==', winning.drawNumber)
+          .get();
+
+        let stats = {
+          total: 0,
+          rank3: 0,  // 5등 (3개 일치)
+          rank4: 0,  // 4등 (4개 일치)
+          rank5: 0   // 3등 (5개 일치)
+        };
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const matchCount = countMatches(data.numbers, winning.numbers);
+
+          if (matchCount >= 3) {
+            stats.total++;
+            if (matchCount === 3) stats.rank3++;
+            if (matchCount === 4) stats.rank4++;
+            if (matchCount === 5) stats.rank5++;
+          }
+        });
+
+        // UI 업데이트
+        const totalEl = document.getElementById('totalWinners');
+        const winners5thEl = document.getElementById('winners5th');
+        const winners4thEl = document.getElementById('winners4th');
+        const winners3rdEl = document.getElementById('winners3rd');
+
+        if (totalEl) totalEl.textContent = stats.total;
+        if (winners5thEl) winners5thEl.textContent = stats.rank3;
+        if (winners4thEl) winners4thEl.textContent = stats.rank4;
+        if (winners3rdEl) winners3rdEl.textContent = stats.rank5;
+
+        console.log('통계 업데이트 완료:', stats);
+      } catch (error) {
+        console.error('통계 업데이트 오류:', error);
+      }
+    }
+
+    // 일치하는 번호 개수 계산
+    function countMatches(numbers, winningNumbers) {
+      return numbers.filter(n => winningNumbers.includes(n)).length;
     }
 
     function closeWinningStatsCard() {
