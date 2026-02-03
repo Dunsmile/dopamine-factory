@@ -19,12 +19,35 @@
     
     <!-- 메인 컨텐츠 영역 -->
     <div class="content-area">
-      <div class="max-w-md mx-auto min-h-screen bg-white relative">
+      <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white relative">
         
         <!-- Top Navigation -->
         <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
           <div class="flex items-center justify-between px-4 h-14">
             <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">HOXY NUMBER</h1>
+
+            <!-- PC용 상단 네비게이션 (768px 이상) -->
+            <nav class="hidden md:flex items-center gap-1 desktop-nav">
+              <button onclick="switchTab('homeTab')" id="btnHomeDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-blue-600 bg-blue-50 font-medium text-sm transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                </svg>
+                홈
+              </button>
+              <button onclick="switchTab('savedTab')" id="btnSavedDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                </svg>
+                내 번호
+              </button>
+              <button onclick="switchTab('checkTab')" id="btnCheckDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+                당첨 확인
+              </button>
+            </nav>
+
             <button onclick="openSettings()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -293,8 +316,8 @@
 
         </div>
 
-        <!-- Bottom Navigation -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg bottom-nav">
+        <!-- Bottom Navigation (모바일 전용) -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg bottom-nav md:hidden">
           <div class="grid grid-cols-3 h-16">
             <button onclick="switchTab('homeTab')" id="btnHome" class="flex flex-col items-center justify-center text-blue-600 transition-colors">
               <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
@@ -608,6 +631,66 @@
     </div>
   </div>
 
+  <!-- 액션시트 모달 (iOS 스타일) -->
+  <div id="actionSheetModal" class="action-sheet-backdrop" onclick="if(event.target === this) closeActionSheet()">
+    <div class="action-sheet">
+      <div class="action-sheet-header">
+        <span id="actionSheetTitle">번호 관리</span>
+      </div>
+      <div class="action-sheet-buttons">
+        <button class="action-btn save-btn" onclick="actionSheetSave()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          저장하기
+        </button>
+        <button class="action-btn delete-btn" onclick="actionSheetDelete()">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          삭제하기
+        </button>
+      </div>
+      <button class="action-btn cancel-btn" onclick="closeActionSheet()">취소</button>
+    </div>
+  </div>
+
+  <!-- 축하 팝업 모달 -->
+  <div id="congratsModal" class="modal-backdrop" onclick="if(event.target === this) closeCongratsModal()">
+    <div class="bg-white rounded-2xl p-6 max-w-[400px] w-full mx-4 shadow-2xl congrats-modal relative overflow-hidden">
+      <div class="confetti" id="confettiContainer"></div>
+
+      <div class="relative z-10">
+        <div class="congrats-icon mb-4">🎉</div>
+
+        <h2 class="text-2xl font-black text-gray-900 mb-2">축하합니다!</h2>
+
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 mb-4">
+          <div class="text-sm text-gray-600 mb-1">제 <span id="congratsDrawNumber" class="font-bold text-blue-600">1157</span>회차</div>
+          <div class="text-3xl font-black mb-2">
+            <span id="congratsRank" class="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">3등</span>
+            <span class="text-gray-700">당첨!</span>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <div class="text-xs text-gray-500 mb-2">일치 번호</div>
+          <div id="congratsMatchedNumbers" class="flex gap-1 justify-center">
+            <!-- 동적 생성 -->
+          </div>
+        </div>
+
+        <div class="bg-green-50 rounded-xl p-3 mb-4">
+          <div class="text-xs text-gray-500 mb-1">예상 당첨금</div>
+          <div id="congratsPrize" class="text-xl font-bold text-green-600">1,500,000원</div>
+        </div>
+
+        <button onclick="closeCongratsModal()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all">
+          확인
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

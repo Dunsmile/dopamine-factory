@@ -269,36 +269,29 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center justify-center gap-1 p-3 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs text-gray-400 w-6 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 justify-center">
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+            <div class="flex items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
+              <span class="text-xs md:text-sm text-gray-400 w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
+              <div class="flex gap-1 md:gap-2 justify-center">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
               </div>
             </div>
           `;
         } else {
           return `
-            <div class="swipe-item relative" data-index="${slot.index}">
-              <div class="swipe-save-btn" onclick="saveNumber(${JSON.stringify(slot.data.numbers)})">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <div class="swipe-item relative" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}'>
+              <div class="swipe-hint">
+                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
-                저장
               </div>
-              <div class="swipe-delete-btn" onclick="deleteRecentNumber(${slot.index})">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                </svg>
-                삭제
-              </div>
-              <div class="swipe-content flex items-center justify-center gap-1 p-3 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
-                <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-6 shrink-0">#${slot.index + 1}</span>
-                <div class="flex gap-1 justify-center">
+              <div class="swipe-content flex items-center justify-center gap-1 md:gap-2 p-3 md:p-4 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
+                <span class="text-xs md:text-sm ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
+                <div class="flex gap-1 md:gap-2 justify-center">
                   ${renderNumberBalls(slot.data.numbers)}
                 </div>
               </div>
@@ -590,6 +583,10 @@
     // 전역으로 명시적 노출
     window.deleteRecentNumber = deleteRecentNumber;
 
+    // 액션시트 관련 변수
+    let currentActionIndex = null;
+    let currentActionNumbers = null;
+
     function initSwipeListeners() {
       const swipeItems = document.querySelectorAll('.swipe-item');
 
@@ -604,7 +601,7 @@
         // 스와이프 상태 초기화
         function resetSwipe() {
           content.style.transform = 'translateX(0)';
-          item.classList.remove('swiped-left', 'swiped-right', 'swiping');
+          item.classList.remove('swiping');
         }
 
         // 터치 시작
@@ -613,26 +610,20 @@
           currentX = startX;
           isSwiping = true;
           item.classList.add('swiping');
-          // 다른 아이템의 스와이프 상태 초기화
-          document.querySelectorAll('.swipe-item').forEach(other => {
-            if (other !== item) {
-              const otherContent = other.querySelector('.swipe-content');
-              if (otherContent) otherContent.style.transform = 'translateX(0)';
-              other.classList.remove('swiped-left', 'swiped-right');
-            }
-          });
         });
 
-        // 터치 이동
+        // 터치 이동 (좌측 스와이프만 허용)
         item.addEventListener('touchmove', (e) => {
           if (!isSwiping) return;
 
           currentX = e.touches[0].clientX;
           const diffX = currentX - startX;
 
-          // 양방향 스와이프 (최대 70px)
-          const translateX = Math.max(-70, Math.min(70, diffX));
-          content.style.transform = `translateX(${translateX}px)`;
+          // 좌측 스와이프만 (최대 -80px)
+          if (diffX < 0) {
+            const translateX = Math.max(-80, diffX);
+            content.style.transform = `translateX(${translateX}px)`;
+          }
         });
 
         // 터치 종료
@@ -642,19 +633,12 @@
           const diffX = currentX - startX;
           item.classList.remove('swiping');
 
-          // 40px 이상 스와이프하면 버튼 표시
-          if (diffX > 40) {
-            content.style.transform = 'translateX(70px)';
-            item.classList.add('swiped-left');
-            item.classList.remove('swiped-right');
-          } else if (diffX < -40) {
-            content.style.transform = 'translateX(-70px)';
-            item.classList.add('swiped-right');
-            item.classList.remove('swiped-left');
-          } else {
-            resetSwipe();
+          // 50px 이상 좌측 스와이프하면 액션시트 열기
+          if (diffX < -50) {
+            openActionSheet(item);
           }
 
+          resetSwipe();
           isSwiping = false;
         });
 
@@ -671,8 +655,12 @@
 
           currentX = e.clientX;
           const diffX = currentX - startX;
-          const translateX = Math.max(-70, Math.min(70, diffX));
-          content.style.transform = `translateX(${translateX}px)`;
+
+          // 좌측 스와이프만
+          if (diffX < 0) {
+            const translateX = Math.max(-80, diffX);
+            content.style.transform = `translateX(${translateX}px)`;
+          }
         });
 
         item.addEventListener('mouseup', () => {
@@ -681,18 +669,11 @@
           const diffX = currentX - startX;
           item.classList.remove('swiping');
 
-          if (diffX > 40) {
-            content.style.transform = 'translateX(70px)';
-            item.classList.add('swiped-left');
-            item.classList.remove('swiped-right');
-          } else if (diffX < -40) {
-            content.style.transform = 'translateX(-70px)';
-            item.classList.add('swiped-right');
-            item.classList.remove('swiped-left');
-          } else {
-            resetSwipe();
+          if (diffX < -50) {
+            openActionSheet(item);
           }
 
+          resetSwipe();
           isSwiping = false;
         });
 
@@ -704,6 +685,55 @@
         });
       });
     }
+
+    // 액션시트 열기
+    function openActionSheet(item) {
+      currentActionIndex = parseInt(item.dataset.index);
+      currentActionNumbers = JSON.parse(item.dataset.numbers);
+
+      const modal = document.getElementById('actionSheetModal');
+      const title = document.getElementById('actionSheetTitle');
+
+      if (title) {
+        title.textContent = `#${currentActionIndex + 1} 번호 관리`;
+      }
+
+      if (modal) {
+        modal.classList.add('active');
+      }
+    }
+
+    // 액션시트 닫기
+    function closeActionSheet() {
+      const modal = document.getElementById('actionSheetModal');
+      if (modal) {
+        modal.classList.remove('active');
+      }
+      currentActionIndex = null;
+      currentActionNumbers = null;
+    }
+
+    // 액션시트 - 저장
+    function actionSheetSave() {
+      if (currentActionNumbers) {
+        saveNumber(currentActionNumbers);
+      }
+      closeActionSheet();
+    }
+
+    // 액션시트 - 삭제
+    function actionSheetDelete() {
+      if (currentActionIndex !== null) {
+        deleteRecentNumber(currentActionIndex);
+      }
+      closeActionSheet();
+    }
+
+    // 전역 함수 등록
+    window.openActionSheet = openActionSheet;
+    window.closeActionSheet = closeActionSheet;
+    window.actionSheetSave = actionSheetSave;
+    window.actionSheetDelete = actionSheetDelete;
 
     // ==================== 저장된 번호 관리 ====================
     
@@ -1199,9 +1229,32 @@
       });
 
       showToast(`${allNumbers.length}줄이 저장되었습니다!`, 2000);
-      
+
       setTimeout(() => {
         updateCheckUI();
+
+        // 당첨 여부 확인 후 팝업 표시
+        const winning = getWinningNumbers();
+        let bestWin = null;
+
+        allNumbers.forEach(item => {
+          const match = checkMatch(item.numbers, winning.numbers);
+          const rankInfo = getMatchRank(match.count);
+
+          if (rankInfo && (!bestWin || rankInfo.rank < bestWin.rank)) {
+            bestWin = {
+              rank: rankInfo.rank,
+              rankInfo: rankInfo,
+              matchedNumbers: item.numbers.filter(n => winning.numbers.includes(n))
+            };
+          }
+        });
+
+        if (bestWin) {
+          setTimeout(() => {
+            showCongratsModal(winning.drawNumber, bestWin.rankInfo, bestWin.matchedNumbers);
+          }, 500);
+        }
       }, 100);
     }
 
@@ -1445,12 +1498,16 @@
       container.innerHTML = pageItems.map((item, index) => {
         const globalIndex = startIndex + index;
         return `
-          <div class="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 overflow-hidden">
-            <span class="text-xs text-blue-600 font-bold w-6 shrink-0">#${globalIndex + 1}</span>
-            <div class="flex gap-1 flex-1 min-w-0">
+          <div class="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
+            <span class="text-xs md:text-sm text-blue-600 font-bold w-6 md:w-8 shrink-0">#${globalIndex + 1}</span>
+            <div class="flex gap-1 md:gap-2 flex-1 justify-center overflow-hidden">
               ${renderNumberBalls(item.numbers)}
             </div>
-            <button onclick="deleteSaved(${globalIndex})" class="text-red-600 text-xs font-bold hover:text-red-700 shrink-0">삭제</button>
+            <button onclick="deleteSaved(${globalIndex})" class="text-red-500 hover:text-red-700 shrink-0 p-1 md:p-2">
+              <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+            </button>
           </div>
         `;
       }).join('');
@@ -1565,27 +1622,45 @@
       
       container.innerHTML = saved.map((item, index) => {
         const match = checkMatch(item.numbers, winning.numbers);
-        const rank = getMatchRank(match.count);
-        
+        const rankInfo = getMatchRank(match.count);
+
+        // 등수별 스타일 클래스
+        let rankClass = 'bg-gray-50 border border-gray-200';
+        let badgeClass = 'bg-gray-400';
+        let clickable = '';
+
+        if (rankInfo) {
+          rankClass = `rank-${rankInfo.rank}`;
+          clickable = `cursor-pointer hover:scale-[1.02] transition-transform`;
+
+          if (rankInfo.rank === 1) badgeClass = 'bg-gradient-to-r from-yellow-500 to-orange-500';
+          else if (rankInfo.rank === 2) badgeClass = 'bg-gradient-to-r from-gray-400 to-gray-500';
+          else if (rankInfo.rank === 3) badgeClass = 'bg-gradient-to-r from-orange-400 to-orange-600';
+          else badgeClass = 'bg-green-600';
+        }
+
+        const matchedNums = item.numbers.filter(n => winning.numbers.includes(n));
+
         return `
-          <div class="p-4 rounded-xl ${rank ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300' : 'bg-gray-50 border border-gray-200'}">
-            <div class="flex items-center gap-2 mb-3">
-              <span class="text-xs text-gray-500 font-medium">#${index + 1}</span>
-              <div class="flex gap-1.5 flex-1">
+          <div class="p-3 rounded-xl ${rankClass} ${clickable}"
+               ${rankInfo ? `onclick="showCongratsModal(${winning.drawNumber}, {rank: ${rankInfo.rank}, text: '${rankInfo.text}'}, ${JSON.stringify(matchedNums)})"` : ''}>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs ${rankInfo && rankInfo.rank <= 3 ? 'text-gray-700 font-bold' : 'text-gray-500'} font-medium w-6 shrink-0">#${index + 1}</span>
+              <div class="flex gap-1 md:gap-1.5 flex-1 justify-center">
                 ${item.numbers.map(num => {
                   const isMatch = winning.numbers.includes(num);
                   return renderBall(num, isMatch ? 'matched' : 'normal');
                 }).join('')}
               </div>
             </div>
-            ${rank ? `
+            ${rankInfo ? `
               <div class="text-center">
-                <div class="inline-block bg-green-600 text-white px-4 py-2 rounded-full font-bold text-sm">
-                  🎉 ${match.count}개 일치 - ${rank}
+                <div class="inline-block ${badgeClass} text-white px-3 py-1.5 rounded-full font-bold text-sm shadow-md">
+                  ${rankInfo.rank <= 3 ? '🏆' : '🎉'} ${match.count}개 일치 - ${rankInfo.text}
                 </div>
               </div>
             ` : `
-              <div class="text-center text-sm text-gray-500">
+              <div class="text-center text-xs text-gray-500">
                 ${match.count}개 일치 - 미당첨
               </div>
             `}
@@ -1641,7 +1716,7 @@
 
       if (type === 'bonus') {
         colorClass = 'from-green-400 to-green-600';
-        return `<div class="w-8 h-8 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md border-2 border-white">${num}</div>`;
+        return `<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shadow-md border-2 border-white">${num}</div>`;
       }
 
       if (type === 'matched') {
@@ -1654,21 +1729,82 @@
         else colorClass = 'from-green-400 to-green-600';
       }
 
-      return `<div class="w-8 h-8 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">${num}</div>`;
+      return `<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shadow-md">${num}</div>`;
     }
 
     function getMatchRank(count) {
-      if (count === 6) return '1등 당첨!';
-      if (count === 5) return '3등 당첨!';
-      if (count === 4) return '4등 당첨!';
-      if (count === 3) return '5등 당첨!';
+      if (count === 6) return { rank: 1, text: '1등 당첨!' };
+      if (count === 5) return { rank: 3, text: '3등 당첨!' };  // 보너스 미확인으로 3등
+      if (count === 4) return { rank: 4, text: '4등 당첨!' };
+      if (count === 3) return { rank: 5, text: '5등 당첨!' };
       return null;
+    }
+
+    // 등수별 예상 당첨금
+    function getEstimatedPrize(rank) {
+      const prizes = {
+        1: '약 20억원',
+        2: '약 5천만원',
+        3: '약 150만원',
+        4: '5만원',
+        5: '5,000원'
+      };
+      return prizes[rank] || '0원';
     }
 
     function formatPrize(prize) {
       const num = prize.replace(/,/g, '');
       return parseInt(num).toLocaleString() + '원';
     }
+
+    // ==================== 축하 팝업 ====================
+
+    function showCongratsModal(drawNumber, rankInfo, matchedNumbers) {
+      const modal = document.getElementById('congratsModal');
+      const drawNumEl = document.getElementById('congratsDrawNumber');
+      const rankEl = document.getElementById('congratsRank');
+      const numbersEl = document.getElementById('congratsMatchedNumbers');
+      const prizeEl = document.getElementById('congratsPrize');
+      const confettiEl = document.getElementById('confettiContainer');
+
+      if (drawNumEl) drawNumEl.textContent = drawNumber;
+      if (rankEl) rankEl.textContent = rankInfo.rank + '등';
+      if (numbersEl) numbersEl.innerHTML = matchedNumbers.map(num => renderBall(num, 'matched')).join('');
+      if (prizeEl) prizeEl.textContent = getEstimatedPrize(rankInfo.rank);
+
+      // 등수별 아이콘 변경
+      const iconEl = modal.querySelector('.congrats-icon');
+      if (iconEl) {
+        if (rankInfo.rank === 1) iconEl.textContent = '🏆';
+        else if (rankInfo.rank <= 3) iconEl.textContent = '🎉';
+        else iconEl.textContent = '🎊';
+      }
+
+      // 컨페티 생성 (1~3등만)
+      if (confettiEl && rankInfo.rank <= 3) {
+        confettiEl.innerHTML = '';
+        for (let i = 0; i < 30; i++) {
+          const piece = document.createElement('div');
+          piece.className = 'confetti-piece';
+          piece.style.left = Math.random() * 100 + '%';
+          piece.style.animationDelay = Math.random() * 2 + 's';
+          piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+          confettiEl.appendChild(piece);
+        }
+      } else if (confettiEl) {
+        confettiEl.innerHTML = '';
+      }
+
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeCongratsModal() {
+      const modal = document.getElementById('congratsModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    window.showCongratsModal = showCongratsModal;
+    window.closeCongratsModal = closeCongratsModal;
 
     // ==================== 탭 전환 ====================
     
@@ -1679,41 +1815,54 @@
           tab.classList.remove('active');
         }
       });
-      
-      // 모든 버튼 비활성화
-      document.querySelectorAll('[id^="btn"]').forEach(btn => {
-        if (!btn || !btn.classList) return;
-        
-        btn.classList.remove('text-blue-600');
-        btn.classList.add('text-gray-400');
-        
-        const span = btn.querySelector('span');
-        if (span && span.classList) {
-          span.classList.remove('font-bold');
+
+      // 모바일 네비게이션 버튼 초기화
+      ['btnHome', 'btnSaved', 'btnCheck'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove('text-blue-600');
+          btn.classList.add('text-gray-400');
+          const span = btn.querySelector('span');
+          if (span) span.classList.remove('font-bold');
         }
       });
-      
+
+      // 데스크톱 네비게이션 버튼 초기화
+      ['btnHomeDesktop', 'btnSavedDesktop', 'btnCheckDesktop'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove('text-blue-600', 'bg-blue-50');
+          btn.classList.add('text-gray-500');
+        }
+      });
+
       // 선택된 탭 활성화
       const tabEl = document.getElementById(tabId);
       if (tabEl && tabEl.classList) {
         tabEl.classList.add('active');
       }
-      
-      // 선택된 버튼 활성화
+
+      // 선택된 버튼 활성화 (모바일)
       const btnId = tabId.replace('Tab', '');
       const btnMap = { home: 'btnHome', saved: 'btnSaved', check: 'btnCheck' };
       const btn = document.getElementById(btnMap[btnId]);
-      
-      if (btn && btn.classList) {
+
+      if (btn) {
         btn.classList.remove('text-gray-400');
         btn.classList.add('text-blue-600');
-        
         const span = btn.querySelector('span');
-        if (span && span.classList) {
-          span.classList.add('font-bold');
-        }
+        if (span) span.classList.add('font-bold');
       }
-      
+
+      // 선택된 버튼 활성화 (데스크톱)
+      const btnMapDesktop = { home: 'btnHomeDesktop', saved: 'btnSavedDesktop', check: 'btnCheckDesktop' };
+      const btnDesktop = document.getElementById(btnMapDesktop[btnId]);
+
+      if (btnDesktop) {
+        btnDesktop.classList.remove('text-gray-500');
+        btnDesktop.classList.add('text-blue-600', 'bg-blue-50');
+      }
+
       if (tabId === 'checkTab') {
         updateCheckUI();
       }
