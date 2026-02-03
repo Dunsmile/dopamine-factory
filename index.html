@@ -125,6 +125,9 @@
             <div class="flex items-center justify-between mb-4">
               <h3 class="font-bold text-gray-900 text-lg">최근 생성 번호</h3>
               <div class="flex items-center gap-2">
+                <button onclick="saveAllRecentNumbers()" class="text-xs text-blue-600 hover:text-blue-700 font-medium px-3 py-1 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
+                  전체 저장
+                </button>
                 <button onclick="clearRecentNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-3 py-1 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
                   초기화
                 </button>
@@ -224,10 +227,8 @@
           <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
             <div class="mb-4">
               <label class="text-sm font-semibold text-gray-700 mb-2 block">당첨 회차</label>
-              <select id="drawSelect" onchange="changeDrawNumber()" class="w-full p-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-900 focus:border-blue-500 focus:outline-none">
-                <option value="1199">1199회차 (2025-11-22)</option>
-                <option value="1198">1198회차 (2025-11-15)</option>
-                <option value="1197">1197회차 (2025-11-08)</option>
+              <select id="drawSelect" class="w-full p-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-900 focus:border-blue-500 focus:outline-none">
+                <!-- 동적으로 최근 10회차 생성 -->
               </select>
             </div>
 

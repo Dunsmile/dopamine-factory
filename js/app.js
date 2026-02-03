@@ -36,9 +36,10 @@
     let savedItemsPerPage = 10;
     let savedUnlockedPages = 1;
 
-    function initApp() {
-      loadWinningNumbers();
+    async function initApp() {
+      await loadWinningNumbers();
       initQuota();
+      await initDrawSelect();
       initManualInputs();
       
       // 잠금 해제된 페이지 수 로드 (최근 생성 번호)
@@ -268,33 +269,38 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center gap-3 p-3 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs text-gray-400 w-8">#${slot.index + 1}</span>
-              <div class="flex gap-1.5 flex-1">
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
-                <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+            <div class="flex items-center justify-center gap-1 p-3 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
+              <span class="text-xs text-gray-400 w-6 shrink-0">#${slot.index + 1}</span>
+              <div class="flex gap-1 justify-center">
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                <div class="w-8 h-8 rounded-full bg-gray-200"></div>
               </div>
-              <span class="text-xs text-gray-400">빈 슬롯</span>
             </div>
           `;
         } else {
           return `
-            <div class="swipe-item relative overflow-hidden" data-index="${slot.index}">
+            <div class="swipe-item relative" data-index="${slot.index}">
+              <div class="swipe-save-btn" onclick="saveNumber(${JSON.stringify(slot.data.numbers)})">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                저장
+              </div>
               <div class="swipe-delete-btn" onclick="deleteRecentNumber(${slot.index})">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                 </svg>
+                삭제
               </div>
-              <div class="swipe-content flex items-center gap-3 p-3 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
-                <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-8">#${slot.index + 1}</span>
-                <div class="flex gap-1.5 flex-1">
+              <div class="swipe-content flex items-center justify-center gap-1 p-3 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
+                <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-6 shrink-0">#${slot.index + 1}</span>
+                <div class="flex gap-1 justify-center">
                   ${renderNumberBalls(slot.data.numbers)}
                 </div>
-                <button onclick="saveNumber(${JSON.stringify(slot.data.numbers)})" class="text-blue-600 text-sm font-bold hover:text-blue-700">저장</button>
               </div>
             </div>
           `;
@@ -586,98 +592,113 @@
 
     function initSwipeListeners() {
       const swipeItems = document.querySelectorAll('.swipe-item');
-      
+
       swipeItems.forEach(item => {
         let startX = 0;
         let currentX = 0;
         let isSwiping = false;
-        
+
         const content = item.querySelector('.swipe-content');
         if (!content) return;
-        
+
+        // 스와이프 상태 초기화
+        function resetSwipe() {
+          content.style.transform = 'translateX(0)';
+          item.classList.remove('swiped-left', 'swiped-right', 'swiping');
+        }
+
         // 터치 시작
         item.addEventListener('touchstart', (e) => {
           startX = e.touches[0].clientX;
+          currentX = startX;
           isSwiping = true;
           item.classList.add('swiping');
+          // 다른 아이템의 스와이프 상태 초기화
+          document.querySelectorAll('.swipe-item').forEach(other => {
+            if (other !== item) {
+              const otherContent = other.querySelector('.swipe-content');
+              if (otherContent) otherContent.style.transform = 'translateX(0)';
+              other.classList.remove('swiped-left', 'swiped-right');
+            }
+          });
         });
-        
+
         // 터치 이동
         item.addEventListener('touchmove', (e) => {
           if (!isSwiping) return;
-          
+
           currentX = e.touches[0].clientX;
           const diffX = currentX - startX;
-          
-          // 왼쪽으로만 스와이프 (최대 80px)
-          if (diffX < 0) {
-            const translateX = Math.max(diffX, -80);
-            content.style.transform = `translateX(${translateX}px)`;
-          }
+
+          // 양방향 스와이프 (최대 70px)
+          const translateX = Math.max(-70, Math.min(70, diffX));
+          content.style.transform = `translateX(${translateX}px)`;
         });
-        
+
         // 터치 종료
         item.addEventListener('touchend', () => {
           if (!isSwiping) return;
-          
+
           const diffX = currentX - startX;
-          
           item.classList.remove('swiping');
-          
-          // 50px 이상 스와이프하면 삭제 버튼 표시
-          if (diffX < -50) {
-            content.style.transform = 'translateX(-80px)';
-            item.classList.add('swiped');
+
+          // 40px 이상 스와이프하면 버튼 표시
+          if (diffX > 40) {
+            content.style.transform = 'translateX(70px)';
+            item.classList.add('swiped-left');
+            item.classList.remove('swiped-right');
+          } else if (diffX < -40) {
+            content.style.transform = 'translateX(-70px)';
+            item.classList.add('swiped-right');
+            item.classList.remove('swiped-left');
           } else {
-            content.style.transform = 'translateX(0)';
-            item.classList.remove('swiped');
+            resetSwipe();
           }
-          
+
           isSwiping = false;
         });
-        
-        // 마우스 이벤트도 지원 (데스크톱)
+
+        // 마우스 이벤트 (데스크톱)
         item.addEventListener('mousedown', (e) => {
           startX = e.clientX;
+          currentX = startX;
           isSwiping = true;
           item.classList.add('swiping');
         });
-        
+
         item.addEventListener('mousemove', (e) => {
           if (!isSwiping) return;
-          
+
           currentX = e.clientX;
           const diffX = currentX - startX;
-          
-          if (diffX < 0) {
-            const translateX = Math.max(diffX, -80);
-            content.style.transform = `translateX(${translateX}px)`;
-          }
+          const translateX = Math.max(-70, Math.min(70, diffX));
+          content.style.transform = `translateX(${translateX}px)`;
         });
-        
+
         item.addEventListener('mouseup', () => {
           if (!isSwiping) return;
-          
+
           const diffX = currentX - startX;
-          
           item.classList.remove('swiping');
-          
-          if (diffX < -50) {
-            content.style.transform = 'translateX(-80px)';
-            item.classList.add('swiped');
+
+          if (diffX > 40) {
+            content.style.transform = 'translateX(70px)';
+            item.classList.add('swiped-left');
+            item.classList.remove('swiped-right');
+          } else if (diffX < -40) {
+            content.style.transform = 'translateX(-70px)';
+            item.classList.add('swiped-right');
+            item.classList.remove('swiped-left');
           } else {
-            content.style.transform = 'translateX(0)';
-            item.classList.remove('swiped');
+            resetSwipe();
           }
-          
+
           isSwiping = false;
         });
-        
+
         item.addEventListener('mouseleave', () => {
           if (isSwiping) {
-            item.classList.remove('swiping');
-            content.style.transform = 'translateX(0)';
-            item.classList.remove('swiped');
+            resetSwipe();
             isSwiping = false;
           }
         });
@@ -688,14 +709,14 @@
     
     function saveNumber(numbers) {
       const saved = getSaved();
-      
+
       if (saved.length >= 50) {
         showToast('저장된 번호는 최대 50개까지 가능합니다', 2000);
         return;
       }
-      
+
       const exists = saved.some(item => JSON.stringify(item.numbers) === JSON.stringify(numbers));
-      
+
       if (exists) {
         showToast('이미 저장된 번호입니다!', 2000);
         return;
@@ -706,6 +727,39 @@
       updateUI();
       updateWinningStats();
       showToast('✅ 저장되었습니다', 2000);
+    }
+
+    function saveAllRecentNumbers() {
+      const recent = getRecent();
+      if (recent.length === 0) {
+        showToast('저장할 번호가 없습니다', 2000);
+        return;
+      }
+
+      const saved = getSaved();
+      let savedCount = 0;
+
+      for (const item of recent) {
+        if (saved.length >= 50) {
+          showToast(`저장 공간이 부족합니다 (${savedCount}개 저장됨)`, 2000);
+          break;
+        }
+
+        const exists = saved.some(s => JSON.stringify(s.numbers) === JSON.stringify(item.numbers));
+        if (!exists) {
+          saved.push({ numbers: item.numbers, timestamp: Date.now() });
+          savedCount++;
+        }
+      }
+
+      if (savedCount > 0) {
+        localStorage.setItem(STORAGE_KEYS.SAVED, JSON.stringify(saved));
+        updateUI();
+        updateWinningStats();
+        showToast(`✅ ${savedCount}개 번호가 저장되었습니다`, 2000);
+      } else {
+        showToast('모든 번호가 이미 저장되어 있습니다', 2000);
+      }
     }
 
     function getSaved() {
@@ -788,9 +842,116 @@
     }
 
     // ==================== 당첨 번호 관리 ====================
-    
-    function loadWinningNumbers() {
-      localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(winningData));
+
+    // 로또 API에서 당첨 번호 가져오기 (JSONP 사용)
+    async function fetchLotteryData(drawNo = null) {
+      return new Promise((resolve) => {
+        try {
+          // JSONP를 사용하여 CORS 우회
+          const callbackName = 'lottoCallback_' + Date.now();
+          let apiUrl = `https://api.lotto-haru.kr/win/analysis.js?callback=${callbackName}`;
+
+          // 특정 회차 지정 시
+          if (drawNo) {
+            apiUrl += `&chasu=${drawNo}`;
+          }
+
+          // 전역 콜백 함수 등록
+          window[callbackName] = function(data) {
+            // 데이터 처리
+            try {
+              // 데이터 구조: { data: [{ball: [...], bonusBall: ..., chasu: ..., ...}] }
+              const latestDraw = data.data ? data.data[0] : null;
+
+              if (!latestDraw) {
+                console.error('데이터 파싱 실패, 구조:', data);
+                throw new Error('데이터 없음');
+              }
+
+              // 데이터 변환
+              const result = {
+                drawNumber: parseInt(latestDraw.chasu),
+                drawDate: latestDraw.date,
+                numbers: latestDraw.ball.map(n => parseInt(n)),
+                bonus: parseInt(latestDraw.bonusBall),
+                firstPrize: latestDraw.win?.win1?.wonmoney ? parseInt(latestDraw.win.win1.wonmoney).toLocaleString() : '0'
+              };
+
+              // 정리
+              delete window[callbackName];
+              document.body.removeChild(script);
+
+              resolve(result);
+            } catch (error) {
+              console.error('데이터 파싱 오류:', error);
+              delete window[callbackName];
+              document.body.removeChild(script);
+              resolve(null);
+            }
+          };
+
+          // script 태그 생성 및 추가
+          const script = document.createElement('script');
+          script.src = apiUrl;
+          script.onerror = function() {
+            console.error('로또 API 호출 실패');
+            delete window[callbackName];
+            document.body.removeChild(script);
+            resolve(null);
+          };
+          document.body.appendChild(script);
+
+        } catch (error) {
+          console.error('로또 API 호출 오류:', error);
+          resolve(null);
+        }
+      });
+    }
+
+    // 최신 회차 번호 계산
+    function getLatestDrawNumber() {
+      // 로또 1회: 2002년 12월 7일 (토요일)
+      const firstDrawDate = new Date('2002-12-07');
+      const today = new Date();
+
+      // 밀리초를 주 단위로 변환
+      const weeksDiff = Math.floor((today - firstDrawDate) / (7 * 24 * 60 * 60 * 1000));
+
+      return weeksDiff + 1;
+    }
+
+    // 당첨 번호 로드 (API 우선, 실패시 폴백)
+    async function loadWinningNumbers() {
+      // LocalStorage에서 캐시된 데이터 확인
+      const cached = localStorage.getItem(STORAGE_KEYS.WINNING);
+      const cachedData = cached ? JSON.parse(cached) : null;
+
+      // API에서 최신 당첨 번호 가져오기
+      console.log('최신 당첨 번호 가져오는 중...');
+      const apiData = await fetchLotteryData();
+
+      if (apiData) {
+        // 캐시된 데이터와 비교
+        if (cachedData && cachedData.drawNumber === apiData.drawNumber) {
+          winningData = cachedData;
+          console.log('✅ 캐시된 데이터가 최신입니다:', cachedData.drawNumber);
+          return;
+        }
+
+        // API 성공: 새로운 데이터 업데이트
+        winningData = apiData;
+        localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(apiData));
+        console.log('✅ 최신 당첨 번호 업데이트 완료:', apiData.drawNumber, '회차');
+        console.log('   당첨번호:', apiData.numbers.join(', '), '+ 보너스:', apiData.bonus);
+      } else if (cachedData) {
+        // API 실패 but 캐시 있음: 캐시 사용
+        winningData = cachedData;
+        console.log('⚠️ API 실패, 캐시된 데이터 사용:', cachedData.drawNumber);
+      } else {
+        // API 실패 & 캐시 없음: 하드코딩된 폴백 데이터 사용
+        localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(winningData));
+        console.log('⚠️ API 실패, 폴백 데이터 사용:', winningData.drawNumber);
+      }
     }
 
     function getWinningNumbers() {
@@ -798,41 +959,144 @@
       return stored ? JSON.parse(stored) : winningData;
     }
 
-    function changeDrawNumber() {
+    // Firestore에 당첨 번호 저장
+    async function saveWinningToFirestore(data) {
+      try {
+        await db.collection('winning_numbers').doc(String(data.drawNumber)).set({
+          drawNumber: data.drawNumber,
+          drawDate: data.drawDate,
+          numbers: data.numbers,
+          bonus: data.bonus,
+          firstPrize: data.firstPrize,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log(`✅ ${data.drawNumber}회차 당첨 정보 Firestore 저장 완료`);
+      } catch (error) {
+        console.error('Firestore 저장 오류:', error);
+      }
+    }
+
+    // Firestore에서 당첨 번호 목록 로드
+    async function loadWinningListFromFirestore() {
+      try {
+        const snapshot = await db.collection('winning_numbers')
+          .orderBy('drawNumber', 'desc')
+          .limit(10)
+          .get();
+
+        const list = [];
+        snapshot.forEach(doc => {
+          list.push(doc.data());
+        });
+        console.log(`✅ Firestore에서 ${list.length}개 회차 로드됨`);
+        return list;
+      } catch (error) {
+        console.error('Firestore 로드 오류:', error);
+        return [];
+      }
+    }
+
+    // 드롭다운 초기화 (Firestore에서 로드) + 이벤트 리스너 등록
+    async function initDrawSelect() {
       const select = document.getElementById('drawSelect');
       if (!select) return;
-      
-      const drawNo = parseInt(select.value);
-      
-      if (drawNo === 1199) {
-        winningData = {
-          drawNumber: 1199,
-          drawDate: '2025-11-22',
-          numbers: [16, 24, 25, 30, 31, 32],
-          bonus: 7,
-          firstPrize: '1,695,609,839'
-        };
-      } else if (drawNo === 1198) {
-        winningData = {
-          drawNumber: 1198,
-          drawDate: '2025-11-15',
-          numbers: [5, 18, 19, 32, 42, 44],
-          bonus: 3,
-          firstPrize: '1,523,456,789'
-        };
-      } else if (drawNo === 1197) {
-        winningData = {
-          drawNumber: 1197,
-          drawDate: '2025-11-08',
-          numbers: [6, 18, 26, 35, 38, 45],
-          bonus: 12,
-          firstPrize: '1,789,012,345'
-        };
+
+      select.innerHTML = '<option value="">불러오는 중...</option>';
+
+      // Firestore에서 당첨 번호 목록 로드
+      let winningList = await loadWinningListFromFirestore();
+
+      // Firestore에 데이터가 없거나 부족하면 API에서 가져와서 저장
+      const latestDraw = getLatestDrawNumber();
+      if (winningList.length === 0 || winningList[0].drawNumber < latestDraw) {
+        console.log('🔄 최신 데이터 API에서 가져오는 중...');
+
+        // 최근 10회차 API에서 가져오기
+        for (let i = 0; i < 10; i++) {
+          const drawNo = latestDraw - i;
+          if (drawNo < 1) break;
+
+          // 이미 있는지 확인
+          const exists = winningList.find(w => w.drawNumber === drawNo);
+          if (!exists) {
+            const data = await fetchLotteryData(drawNo);
+            if (data) {
+              await saveWinningToFirestore(data);
+              winningList.push(data);
+            }
+          }
+        }
+
+        // 다시 정렬
+        winningList.sort((a, b) => b.drawNumber - a.drawNumber);
+        winningList = winningList.slice(0, 10);
       }
-      
-      localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(winningData));
-      updateCheckUI();
-      updateWinningStats();
+
+      // 드롭다운 옵션 생성
+      select.innerHTML = '';
+      winningList.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.drawNumber;
+        option.textContent = `${item.drawNumber}회차 (${item.drawDate})`;
+        select.appendChild(option);
+      });
+
+      // 이벤트 리스너 등록
+      select.addEventListener('change', async function() {
+        const drawNo = parseInt(this.value);
+        await loadDrawData(drawNo);
+      });
+
+      console.log('✅ 드롭다운 초기화 완료');
+    }
+
+    // 당첨 데이터 로드 (Firestore 우선, 없으면 API)
+    async function loadDrawData(drawNo) {
+      showToast('당첨 정보 불러오는 중...', 1500);
+
+      // Firestore에서 먼저 확인
+      try {
+        const doc = await db.collection('winning_numbers').doc(String(drawNo)).get();
+        if (doc.exists) {
+          const data = doc.data();
+          winningData = {
+            drawNumber: data.drawNumber,
+            drawDate: data.drawDate,
+            numbers: data.numbers,
+            bonus: data.bonus,
+            firstPrize: data.firstPrize
+          };
+          localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(winningData));
+          updateCheckUI();
+          updateWinningStats();
+          showToast(`${drawNo}회차 당첨 정보 로드 완료`, 2000);
+          return;
+        }
+      } catch (error) {
+        console.error('Firestore 조회 오류:', error);
+      }
+
+      // Firestore에 없으면 API에서 가져오기
+      const data = await fetchLotteryData(drawNo);
+      if (data) {
+        winningData = {
+          drawNumber: data.drawNumber,
+          drawDate: data.drawDate,
+          numbers: data.numbers,
+          bonus: data.bonus,
+          firstPrize: data.firstPrize
+        };
+
+        // Firestore에 저장
+        await saveWinningToFirestore(data);
+
+        localStorage.setItem(STORAGE_KEYS.WINNING, JSON.stringify(winningData));
+        updateCheckUI();
+        updateWinningStats();
+        showToast(`${drawNo}회차 당첨 정보 로드 완료`, 2000);
+      } else {
+        showToast('당첨 정보를 불러올 수 없습니다', 2000);
+      }
     }
 
     // ==================== 직접 번호 입력 ====================
@@ -1181,12 +1445,12 @@
       container.innerHTML = pageItems.map((item, index) => {
         const globalIndex = startIndex + index;
         return `
-          <div class="flex items-center gap-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
-            <span class="text-xs text-blue-600 font-bold w-8">#${globalIndex + 1}</span>
-            <div class="flex gap-1.5 flex-1">
+          <div class="flex items-center gap-2 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200 overflow-hidden">
+            <span class="text-xs text-blue-600 font-bold w-6 shrink-0">#${globalIndex + 1}</span>
+            <div class="flex gap-1 flex-1 min-w-0">
               ${renderNumberBalls(item.numbers)}
             </div>
-            <button onclick="deleteSaved(${globalIndex})" class="text-red-600 text-sm font-bold hover:text-red-700">삭제</button>
+            <button onclick="deleteSaved(${globalIndex})" class="text-red-600 text-xs font-bold hover:text-red-700 shrink-0">삭제</button>
           </div>
         `;
       }).join('');
@@ -1374,12 +1638,12 @@
 
     function renderBall(num, type = 'normal') {
       let colorClass;
-      
+
       if (type === 'bonus') {
         colorClass = 'from-green-400 to-green-600';
-        return `<div class="w-8 h-8 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md border-2 border-white">${num}</div>`;
+        return `<div class="w-8 h-8 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md border-2 border-white">${num}</div>`;
       }
-      
+
       if (type === 'matched') {
         colorClass = 'from-green-400 to-green-600';
       } else {
@@ -1389,8 +1653,8 @@
         else if (num <= 40) colorClass = 'from-gray-400 to-gray-600';
         else colorClass = 'from-green-400 to-green-600';
       }
-      
-      return `<div class="w-8 h-8 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">${num}</div>`;
+
+      return `<div class="w-8 h-8 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">${num}</div>`;
     }
 
     function getMatchRank(count) {
@@ -1550,13 +1814,9 @@
       }
     }
 
-    // ==================== 초기화 실행 ====================
-    
-    initApp();
-    
     // ==================== 전역 함수 노출 (onclick 지원) ====================
     // 이미 노출된 함수들: resetQuota, clearRecentNumbers, deleteRecentNumber, clearAllData
-    
+
     window.openSettings = openSettings;
     window.closeSettings = closeSettings;
     window.showGenerateConfirm = showGenerateConfirm;
@@ -1581,14 +1841,14 @@
     window.removeManualInputLine = removeManualInputLine;
     window.checkManualNumbers = checkManualNumbers;
     window.validateManualInput = validateManualInput;
-    window.changeDrawNumber = changeDrawNumber;
     window.closeWinningStatsCard = closeWinningStatsCard;
     window.closeStatsCard = closeStatsCard;
     window.closeWinningCard = closeWinningCard;
     window.saveNumber = saveNumber;
+    window.saveAllRecentNumbers = saveAllRecentNumbers;
     window.deleteSaved = deleteSaved;
     window.closeGeneratedModal = closeGeneratedModal;
-    
+
     // 저장된 번호 페이지네이션
     window.prevSavedPage = prevSavedPage;
     window.nextSavedPage = nextSavedPage;
@@ -1598,3 +1858,7 @@
     window.confirmSavedPageAdd = confirmSavedPageAdd;
     window.showSavedExpandConfirm = showSavedExpandConfirm;
     window.clearSavedNumbers = clearSavedNumbers;
+
+    // ==================== 초기화 실행 ====================
+
+    initApp();
