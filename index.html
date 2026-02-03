@@ -28,23 +28,23 @@
 
             <!-- PC용 상단 네비게이션 (768px 이상) -->
             <nav class="hidden md:flex items-center gap-1 desktop-nav">
-              <button onclick="switchTab('homeTab')" id="btnHomeDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-blue-600 bg-blue-50 font-medium text-sm transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <button onclick="switchTab('homeTab')" id="btnHomeDesktop" class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-blue-600 bg-blue-50 font-medium text-sm transition-colors cursor-pointer select-none">
+                <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
-                홈
+                <span class="pointer-events-none">홈</span>
               </button>
-              <button onclick="switchTab('savedTab')" id="btnSavedDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="switchTab('savedTab')" id="btnSavedDesktop" class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors cursor-pointer select-none">
+                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                 </svg>
-                내 번호
+                <span class="pointer-events-none">내 번호</span>
               </button>
-              <button onclick="switchTab('checkTab')" id="btnCheckDesktop" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="switchTab('checkTab')" id="btnCheckDesktop" class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm transition-colors cursor-pointer select-none">
+                <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                 </svg>
-                당첨 확인
+                <span class="pointer-events-none">당첨 확인</span>
               </button>
             </nav>
 
@@ -190,7 +190,12 @@
         <div id="savedTab" class="tab-content tab-padding space-y-4 pb-24">
           <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-bold text-gray-900 text-lg">저장된 번호</h3>
+              <div>
+                <h3 class="font-bold text-gray-900 text-lg">저장된 번호</h3>
+                <div class="text-xs text-gray-500 mt-1">
+                  <span id="savedCount">0</span>/<span id="savedMaxCount">10</span>개 저장됨
+                </div>
+              </div>
               <div class="flex items-center gap-2">
                 <button onclick="clearSavedNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-3 py-1 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
                   초기화
