@@ -151,34 +151,34 @@
         </div>
 
         <!-- Tab Contents -->
-        <div id="homeTab" class="tab-content active tab-padding space-y-4 pb-24">
-          
+        <div id="homeTab" class="tab-content active tab-padding space-y-3 pb-24">
+
           <!-- 오늘의 행운 번호 -->
-          <div class="bg-gradient-to-br from-purple-100 via-pink-50 to-purple-50 rounded-2xl p-5 shadow-lg border-2 border-purple-200">
-            <div class="flex items-center justify-between mb-3">
+          <div class="bg-gradient-to-br from-purple-100 via-pink-50 to-purple-50 rounded-2xl p-3 shadow-lg border-2 border-purple-200">
+            <div class="flex items-center justify-between mb-2">
               <div>
-                <div class="text-sm text-gray-700 font-bold flex items-center gap-2">
-                  <span class="bg-purple-600 text-white text-xs px-2 py-0.5 rounded-full">NEW</span>
+                <div class="text-xs text-gray-700 font-bold flex items-center gap-1.5">
+                  <span class="bg-purple-600 text-white text-xs px-1.5 py-0.5 rounded-full">NEW</span>
                   오늘의 럭키 넘버
                 </div>
-                <div class="text-xs text-purple-600 font-medium mt-1" id="luckyMessage">✨ 행운이 가득한 날</div>
+                <div class="text-xs text-purple-600 font-medium mt-0.5" id="luckyMessage">✨ 행운이 가득한 날</div>
               </div>
-              <div class="text-3xl pulse-animation">🍀</div>
+              <div class="text-2xl pulse-animation">🍀</div>
             </div>
             
             <div id="luckyNumberContainer" class="relative">
-              <div id="luckyNumberBlurred" class="flex gap-2 justify-center p-4 bg-white/60 rounded-xl backdrop-blur-sm" style="filter: blur(8px);">
-                <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full"></div>
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full"></div>
-                <div class="w-10 h-10 bg-gradient-to-br from-red-400 to-red-600 rounded-full"></div>
-                <div class="w-10 h-10 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full"></div>
-                <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full"></div>
-                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-700 rounded-full"></div>
+              <div id="luckyNumberBlurred" class="flex gap-1 justify-center p-3 bg-white/60 rounded-xl backdrop-blur-sm" style="filter: blur(8px);">
+                <div class="number-ball bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full"></div>
+                <div class="number-ball bg-gradient-to-br from-blue-400 to-blue-600 rounded-full"></div>
+                <div class="number-ball bg-gradient-to-br from-red-400 to-red-600 rounded-full"></div>
+                <div class="number-ball bg-gradient-to-br from-gray-400 to-gray-600 rounded-full"></div>
+                <div class="number-ball bg-gradient-to-br from-green-400 to-green-600 rounded-full"></div>
+                <div class="number-ball bg-gradient-to-br from-green-500 to-green-700 rounded-full"></div>
               </div>
-              
+
               <div id="luckyNumberReveal" class="absolute inset-0 flex items-center justify-center">
-                <button onclick="revealLuckyNumber()" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-3 rounded-full font-bold text-sm shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="revealLuckyNumber()" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                   </svg>
                   광고보고 확인하기
@@ -188,31 +188,31 @@
           </div>
 
           <!-- 로또 번호 생성기 -->
-          <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-            <div class="text-center mb-6">
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">로또 번호 자동 생성기</h2>
-              <p class="text-sm text-gray-600">버튼 한 번으로 이번 주 로또 번호를 생성해드립니다</p>
+          <div class="bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+            <div class="text-center mb-4">
+              <h2 class="text-xl font-bold text-gray-900 mb-1">로또 번호 자동 생성기</h2>
+              <p class="text-xs text-gray-600">버튼 한 번으로 이번 주 로또 번호를 생성해드립니다</p>
             </div>
 
-            <button id="generateButton" onclick="showGenerateConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-5 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] mb-6 text-lg">
+            <button id="generateButton" onclick="showGenerateConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] mb-4 text-base">
               로또 번호 생성하기
             </button>
 
             <!-- 할당량 소진 안내 메시지 -->
-            <div id="quotaDepletedMessage" class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6 text-center" style="display: none;">
-              <p class="text-sm text-gray-700 font-medium">오늘 생성 가능한 번호를 모두 사용했어요</p>
+            <div id="quotaDepletedMessage" class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 mb-4 text-center" style="display: none;">
+              <p class="text-xs text-gray-700 font-medium">오늘 생성 가능한 번호를 모두 사용했어요</p>
             </div>
 
-            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-200">
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-sm font-medium text-gray-700">오늘 남은 생성 횟수</span>
-                <span class="text-2xl font-bold text-blue-600"><span id="remainingQuota">10</span>회</span>
+            <div class="bg-gray-50 rounded-xl p-3 border border-gray-200">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-gray-700">오늘 남은 생성 횟수</span>
+                <span class="text-xl font-bold text-blue-600"><span id="remainingQuota">10</span>회</span>
               </div>
-              
-              <div class="w-full bg-gray-200 rounded-full h-3 mb-2 overflow-hidden">
+
+              <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1.5 overflow-hidden">
                 <div id="quotaProgressBar" class="bg-gradient-to-r from-blue-600 to-blue-700 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
               </div>
-              
+
               <div class="text-xs text-center text-gray-500">
                 총 10회 중 <span id="quotaProgressText">10회</span> 남음
               </div>
@@ -220,47 +220,47 @@
           </div>
 
           <!-- 공유하기 배너 -->
-          <div class="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 rounded-2xl p-5 text-white shadow-xl hover:shadow-2xl transition-shadow">
-            <div class="flex items-center justify-between mb-3">
+          <div class="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 rounded-2xl p-3 text-white shadow-xl hover:shadow-2xl transition-shadow">
+            <div class="flex items-center justify-between mb-2">
               <div class="flex-1">
-                <div class="text-sm opacity-90 font-medium">친구에게 공유하고</div>
-                <div class="text-2xl font-bold mt-1">+5회 받기! 🎁</div>
-                <div class="text-xs opacity-80 mt-1">하루 1회만 가능 (00:00 기준)</div>
+                <div class="text-xs opacity-90 font-medium">친구에게 공유하고</div>
+                <div class="text-lg font-bold mt-0.5">+5회 받기! 🎁</div>
+                <div class="text-xs opacity-80 mt-0.5">하루 1회만 가능 (00:00 기준)</div>
               </div>
-              <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-4xl backdrop-blur-sm">
+              <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
                 📤
               </div>
             </div>
-            <button onclick="shareApp()" class="w-full bg-white text-purple-600 font-bold py-3 rounded-xl hover:bg-purple-50 transition-colors shadow-lg">
+            <button onclick="shareApp()" class="w-full bg-white text-purple-600 font-bold py-2.5 rounded-xl hover:bg-purple-50 transition-colors shadow-lg text-sm">
               친구에게 공유하기
             </button>
           </div>
 
           <!-- 최근 생성 번호 (슬롯 시스템) -->
-          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="font-bold text-gray-900 text-lg">최근 생성 번호</h3>
-              <div class="flex items-center gap-2">
-                <button onclick="saveAllRecentNumbers()" class="text-xs text-blue-600 hover:text-blue-700 font-medium px-3 py-1 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
+          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-gray-900 text-base">최근 생성 번호</h3>
+              <div class="flex items-center gap-1">
+                <button onclick="saveAllRecentNumbers()" class="text-xs text-blue-600 hover:text-blue-700 font-medium px-2 py-0.5 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
                   전체 저장
                 </button>
-                <button onclick="clearRecentNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-3 py-1 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
+                <button onclick="clearRecentNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-2 py-0.5 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
                   초기화
                 </button>
-                <span class="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full font-medium"><span id="recentSlotsCount">5</span>/50</span>
+                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="recentSlotsCount">5</span>/50</span>
               </div>
             </div>
-            
+
             <div id="recentNumbersList">
               <!-- 동적으로 생성 -->
             </div>
 
-            <div class="text-xs text-center text-gray-500 mt-4">
-              최대 50개 슬롯까지 확장 가능합니다
+            <div class="text-xs text-center text-gray-400 mt-3">
+              스와이프→삭제 / 길게 누르기→저장
             </div>
 
-            <button onclick="showExpandSlotsModal()" class="w-full mt-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-2 border-2 border-purple-200 shadow-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="showExpandSlotsModal()" class="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-1.5 border-2 border-purple-200 shadow-sm text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
               </svg>
               <span>광고 시청하고 +5줄 추가</span>
@@ -268,21 +268,21 @@
           </div>
 
           <!-- 관상 테스트 배너 -->
-          <a href="face-test.html" class="block bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-2xl p-5 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]">
+          <a href="face-test.html" class="block bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-2xl p-3 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]">
             <div class="flex items-center justify-between">
               <div class="flex-1">
-                <div class="text-xs opacity-90 font-medium mb-1">NEW 서비스</div>
-                <div class="text-xl font-bold mb-1">🔮 내가 부자가 될 상인가?</div>
-                <div class="text-sm opacity-90">AI 관상 테스트로 나의 금전운 확인!</div>
+                <div class="text-xs opacity-90 font-medium">NEW 서비스</div>
+                <div class="text-base font-bold mt-0.5">🔮 내가 부자가 될 상인가?</div>
+                <div class="text-xs opacity-90 mt-0.5">AI 관상 테스트로 나의 금전운 확인!</div>
               </div>
-              <div class="text-4xl ml-4">💰</div>
+              <div class="text-3xl ml-3">💰</div>
             </div>
           </a>
 
           <!-- 면책 조항 -->
-          <div class="bg-gray-50 rounded-xl p-4 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-2">⚠️ 면책 조항</div>
-            <ul class="space-y-1 list-disc list-inside">
+          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
+            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
+            <ul class="space-y-0.5 list-disc list-inside text-xs">
               <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
               <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
               <li>개인의 책임 하에 이용 바랍니다.</li>
@@ -292,61 +292,73 @@
         </div>
 
         <!-- 내 번호 탭 -->
-        <div id="savedTab" class="tab-content tab-padding space-y-4 pb-24">
-          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
-            <div class="flex items-center justify-between mb-4">
+        <div id="savedTab" class="tab-content tab-padding space-y-3 pb-24">
+
+          <!-- 최근 뽑은 번호 섹션 (NEW) -->
+          <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-3 border-2 border-blue-200">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-gray-900 text-sm">최근 뽑은 번호</h3>
+              <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">최근 5개</span>
+            </div>
+            <div id="recentNumbersPreview" class="space-y-1.5">
+              <!-- 동적으로 생성 -->
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-3">
               <div>
-                <h3 class="font-bold text-gray-900 text-lg">저장된 번호</h3>
-                <div class="text-xs text-gray-500 mt-1">
+                <h3 class="font-bold text-gray-900 text-base">저장된 번호</h3>
+                <div class="text-xs text-gray-500 mt-0.5">
                   <span id="savedCount">0</span>/<span id="savedMaxCount">10</span>개 저장됨
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <button onclick="clearSavedNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-3 py-1 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
+              <div class="flex items-center gap-1">
+                <button onclick="clearSavedNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-2 py-0.5 bg-red-50 rounded-full hover:bg-red-100 transition-colors">
                   초기화
                 </button>
-                <span class="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full font-medium"><span id="savedCurrentPage">1</span>/<span id="savedTotalPages">5</span></span>
+                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="savedCurrentPage">1</span>/<span id="savedTotalPages">5</span></span>
               </div>
             </div>
-            
+
             <div id="savedNumbersList">
               <!-- 동적으로 생성 -->
             </div>
 
             <!-- 페이지네이션 컨트롤 -->
-            <div class="mt-4 flex items-center justify-center gap-4">
-              <button onclick="prevSavedPage()" id="btnPrevSaved" class="p-2 text-gray-400 hover:text-gray-600 disabled:opacity-30" disabled>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="mt-3 flex items-center justify-center gap-3">
+              <button onclick="prevSavedPage()" id="btnPrevSaved" class="p-1.5 text-gray-400 hover:text-gray-600 disabled:opacity-30" disabled>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
               </button>
-              
-              <div class="flex gap-2" id="savedPaginationDots">
+
+              <div class="flex gap-1.5" id="savedPaginationDots">
                 <!-- 동적으로 생성 -->
               </div>
-              
-              <button onclick="nextSavedPage()" id="btnNextSaved" class="p-2 text-gray-600 hover:text-gray-900">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+              <button onclick="nextSavedPage()" id="btnNextSaved" class="p-1.5 text-gray-600 hover:text-gray-900">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
               </button>
             </div>
 
-            <div class="text-xs text-center text-gray-500 mt-2">
+            <div class="text-xs text-center text-gray-400 mt-2">
               최대 5페이지(50개)까지 표시됩니다
             </div>
 
-            <button onclick="showSavedExpandConfirm()" class="w-full mt-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-2 border-2 border-purple-200 shadow-sm">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="showSavedExpandConfirm()" class="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-1.5 border-2 border-purple-200 shadow-sm text-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
               </svg>
               광고 시청하고 페이지 추가하기
             </button>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-4 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-2">⚠️ 면책 조항</div>
-            <ul class="space-y-1 list-disc list-inside">
+          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
+            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
+            <ul class="space-y-0.5 list-disc list-inside text-xs">
               <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
               <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
               <li>개인의 책임 하에 이용 바랍니다.</li>
@@ -355,69 +367,69 @@
         </div>
 
         <!-- 당첨 확인 탭 -->
-        <div id="checkTab" class="tab-content tab-padding space-y-4 pb-24">
-          
-          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
-            <div class="mb-4">
-              <label class="text-sm font-semibold text-gray-700 mb-2 block">당첨 회차</label>
-              <select id="drawSelect" class="w-full p-3 border-2 border-gray-200 rounded-xl font-semibold text-gray-900 focus:border-blue-500 focus:outline-none">
+        <div id="checkTab" class="tab-content tab-padding space-y-3 pb-24">
+
+          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+            <div class="mb-3">
+              <label class="text-xs font-semibold text-gray-700 mb-1.5 block">당첨 회차</label>
+              <select id="drawSelect" class="w-full p-2.5 border-2 border-gray-200 rounded-xl font-semibold text-gray-900 focus:border-blue-500 focus:outline-none text-sm">
                 <!-- 동적으로 최근 10회차 생성 -->
               </select>
             </div>
 
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 mb-4">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-sm font-bold text-gray-900">제 <span id="checkDrawNumber">1199</span>회 당첨번호</div>
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3 mb-3">
+              <div class="flex items-center justify-between mb-1.5">
+                <div class="text-xs font-bold text-gray-900">제 <span id="checkDrawNumber">1199</span>회 당첨번호</div>
                 <div class="text-xs text-gray-500"><span id="checkDrawDate">2025-11-22</span></div>
               </div>
-              <div id="checkWinningNumbers" class="flex gap-2 justify-center mb-2">
+              <div id="checkWinningNumbers" class="flex gap-1 justify-center mb-1.5">
                 <!-- 동적으로 생성 -->
               </div>
               <div class="text-xs text-center text-gray-600">
-                1등 당첨금 <span id="checkFirstPrize" class="font-semibold text-blue-700">1,695,609,839원</span>
+                1등 <span id="checkFirstPrize" class="font-semibold text-blue-700">1,695,609,839원</span>
               </div>
             </div>
 
-            <div class="mb-4">
-              <div class="text-sm font-bold text-gray-900 mb-3">직접 번호 입력</div>
-              
-              <div id="manualInputLines" class="space-y-3">
+            <div class="mb-3">
+              <div class="text-xs font-bold text-gray-900 mb-2">직접 번호 입력</div>
+
+              <div id="manualInputLines" class="space-y-2">
                 <!-- 동적으로 생성 -->
               </div>
 
-              <button onclick="addManualInputLine()" class="w-full mt-3 py-3 bg-gray-50 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 border border-gray-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="addManualInputLine()" class="w-full mt-2 py-2.5 bg-gray-50 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-1.5 border border-gray-200 text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
                 한 줄 추가
               </button>
 
-              <button onclick="checkManualNumbers()" class="w-full mt-3 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg">
+              <button onclick="checkManualNumbers()" class="w-full mt-2 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm">
                 당첨 확인하기
               </button>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="font-bold text-gray-900 text-lg">내 번호 당첨 확인</h3>
-              <span class="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full font-medium"><span id="savedCheckCount">0</span>개</span>
+          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-bold text-gray-900 text-base">내 번호 당첨 확인</h3>
+              <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="savedCheckCount">0</span>개</span>
             </div>
-            
-            <div id="savedNumbersCheck" class="space-y-3">
+
+            <div id="savedNumbersCheck" class="space-y-2">
               <!-- 동적으로 생성 -->
             </div>
 
-            <div id="noSavedForCheck" class="text-center py-12">
-              <div class="text-6xl mb-4">🎯</div>
-              <div class="text-gray-500 font-medium">저장된 번호가 없습니다</div>
-              <div class="text-sm text-gray-400 mt-2">내 번호를 저장하고 당첨을 확인해보세요!</div>
+            <div id="noSavedForCheck" class="text-center py-8">
+              <div class="text-4xl mb-3">🎯</div>
+              <div class="text-gray-500 font-medium text-sm">저장된 번호가 없습니다</div>
+              <div class="text-xs text-gray-400 mt-1">내 번호를 저장하고 당첨을 확인해보세요!</div>
             </div>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-4 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-2">⚠️ 면책 조항</div>
-            <ul class="space-y-1 list-disc list-inside">
+          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
+            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
+            <ul class="space-y-0.5 list-disc list-inside text-xs">
               <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
               <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
               <li>개인의 책임 하에 이용 바랍니다.</li>
@@ -521,31 +533,38 @@
 
   <!-- 생성 확인 모달 -->
   <div id="generateConfirmModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="flex items-start justify-between mb-4">
+    <div class="bg-white rounded-2xl p-5 max-w-[400px] w-full mx-4 shadow-2xl">
+      <div class="flex items-start justify-between mb-3">
         <div class="flex-1">
-          <div class="text-base font-semibold text-gray-700 mb-2">하루 생성할 수 있는 번호는 최대 10회</div>
-          <div class="text-3xl font-black text-blue-600 mb-2"><span id="confirmRemaining">10</span>/<span id="confirmTotal">10</span>번 남았습니다.</div>
-          <div class="text-sm text-gray-600">번호를 생성하시겠습니까?</div>
+          <div class="text-sm font-semibold text-gray-700 mb-1">하루 생성할 수 있는 번호는 최대 10회</div>
+          <div class="text-2xl font-black text-blue-600 mb-1"><span id="confirmRemaining">10</span>/<span id="confirmTotal">10</span>번 남았습니다.</div>
+          <div class="text-xs text-gray-600">번호를 생성하시겠습니까?</div>
         </div>
         <button onclick="closeGenerateConfirm()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
 
-      <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl mb-4 cursor-pointer hover:bg-gray-100 transition-colors">
-        <input type="checkbox" id="generate5Times" class="w-5 h-5 text-blue-600 rounded">
+      <!-- 5회 이상일 때: 5회 연속 뽑기 옵션 -->
+      <label id="option5Times" class="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl mb-3 cursor-pointer hover:bg-gray-100 transition-colors">
+        <input type="checkbox" id="generate5Times" class="w-4 h-4 text-blue-600 rounded">
         <span class="text-sm font-medium text-gray-700">광고보고 연속 5회 뽑기</span>
       </label>
 
-      <div class="flex gap-3">
-        <button onclick="closeGenerateConfirm()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
-          취소하기
+      <!-- 4회 이하일 때: 남은 횟수 모두 뽑기 옵션 -->
+      <label id="optionRemaining" class="hidden flex items-center gap-2 p-2.5 bg-purple-50 rounded-xl mb-3 cursor-pointer hover:bg-purple-100 transition-colors border-2 border-purple-200">
+        <input type="checkbox" id="generateRemaining" class="w-4 h-4 text-purple-600 rounded">
+        <span class="text-sm font-medium text-purple-700">광고보고 남은 <span id="remainingDrawCount">4</span>회 모두 뽑기</span>
+      </label>
+
+      <div class="flex gap-2">
+        <button onclick="closeGenerateConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+          취소
         </button>
-        <button onclick="confirmGenerate()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg">
-          번호 생성하기
+        <button onclick="confirmGenerate()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm">
+          생성하기
         </button>
       </div>
     </div>
@@ -759,7 +778,7 @@
         </div>
 
         <div class="border-t pt-4 text-xs text-gray-500 text-center">
-          <p>HOXY NUMBER v1.4</p>
+          <p>HOXY NUMBER v1.6</p>
           <p class="mt-1">© 2026 HOXY NUMBER. All rights reserved</p>
         </div>
       </div>
@@ -828,7 +847,7 @@
           <p class="mt-2">문의: poilkjmnb122@gmail.com</p>
         </div>
         <div class="pt-2 border-t text-xs text-gray-400">
-          <p>버전: v1.4</p>
+          <p>버전: v1.6</p>
           <p>최종 업데이트: 2026년 2월</p>
         </div>
       </div>
@@ -960,27 +979,23 @@
     </div>
   </div>
 
-  <!-- 액션시트 모달 (iOS 스타일) -->
-  <div id="actionSheetModal" class="action-sheet-backdrop" onclick="if(event.target === this) closeActionSheet()">
-    <div class="action-sheet">
-      <div class="action-sheet-header">
-        <span id="actionSheetTitle">번호 관리</span>
+  <!-- 저장 확인 모달 (롱프레스용) -->
+  <div id="saveConfirmModal" class="modal-backdrop" onclick="if(event.target === this) closeSaveConfirm()">
+    <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
+      <div class="text-center mb-4">
+        <div class="text-lg font-bold text-gray-900 mb-3">번호를 저장하시겠습니까?</div>
+        <div id="saveConfirmNumbers" class="flex gap-1 justify-center p-3 bg-gray-50 rounded-xl">
+          <!-- 동적으로 생성 -->
+        </div>
       </div>
-      <div class="action-sheet-buttons">
-        <button class="action-btn save-btn" onclick="actionSheetSave()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
+      <div class="flex gap-2">
+        <button onclick="closeSaveConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+          취소
+        </button>
+        <button onclick="confirmSaveNumber()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-sm">
           저장하기
         </button>
-        <button class="action-btn delete-btn" onclick="actionSheetDelete()">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-          </svg>
-          삭제하기
-        </button>
       </div>
-      <button class="action-btn cancel-btn" onclick="closeActionSheet()">취소</button>
     </div>
   </div>
 

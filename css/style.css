@@ -47,17 +47,29 @@
       max-width: 100%;
     }
     
-    /* 탭 콘텐츠 패딩 */
+    /* 탭 콘텐츠 패딩 (모바일 최적화) */
     .tab-padding {
-      padding: 16px;
+      padding: 12px;
     }
-    
-    /* 생성 번호 리스트: 1컬럼 */
+
+    /* 생성 번호 리스트: 1컬럼 (간격 축소) */
     #recentNumbersList,
     #savedNumbersList {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
+    }
+
+    /* 375px 이하 초소형 디바이스 */
+    @media (max-width: 375px) {
+      .tab-padding {
+        padding: 8px;
+      }
+
+      #recentNumbersList,
+      #savedNumbersList {
+        gap: 6px;
+      }
     }
     
     /* 모달 팝업 사이즈 (모바일/PC 동일) */
@@ -91,6 +103,7 @@
     /* 하단 네비게이션 */
     .bottom-nav {
       margin: 0 auto;
+      z-index: 50;
     }
 
     /* PC에서 하단 패딩 제거 (768px 이상) */
@@ -167,17 +180,25 @@
       opacity: 1;
     }
 
-    /* 번호 입력 칸 스타일 */
+    /* 번호 입력 칸 스타일 (모바일 최적화) */
     .number-input {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border: 2px solid #e5e7eb;
-      border-radius: 12px;
+      border-radius: 10px;
       text-align: center;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       outline: none;
       transition: all 0.2s;
+    }
+
+    @media (min-width: 768px) {
+      .number-input {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+      }
     }
 
     .number-input:focus {
@@ -189,6 +210,70 @@
       background: #eff6ff;
       border-color: #3b82f6;
       color: #1e40af;
+    }
+
+    /* ========== 모바일 반응형 최적화 (375px 기준) ========== */
+
+    /* 숫자 공 기본 크기 (모바일) */
+    .number-ball {
+      width: 28px;
+      height: 28px;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 400px) {
+      .number-ball {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .number-ball {
+        width: 36px;
+        height: 36px;
+        font-size: 13px;
+      }
+    }
+
+    /* 카드 패딩 축소 */
+    .card-compact {
+      padding: 12px;
+    }
+
+    @media (min-width: 400px) {
+      .card-compact {
+        padding: 16px;
+      }
+    }
+
+    /* 폰트 크기 조정 */
+    .text-responsive-xs {
+      font-size: 10px;
+    }
+
+    .text-responsive-sm {
+      font-size: 12px;
+    }
+
+    .text-responsive-base {
+      font-size: 14px;
+    }
+
+    @media (min-width: 400px) {
+      .text-responsive-xs {
+        font-size: 11px;
+      }
+
+      .text-responsive-sm {
+        font-size: 13px;
+      }
+
+      .text-responsive-base {
+        font-size: 15px;
+      }
     }
 
     /* 페이지네이션 */
