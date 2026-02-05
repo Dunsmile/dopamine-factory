@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 기본 SEO 메타 태그 -->
+  <title>부자가 될 상인가? - AI 관상 테스트 | HOXY</title>
+  <meta name="description" content="AI가 분석하는 나의 관상! 내가 부자가 될 상인지 무료로 테스트해보세요. 재미로 보는 관상 분석 서비스.">
+  <meta name="keywords" content="관상, 관상테스트, 부자관상, AI관상, 얼굴분석, 금전운, 재물운, 무료테스트">
+  <meta name="author" content="HOXY">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#8b5cf6">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://hoxy-number.pages.dev/face-test.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HOXY">
+  <meta property="og:title" content="부자가 될 상인가? - AI 관상 테스트">
+  <meta property="og:description" content="AI가 분석하는 나의 관상! 내가 부자가 될 상인지 무료로 테스트해보세요.">
+  <meta property="og:image" content="https://hoxy-number.pages.dev/og-face-test.png">
+  <meta property="og:url" content="https://hoxy-number.pages.dev/face-test.html">
+  <meta property="og:locale" content="ko_KR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="부자가 될 상인가? - AI 관상 테스트">
+  <meta name="twitter:description" content="AI가 분석하는 나의 관상! 내가 부자가 될 상인지 무료로 테스트해보세요.">
+  <meta name="twitter:image" content="https://hoxy-number.pages.dev/og-face-test.png">
+
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-7301223136166743">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PN7SF35WR6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PN7SF35WR6');
+  </script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7301223136166743" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .photo-upload {
+      border: 3px dashed #d1d5db;
+      transition: all 0.3s;
+    }
+    .photo-upload:hover, .photo-upload.drag-over {
+      border-color: #8b5cf6;
+      background: #f5f3ff;
+    }
+    .photo-upload.has-photo {
+      border-style: solid;
+      border-color: #8b5cf6;
+    }
+
+    @keyframes analyzeWave {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.5); opacity: 0; }
+    }
+    .analyze-wave {
+      animation: analyzeWave 2s ease-in-out infinite;
+    }
+    .analyze-wave:nth-child(2) { animation-delay: 0.5s; }
+    .analyze-wave:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .count-up {
+      animation: countUp 0.5s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- 토스트 메시지 -->
+  <div id="toast" class="toast">
+    <span id="toastMessage"></span>
+  </div>
+
+  <div class="main-container">
+    <div class="content-area">
+      <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white relative">
+
+        <!-- Top Navigation -->
+        <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
+          <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center gap-3">
+              <button onclick="openServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">부자가 될 상인가?</h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: 입력 폼 -->
+        <div id="step1" class="step active p-4 space-y-4">
+
+          <!-- 헤더 -->
+          <div class="text-center py-6">
+            <div class="text-6xl mb-4">🔮</div>
+            <h2 class="text-2xl font-black text-gray-900 mb-2">AI 관상 테스트</h2>
+            <p class="text-gray-600">당신의 관상에서 부자의 기운이 느껴지나요?</p>
+          </div>
+
+          <!-- 입력 폼 -->
+          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 space-y-4">
+
+            <!-- 이름 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">이름</label>
+              <input type="text" id="userName" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none" placeholder="이름을 입력하세요" maxlength="20">
+            </div>
+
+            <!-- 성별 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">성별</label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="selectGender('male')" id="genderMale" class="py-3 px-4 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-purple-500 hover:bg-purple-50 transition-all">
+                  남성
+                </button>
+                <button type="button" onclick="selectGender('female')" id="genderFemale" class="py-3 px-4 border-2 border-gray-200 rounded-xl font-medium text-gray-700 hover:border-purple-500 hover:bg-purple-50 transition-all">
+                  여성
+                </button>
+              </div>
+            </div>
+
+            <!-- 생년월일 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">생년월일</label>
+              <input type="date" id="birthDate" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none">
+            </div>
+
+            <!-- 사진 업로드 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">사진 업로드</label>
+              <div id="photoUpload" class="photo-upload rounded-xl p-8 text-center cursor-pointer" onclick="document.getElementById('photoInput').click()">
+                <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                <div id="photoPlaceholder">
+                  <div class="text-4xl mb-2">📷</div>
+                  <div class="text-sm text-gray-500">클릭하여 사진 선택</div>
+                  <div class="text-xs text-gray-400 mt-1">5MB 이하 / JPG, PNG</div>
+                </div>
+                <div id="photoPreview" class="hidden">
+                  <img id="previewImage" class="w-32 h-32 object-cover rounded-xl mx-auto mb-2">
+                  <div class="text-sm text-purple-600 font-medium">사진이 선택되었습니다</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 동의 체크박스 -->
+            <div class="bg-gray-50 rounded-xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="agreeTerms" class="w-5 h-5 mt-0.5 text-purple-600 rounded">
+                <span class="text-sm text-gray-600">
+                  <span class="font-semibold text-gray-800">[필수]</span> 개인정보 수집 및 이용에 동의합니다.
+                  <br><span class="text-xs text-gray-400">수집항목: 이름, 성별, 생년월일 / 이용목적: 테스트 결과 생성</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- 시작 버튼 -->
+            <button onclick="startAnalysis()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg text-lg">
+              관상 분석 시작하기
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Step 2: 분석 중 -->
+        <div id="step2" class="step p-4">
+          <div class="flex flex-col items-center justify-center min-h-[70vh]">
+
+            <div class="relative mb-8">
+              <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-purple-300">
+                <img id="analyzingPhoto" class="w-full h-full object-cover">
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="absolute w-40 h-40 rounded-full border-4 border-purple-400 analyze-wave"></div>
+                <div class="absolute w-40 h-40 rounded-full border-4 border-purple-400 analyze-wave"></div>
+                <div class="absolute w-40 h-40 rounded-full border-4 border-purple-400 analyze-wave"></div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="text-2xl font-black text-gray-900 mb-2">관상 분석 중...</div>
+              <div class="text-purple-600 font-medium mb-6">"내가 부자가 될 상인가!"</div>
+
+              <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="analysisProgress" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+              <div class="text-sm text-gray-500 mt-2"><span id="analysisPercent">0</span>%</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Step 3: 결과 -->
+        <div id="step3" class="step p-4 pb-8 space-y-4">
+
+          <!-- 결과 헤더 -->
+          <div class="bg-gradient-to-br from-purple-100 via-pink-50 to-purple-50 rounded-2xl p-6 text-center border-2 border-purple-200">
+            <div class="text-sm text-purple-600 font-medium mb-2"><span id="resultUserName">홍길동</span>님의 관상 분석</div>
+            <div class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
+              💰 부자가 될 확률
+            </div>
+            <div class="text-7xl font-black text-purple-600 count-up"><span id="resultPercent">87</span>%</div>
+          </div>
+
+          <!-- 사진 + 인물 매칭 -->
+          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-20 h-20 rounded-xl overflow-hidden border-2 border-purple-200">
+                <img id="resultPhoto" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1">
+                <div class="text-sm text-gray-500 mb-1">당신과 비슷한 관상의 인물</div>
+                <div class="text-xl font-bold text-gray-900">과거 "<span id="resultCelebrity">정주영</span>" 회장의 상!</div>
+              </div>
+            </div>
+
+            <!-- 분석 결과 -->
+            <div class="bg-gray-50 rounded-xl p-4">
+              <div class="text-sm font-semibold text-gray-800 mb-2">📋 상세 분석 결과</div>
+              <p id="resultAnalysis" class="text-sm text-gray-600 leading-relaxed">
+                <!-- 동적 생성 -->
+              </p>
+            </div>
+          </div>
+
+          <!-- 일확천금 확률 -->
+          <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-5 border-2 border-yellow-200">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-lg font-bold text-gray-900">🍀 일확천금을 노려볼 확률</div>
+              <div class="text-2xl font-black text-orange-600"><span id="luckPercent">73</span>%</div>
+            </div>
+            <div class="w-full h-3 bg-yellow-200 rounded-full overflow-hidden mb-3">
+              <div id="luckBar" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full" style="width: 73%"></div>
+            </div>
+            <div id="luckMessage" class="text-center text-orange-700 font-medium">
+              "올해 큰 행운이 찾아올 것 같아요!"
+            </div>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="space-y-3">
+            <a href="index.html" class="block w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl text-center shadow-lg text-lg hover:from-blue-700 hover:to-purple-700 transition-all">
+              🎰 행운 번호 받으러 가기
+            </a>
+            <button onclick="shareResult()" class="w-full py-4 bg-white border-2 border-purple-200 text-purple-700 font-bold rounded-xl hover:bg-purple-50 transition-all flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+              </svg>
+              친구에게 테스트 공유하기
+            </button>
+            <button onclick="retakeTest()" class="w-full py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors">
+              다시 테스트하기
+            </button>
+          </div>
+
+          <!-- 푸터 안심 문구 -->
+          <div class="bg-gray-100 rounded-xl p-4 mt-6">
+            <div class="text-xs text-gray-500 space-y-1">
+              <p class="font-semibold text-gray-600">⚠️ 참고 사항</p>
+              <p>• 본 테스트는 오락 목적으로 제작되었으며, 과학적 근거가 없습니다.</p>
+              <p>• 수집된 개인정보는 테스트 결과 생성 목적으로만 사용됩니다.</p>
+              <p>• 업로드된 사진은 결과 표시 후 즉시 삭제되며 서버에 저장되지 않습니다.</p>
+              <p>• 테스트 결과는 재미로만 참고해 주세요.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 서비스 메뉴 사이드바 -->
+  <div id="serviceMenuBackdrop" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="closeServiceMenu()"></div>
+  <div id="serviceMenuSidebar" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300">
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <div class="text-lg font-bold text-gray-900">HOXY 서비스</div>
+        <button onclick="closeServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="p-2">
+      <!-- HOXY NUMBER -->
+      <a href="index.html" class="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl">
+          🎰
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">HOXY NUMBER</div>
+          <div class="text-xs text-gray-500">랜덤 로또 번호 생성기</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 관상 테스트 (현재) -->
+      <a href="face-test.html" class="flex items-center gap-4 p-4 rounded-xl bg-purple-50 border-2 border-purple-200 mb-2">
+        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-2xl">
+          🔮
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">부자가 될 상인가?</div>
+          <div class="text-xs text-gray-500">AI 관상 테스트</div>
+        </div>
+        <div class="text-purple-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 준비 중 -->
+      <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 mb-2 opacity-60">
+        <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 mb-2 opacity-60">
+        <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
+      <div class="text-xs text-gray-500 text-center">
+        <p>HOXY 서비스 v1.0</p>
+        <p class="mt-1">© 2026 HOXY. All rights reserved</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Firebase 초기화 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDw9j_3Di_Zn1kI_5KyQbGUV5o3I2APwkI",
+      authDomain: "hoxy-number.firebaseapp.com",
+      projectId: "hoxy-number",
+      storageBucket: "hoxy-number.firebasestorage.app",
+      messagingSenderId: "311606639114",
+      appId: "1:311606639114:web:ea5d008da413abb9d33df3",
+      measurementId: "G-PN7SF35WR6"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
+  <script src="js/face-test.js"></script>
+</body>
+</html>

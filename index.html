@@ -110,7 +110,14 @@
         <!-- Top Navigation -->
         <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
           <div class="flex items-center justify-between px-4 h-14">
-            <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">HOXY NUMBER</h1>
+            <div class="flex items-center gap-3">
+              <button onclick="openServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors -ml-2">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+              <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">HOXY NUMBER</h1>
+            </div>
 
             <!-- PC용 상단 네비게이션 (768px 이상) -->
             <nav class="hidden md:flex items-center gap-1 desktop-nav">
@@ -259,6 +266,18 @@
               <span>광고 시청하고 +5줄 추가</span>
             </button>
           </div>
+
+          <!-- 관상 테스트 배너 -->
+          <a href="face-test.html" class="block bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-2xl p-5 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02]">
+            <div class="flex items-center justify-between">
+              <div class="flex-1">
+                <div class="text-xs opacity-90 font-medium mb-1">NEW 서비스</div>
+                <div class="text-xl font-bold mb-1">🔮 내가 부자가 될 상인가?</div>
+                <div class="text-sm opacity-90">AI 관상 테스트로 나의 금전운 확인!</div>
+              </div>
+              <div class="text-4xl ml-4">💰</div>
+            </div>
+          </a>
 
           <!-- 면책 조항 -->
           <div class="bg-gray-50 rounded-xl p-4 text-xs text-gray-600 border border-gray-200">
@@ -998,6 +1017,84 @@
         <button onclick="closeCongratsModal()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all">
           확인
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 서비스 메뉴 사이드바 -->
+  <div id="serviceMenuBackdrop" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="closeServiceMenu()"></div>
+  <div id="serviceMenuSidebar" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300">
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <div class="text-lg font-bold text-gray-900">HOXY 서비스</div>
+        <button onclick="closeServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="p-2">
+      <!-- HOXY NUMBER -->
+      <a href="index.html" class="flex items-center gap-4 p-4 rounded-xl bg-blue-50 border-2 border-blue-200 mb-2">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl">
+          🎰
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">HOXY NUMBER</div>
+          <div class="text-xs text-gray-500">랜덤 로또 번호 생성기</div>
+        </div>
+        <div class="text-blue-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 관상 테스트 -->
+      <a href="face-test.html" class="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-2xl">
+          🔮
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">부자가 될 상인가?</div>
+          <div class="text-xs text-gray-500">AI 관상 테스트</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 준비 중 1 -->
+      <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 mb-2 opacity-60">
+        <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl">
+          🔒
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+
+      <!-- 준비 중 2 -->
+      <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 mb-2 opacity-60">
+        <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl">
+          🔒
+        </div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 정보 -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
+      <div class="text-xs text-gray-500 text-center">
+        <p>HOXY 서비스 v1.0</p>
+        <p class="mt-1">© 2026 HOXY. All rights reserved</p>
       </div>
     </div>
   </div>

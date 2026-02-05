@@ -1,20 +1,28 @@
-# HOXY NUMBER 프로젝트 컨텍스트
+# HOXY 프로젝트 컨텍스트
 
 ## 프로젝트 개요
-로또 번호 생성기 웹 애플리케이션 (100% 클라이언트 사이드)
+HOXY는 다양한 운세/행운 관련 서비스를 제공하는 플랫폼입니다.
+
+## 서비스 목록
+1. **HOXY NUMBER** - 로또 번호 생성기 (index.html)
+2. **부자가 될 상인가?** - AI 관상 테스트 (face-test.html)
+3. 준비 중 - 추후 공개
+4. 준비 중 - 추후 공개
 
 ## 기술 스택
 - **Frontend**: HTML, CSS (Tailwind CDN), Vanilla JavaScript
 - **Storage**: LocalStorage + Firebase Firestore
 - **Backend**: Firebase (Firestore Database)
-- **Hosting**: GitHub Pages
+- **Hosting**: Cloudflare Pages
   - Repository: https://github.com/Dunsmile/hoxy-number.git
-  - Live URL: https://dunsmile.github.io/hoxy-number
+  - Live URL: https://hoxy-number.pages.dev
 
 ## 주요 파일
-- `index.html` - 메인 페이지
-- `js/app.js` - 애플리케이션 로직
-- `css/style.css` - 커스텀 스타일
+- `index.html` - HOXY NUMBER (로또 번호 생성기)
+- `face-test.html` - 관상 테스트 페이지
+- `js/app.js` - 로또 앱 로직
+- `js/face-test.js` - 관상 테스트 로직
+- `css/style.css` - 공통 스타일
 
 ## 핵심 기능
 1. **로또 번호 생성** - 1~45 중 6개 랜덤 생성
@@ -40,6 +48,8 @@
 - ✅ Git 저장소 초기화 및 설정 완료
 - ✅ v1.2 UI/UX 대규모 개선 (2026-02-03)
 - ✅ v1.3 버그 수정 및 기능 개선 (2026-02-03)
+- ✅ v1.4 SEO 최적화 및 Google AdSense 연동 (2026-02-05)
+- ✅ v1.5 관상 테스트 서비스 추가 (2026-02-05)
 
 ## Firebase 설정
 - **Project ID**: hoxy-number
@@ -50,6 +60,7 @@
 ### Firestore 컬렉션
 - `generated_numbers`: 사용자가 생성한 번호 저장
 - `winning_numbers`: 당첨 번호 캐시 (회차별 당첨 정보 + 등수별 당첨금)
+- `face_test_results`: 관상 테스트 결과 (이름, 성별, 생년월일, 결과해시)
 
 ## 중요 설정값
 ```javascript

@@ -2148,9 +2148,31 @@
       }
     }
 
+    // ==================== 서비스 메뉴 ====================
+
+    function openServiceMenu() {
+      const backdrop = document.getElementById('serviceMenuBackdrop');
+      const sidebar = document.getElementById('serviceMenuSidebar');
+      if (backdrop && sidebar) {
+        backdrop.classList.remove('hidden');
+        sidebar.classList.remove('-translate-x-full');
+      }
+    }
+
+    function closeServiceMenu() {
+      const backdrop = document.getElementById('serviceMenuBackdrop');
+      const sidebar = document.getElementById('serviceMenuSidebar');
+      if (backdrop && sidebar) {
+        backdrop.classList.add('hidden');
+        sidebar.classList.add('-translate-x-full');
+      }
+    }
+
     // ==================== 전역 함수 노출 (onclick 지원) ====================
     // 이미 노출된 함수들: resetQuota, clearRecentNumbers, deleteRecentNumber, clearAllData
 
+    window.openServiceMenu = openServiceMenu;
+    window.closeServiceMenu = closeServiceMenu;
     window.openSettings = openSettings;
     window.closeSettings = closeSettings;
     window.openAboutModal = openAboutModal;
