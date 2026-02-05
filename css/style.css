@@ -113,9 +113,30 @@
       }
     }
 
+    /* PC에서 우측 사이드바 표시 (1024px 이상) */
+    @media (min-width: 1024px) {
+      .main-container {
+        max-width: 1200px;
+        justify-content: center;
+      }
+
+      .sidebar-cards {
+        display: block;
+        width: 280px;
+        flex-shrink: 0;
+        padding: 16px;
+        padding-top: 80px;
+      }
+    }
+
     .sidebar-card {
       margin-bottom: 20px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 모바일 통계 배너 */
+    #mobileStatsBanner {
+      transition: opacity 0.2s, transform 0.2s;
     }
 
     /* 탭 전환 애니메이션 */

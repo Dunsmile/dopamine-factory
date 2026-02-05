@@ -65,7 +65,8 @@
       updateActiveUsers();
       checkWinnings();
       updateWinningStats();
-      
+      initStatsCarousel();
+
       setInterval(updateActiveUsers, 60000);
       setInterval(checkDateReset, 60000);
     }
@@ -114,26 +115,53 @@
       const confirmRemainingEl = document.getElementById('confirmRemaining');
       const confirmTotalEl = document.getElementById('confirmTotal');
       const modalEl = document.getElementById('generateConfirmModal');
-      
+      const option5TimesEl = document.getElementById('option5Times');
+      const optionRemainingEl = document.getElementById('optionRemaining');
+      const remainingCountEl = document.getElementById('remainingDrawCount');
+
       if (confirmRemainingEl) confirmRemainingEl.textContent = quota.remaining;
       if (confirmTotalEl) confirmTotalEl.textContent = quota.total;
+
+      // 할당량에 따라 옵션 표시 변경
+      if (quota.remaining >= 5) {
+        // 5회 이상: 5회 연속 뽑기 옵션
+        if (option5TimesEl) option5TimesEl.classList.remove('hidden');
+        if (optionRemainingEl) optionRemainingEl.classList.add('hidden');
+      } else {
+        // 4회 이하: 남은 횟수 모두 뽑기 옵션
+        if (option5TimesEl) option5TimesEl.classList.add('hidden');
+        if (optionRemainingEl) optionRemainingEl.classList.remove('hidden');
+        if (remainingCountEl) remainingCountEl.textContent = quota.remaining;
+      }
+
       if (modalEl) modalEl.classList.add('active');
     }
 
     function closeGenerateConfirm() {
       const modalEl = document.getElementById('generateConfirmModal');
       const checkboxEl = document.getElementById('generate5Times');
-      
+      const checkboxRemainingEl = document.getElementById('generateRemaining');
+
       if (modalEl) modalEl.classList.remove('active');
       if (checkboxEl) checkboxEl.checked = false;
+      if (checkboxRemainingEl) checkboxRemainingEl.checked = false;
     }
 
     function confirmGenerate() {
       const checkboxEl = document.getElementById('generate5Times');
+      const checkboxRemainingEl = document.getElementById('generateRemaining');
       const is5Times = checkboxEl ? checkboxEl.checked : false;
-      const count = is5Times ? 5 : 1;
-      
+      const isRemaining = checkboxRemainingEl ? checkboxRemainingEl.checked : false;
+
       const quota = getQuota();
+      let count = 1;
+
+      if (is5Times) {
+        count = 5;
+      } else if (isRemaining) {
+        count = quota.remaining;
+      }
+
       if (quota.remaining < count) {
         showToast(`남은 횟수가 부족합니다! (${quota.remaining}회)`, 3000);
         return;
@@ -270,30 +298,43 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center justify-center gap-1 md:gap-2 p-3 md:p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs md:text-sm text-gray-400 w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 md:gap-2 justify-center">
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+            <div class="flex items-center justify-center gap-1 p-2 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
+              <span class="text-xs text-gray-400 w-5 shrink-0">#${slot.index + 1}</span>
+              <div class="flex gap-1 justify-center">
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
               </div>
             </div>
           `;
         } else {
           return `
-            <div class="swipe-item relative" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}'>
-              <div class="swipe-hint">
-                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="swipe-item relative group" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}'>
+              <div class="swipe-hint md:hidden">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
               </div>
-              <div class="swipe-content flex items-center justify-center gap-1 md:gap-2 p-3 md:p-4 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
-                <span class="text-xs md:text-sm ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
-                <div class="flex gap-1 md:gap-2 justify-center">
+              <div class="swipe-content flex items-center justify-between gap-1 p-2 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
+                <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-5 shrink-0">#${slot.index + 1}</span>
+                <div class="flex gap-1 justify-center flex-1">
                   ${renderNumberBalls(slot.data.numbers)}
+                </div>
+                <!-- PC 호버 버튼 -->
+                <div class="hidden md:flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  <button onclick="hoverSave(${slot.index})" class="p-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" title="저장">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </button>
+                  <button onclick="hoverDelete(${slot.index})" class="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="삭제">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -587,116 +628,148 @@
     // 액션시트 관련 변수
     let currentActionIndex = null;
     let currentActionNumbers = null;
+    let longPressTimer = null;
+    const LONG_PRESS_DURATION = 800; // 0.8초 (UX 개선)
 
+    // 스와이프 상태 변수 (이벤트 위임용)
+    let swipeState = {
+      item: null,
+      content: null,
+      startX: 0,
+      startY: 0,
+      currentX: 0,
+      isSwiping: false,
+      isLongPress: false
+    };
+
+    // 스와이프 상태 초기화
+    function resetSwipe() {
+      if (swipeState.content) {
+        swipeState.content.style.transform = 'translateX(0)';
+      }
+      if (swipeState.item) {
+        swipeState.item.classList.remove('swiping');
+      }
+      swipeState = {
+        item: null,
+        content: null,
+        startX: 0,
+        startY: 0,
+        currentX: 0,
+        isSwiping: false,
+        isLongPress: false
+      };
+    }
+
+    // 롱프레스 취소
+    function cancelLongPress() {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+      swipeState.isLongPress = false;
+    }
+
+    // 롱프레스 시작
+    function startLongPress(itemEl) {
+      cancelLongPress();
+      longPressTimer = setTimeout(() => {
+        swipeState.isLongPress = true;
+        // 진동 피드백 (지원 시)
+        if (navigator.vibrate) navigator.vibrate(50);
+        openSaveConfirm(itemEl);
+        resetSwipe();
+      }, LONG_PRESS_DURATION);
+    }
+
+    // 이벤트 위임 방식으로 스와이프/롱프레스 처리 (한 번만 등록)
     function initSwipeListeners() {
-      const swipeItems = document.querySelectorAll('.swipe-item');
+      const container = document.getElementById('recentNumbersList');
+      if (!container || container.dataset.swipeInit === 'true') return;
 
-      swipeItems.forEach(item => {
-        let startX = 0;
-        let currentX = 0;
-        let isSwiping = false;
+      container.dataset.swipeInit = 'true';
+
+      // 터치 시작
+      container.addEventListener('touchstart', (e) => {
+        const item = e.target.closest('.swipe-item');
+        if (!item) return;
 
         const content = item.querySelector('.swipe-content');
         if (!content) return;
 
-        // 스와이프 상태 초기화
-        function resetSwipe() {
-          content.style.transform = 'translateX(0)';
-          item.classList.remove('swiping');
+        swipeState.item = item;
+        swipeState.content = content;
+        swipeState.startX = e.touches[0].clientX;
+        swipeState.startY = e.touches[0].clientY;
+        swipeState.currentX = swipeState.startX;
+        swipeState.isSwiping = true;
+        swipeState.isLongPress = false;
+
+        item.classList.add('swiping');
+        startLongPress(item);
+      }, { passive: true });
+
+      // 터치 이동
+      container.addEventListener('touchmove', (e) => {
+        if (!swipeState.isSwiping || !swipeState.item) return;
+
+        swipeState.currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = swipeState.currentX - swipeState.startX;
+        const diffY = Math.abs(currentY - swipeState.startY);
+
+        // 움직이면 롱프레스 취소
+        if (Math.abs(diffX) > 10 || diffY > 10) {
+          cancelLongPress();
         }
 
-        // 터치 시작
-        item.addEventListener('touchstart', (e) => {
-          startX = e.touches[0].clientX;
-          currentX = startX;
-          isSwiping = true;
-          item.classList.add('swiping');
-        });
+        // 좌측 스와이프만 (최대 -80px)
+        if (diffX < 0 && swipeState.content) {
+          const translateX = Math.max(-80, diffX);
+          swipeState.content.style.transform = `translateX(${translateX}px)`;
+        }
+      }, { passive: true });
 
-        // 터치 이동 (좌측 스와이프만 허용)
-        item.addEventListener('touchmove', (e) => {
-          if (!isSwiping) return;
+      // 터치 종료
+      container.addEventListener('touchend', () => {
+        cancelLongPress();
 
-          currentX = e.touches[0].clientX;
-          const diffX = currentX - startX;
-
-          // 좌측 스와이프만 (최대 -80px)
-          if (diffX < 0) {
-            const translateX = Math.max(-80, diffX);
-            content.style.transform = `translateX(${translateX}px)`;
-          }
-        });
-
-        // 터치 종료
-        item.addEventListener('touchend', () => {
-          if (!isSwiping) return;
-
-          const diffX = currentX - startX;
-          item.classList.remove('swiping');
-
-          // 50px 이상 좌측 스와이프하면 액션시트 열기
-          if (diffX < -50) {
-            openActionSheet(item);
-          }
-
+        if (!swipeState.isSwiping || swipeState.isLongPress || !swipeState.item) {
           resetSwipe();
-          isSwiping = false;
-        });
+          return;
+        }
 
-        // 마우스 이벤트 (데스크톱)
-        item.addEventListener('mousedown', (e) => {
-          startX = e.clientX;
-          currentX = startX;
-          isSwiping = true;
-          item.classList.add('swiping');
-        });
+        const diffX = swipeState.currentX - swipeState.startX;
+        const item = swipeState.item;
 
-        item.addEventListener('mousemove', (e) => {
-          if (!isSwiping) return;
-
-          currentX = e.clientX;
-          const diffX = currentX - startX;
-
-          // 좌측 스와이프만
-          if (diffX < 0) {
-            const translateX = Math.max(-80, diffX);
-            content.style.transform = `translateX(${translateX}px)`;
-          }
-        });
-
-        item.addEventListener('mouseup', () => {
-          if (!isSwiping) return;
-
-          const diffX = currentX - startX;
-          item.classList.remove('swiping');
-
-          if (diffX < -50) {
-            openActionSheet(item);
-          }
-
+        // 50px 이상 좌측 스와이프하면 바로 삭제
+        if (diffX < -50) {
+          const idx = parseInt(item.dataset.index);
           resetSwipe();
-          isSwiping = false;
-        });
+          deleteRecentNumber(idx);
+          return;
+        }
 
-        item.addEventListener('mouseleave', () => {
-          if (isSwiping) {
-            resetSwipe();
-            isSwiping = false;
-          }
-        });
+        resetSwipe();
+      });
+
+      // 터치 취소
+      container.addEventListener('touchcancel', () => {
+        cancelLongPress();
+        resetSwipe();
       });
     }
 
-    // 액션시트 열기
-    function openActionSheet(item) {
+    // 저장 확인 모달 열기 (롱프레스용)
+    function openSaveConfirm(item) {
       currentActionIndex = parseInt(item.dataset.index);
       currentActionNumbers = JSON.parse(item.dataset.numbers);
 
-      const modal = document.getElementById('actionSheetModal');
-      const title = document.getElementById('actionSheetTitle');
+      const modal = document.getElementById('saveConfirmModal');
+      const numbersEl = document.getElementById('saveConfirmNumbers');
 
-      if (title) {
-        title.textContent = `#${currentActionIndex + 1} 번호 관리`;
+      if (numbersEl && currentActionNumbers) {
+        numbersEl.innerHTML = renderNumberBalls(currentActionNumbers);
       }
 
       if (modal) {
@@ -704,9 +777,9 @@
       }
     }
 
-    // 액션시트 닫기
-    function closeActionSheet() {
-      const modal = document.getElementById('actionSheetModal');
+    // 저장 확인 모달 닫기
+    function closeSaveConfirm() {
+      const modal = document.getElementById('saveConfirmModal');
       if (modal) {
         modal.classList.remove('active');
       }
@@ -714,27 +787,33 @@
       currentActionNumbers = null;
     }
 
-    // 액션시트 - 저장
-    function actionSheetSave() {
+    // 저장 확인
+    function confirmSaveNumber() {
       if (currentActionNumbers) {
         saveNumber(currentActionNumbers);
       }
-      closeActionSheet();
+      closeSaveConfirm();
     }
 
-    // 액션시트 - 삭제
-    function actionSheetDelete() {
-      if (currentActionIndex !== null) {
-        deleteRecentNumber(currentActionIndex);
+    // PC 호버 버튼 - 저장
+    function hoverSave(index) {
+      const recent = getRecent();
+      if (recent[index]) {
+        saveNumber(recent[index].numbers);
       }
-      closeActionSheet();
+    }
+
+    // PC 호버 버튼 - 삭제
+    function hoverDelete(index) {
+      deleteRecentNumber(index);
     }
 
     // 전역 함수 등록
-    window.openActionSheet = openActionSheet;
-    window.closeActionSheet = closeActionSheet;
-    window.actionSheetSave = actionSheetSave;
-    window.actionSheetDelete = actionSheetDelete;
+    window.openSaveConfirm = openSaveConfirm;
+    window.closeSaveConfirm = closeSaveConfirm;
+    window.confirmSaveNumber = confirmSaveNumber;
+    window.hoverSave = hoverSave;
+    window.hoverDelete = hoverDelete;
 
     // ==================== 저장된 번호 관리 ====================
     
@@ -829,50 +908,108 @@
     }
 
     // ==================== 당첨 통계 업데이트 ====================
-    
+
     async function updateWinningStats() {
       try {
         const winning = getWinningNumbers();
+
+        // 회차 표시 업데이트
+        const weeklyDrawEl = document.getElementById('weeklyDrawNumber');
+        if (weeklyDrawEl) weeklyDrawEl.textContent = winning.drawNumber;
 
         // Firebase에서 현재 회차 데이터 가져오기
         const snapshot = await db.collection('generated_numbers')
           .where('week', '==', winning.drawNumber)
           .get();
 
-        let stats = {
-          total: 0,
-          rank3: 0,  // 5등 (3개 일치)
+        let weeklyStats = {
+          rank1: 0,  // 1등 (6개 일치)
+          rank2: 0,  // 2등 (5개 + 보너스)
+          rank3: 0,  // 3등 (5개 일치)
           rank4: 0,  // 4등 (4개 일치)
-          rank5: 0   // 3등 (5개 일치)
+          rank5: 0   // 5등 (3개 일치)
         };
 
         snapshot.forEach(doc => {
           const data = doc.data();
           const matchCount = countMatches(data.numbers, winning.numbers);
+          const hasBonus = data.numbers.includes(winning.bonus);
 
-          if (matchCount >= 3) {
-            stats.total++;
-            if (matchCount === 3) stats.rank3++;
-            if (matchCount === 4) stats.rank4++;
-            if (matchCount === 5) stats.rank5++;
+          if (matchCount === 6) {
+            weeklyStats.rank1++;
+          } else if (matchCount === 5 && hasBonus) {
+            weeklyStats.rank2++;
+          } else if (matchCount === 5) {
+            weeklyStats.rank3++;
+          } else if (matchCount === 4) {
+            weeklyStats.rank4++;
+          } else if (matchCount === 3) {
+            weeklyStats.rank5++;
           }
         });
 
-        // UI 업데이트
-        const totalEl = document.getElementById('totalWinners');
-        const winners5thEl = document.getElementById('winners5th');
-        const winners4thEl = document.getElementById('winners4th');
-        const winners3rdEl = document.getElementById('winners3rd');
+        const weeklyTotal = weeklyStats.rank1 + weeklyStats.rank2 + weeklyStats.rank3 + weeklyStats.rank4 + weeklyStats.rank5;
 
-        if (totalEl) totalEl.textContent = stats.total;
-        if (winners5thEl) winners5thEl.textContent = stats.rank3;
-        if (winners4thEl) winners4thEl.textContent = stats.rank4;
-        if (winners3rdEl) winners3rdEl.textContent = stats.rank5;
+        // 이번주 통계 UI 업데이트 (PC 사이드바)
+        updateElement('weeklyRank1', weeklyStats.rank1);
+        updateElement('weeklyRank2', weeklyStats.rank2);
+        updateElement('weeklyRank3', weeklyStats.rank3);
+        updateElement('weeklyRank4', weeklyStats.rank4);
+        updateElement('weeklyRank5', weeklyStats.rank5);
+        updateElement('weeklyTotalWinners', weeklyTotal);
 
-        console.log('통계 업데이트 완료:', stats);
+        // 이번주 통계 UI 업데이트 (모바일 캐러셀)
+        updateElement('mobileWeeklyDraw', winning.drawNumber);
+        updateElement('mobileWeeklyR1', weeklyStats.rank1);
+        updateElement('mobileWeeklyR2', weeklyStats.rank2);
+        updateElement('mobileWeeklyR3', weeklyStats.rank3);
+        updateElement('mobileWeeklyR4', weeklyStats.rank4);
+        updateElement('mobileWeeklyR5', weeklyStats.rank5);
+        updateElement('mobileWeeklyTotal', weeklyTotal);
+
+        console.log('이번주 통계 업데이트 완료:', weeklyStats);
+
+        // 역대 통계 로드 (Firestore에서)
+        await loadAllTimeStats();
+
       } catch (error) {
         console.error('통계 업데이트 오류:', error);
       }
+    }
+
+    // 역대 통계 로드
+    async function loadAllTimeStats() {
+      try {
+        const doc = await db.collection('winning_stats').doc('all_time').get();
+
+        if (doc.exists) {
+          const data = doc.data();
+          // PC 사이드바
+          updateElement('allTimeRank1', data.rank1 || 0);
+          updateElement('allTimeRank2', data.rank2 || 0);
+          updateElement('allTimeRank3', data.rank3 || 0);
+          // 모바일 캐러셀
+          updateElement('mobileAllTimeR1', data.rank1 || 0);
+          updateElement('mobileAllTimeR2', data.rank2 || 0);
+          updateElement('mobileAllTimeR3', data.rank3 || 0);
+        } else {
+          // 문서가 없으면 0으로 표시 (아직 데이터 없음)
+          updateElement('allTimeRank1', 0);
+          updateElement('allTimeRank2', 0);
+          updateElement('allTimeRank3', 0);
+          updateElement('mobileAllTimeR1', 0);
+          updateElement('mobileAllTimeR2', 0);
+          updateElement('mobileAllTimeR3', 0);
+        }
+      } catch (error) {
+        console.error('역대 통계 로드 오류:', error);
+      }
+    }
+
+    // 요소 텍스트 업데이트 헬퍼
+    function updateElement(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
     }
 
     // 일치하는 번호 개수 계산
@@ -883,6 +1020,42 @@
     function closeWinningStatsCard() {
       // Green card 삭제로 인해 비활성화됨
     }
+
+    // ==================== 모바일 통계 배너 ====================
+
+    const STATS_HIDDEN_KEY = 'hoxy_stats_hidden_date';
+
+    // 배너 초기화
+    function initStatsCarousel() {
+      // 오늘 숨김 여부 확인
+      const hiddenDate = localStorage.getItem(STATS_HIDDEN_KEY);
+      const today = new Date().toDateString();
+
+      if (hiddenDate === today) {
+        const banner = document.getElementById('mobileStatsBanner');
+        if (banner) banner.style.display = 'none';
+      }
+    }
+
+    // 오늘 하루 숨김
+    function hideStatsToday() {
+      const today = new Date().toDateString();
+      localStorage.setItem(STATS_HIDDEN_KEY, today);
+
+      const banner = document.getElementById('mobileStatsBanner');
+      if (banner) {
+        banner.style.opacity = '0';
+        banner.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 200);
+      }
+
+      showToast('오늘 하루 숨김', 1500);
+    }
+
+    // 전역 노출
+    window.hideStatsToday = hideStatsToday;
 
     // ==================== 당첨 번호 관리 ====================
 
@@ -1467,6 +1640,41 @@
 
     function updateSavedUI() {
       updateSavedPagination();
+      updateRecentNumbersPreview();
+    }
+
+    // 내 번호 탭 상단에 최근 뽑은 번호 5개 표시
+    function updateRecentNumbersPreview() {
+      const recent = getRecent();
+      const container = document.getElementById('recentNumbersPreview');
+
+      if (!container) return;
+
+      const previewItems = recent.slice(0, 5);
+
+      if (previewItems.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-4">
+            <div class="text-gray-400 text-xs">최근 생성된 번호가 없습니다</div>
+            <div class="text-gray-400 text-xs mt-1">홈에서 번호를 생성해보세요!</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = previewItems.map((item, index) => `
+        <div class="flex items-center gap-1 p-1.5 bg-white rounded-lg">
+          <span class="text-xs text-gray-400 w-4">#${index + 1}</span>
+          <div class="flex gap-1 flex-1 justify-center">
+            ${renderNumberBalls(item.numbers)}
+          </div>
+          <button onclick="saveNumber(${JSON.stringify(item.numbers).replace(/"/g, '&quot;')})" class="p-1 text-blue-500 hover:bg-blue-100 rounded transition-colors" title="저장">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </button>
+        </div>
+      `).join('');
     }
 
     function updateSavedPagination() {
@@ -1554,28 +1762,28 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs md:text-sm text-gray-400 w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 md:gap-2 flex-1 justify-center">
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
-                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
+            <div class="flex items-center gap-1 p-2 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
+              <span class="text-xs text-gray-400 w-5 shrink-0">#${slot.index + 1}</span>
+              <div class="flex gap-1 flex-1 justify-center">
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
               </div>
-              <div class="w-5 h-5 md:w-6 md:h-6 shrink-0"></div>
+              <div class="w-5 h-5 shrink-0"></div>
             </div>
           `;
         } else {
           return `
-            <div class="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
-              <span class="text-xs md:text-sm text-blue-600 font-bold w-6 md:w-8 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 md:gap-2 flex-1 justify-center overflow-hidden">
+            <div class="flex items-center gap-1 p-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
+              <span class="text-xs text-blue-600 font-bold w-5 shrink-0">#${slot.index + 1}</span>
+              <div class="flex gap-1 flex-1 justify-center overflow-hidden">
                 ${renderNumberBalls(slot.data.numbers)}
               </div>
-              <button onclick="deleteSaved(${slot.index})" class="text-red-500 hover:text-red-700 shrink-0 p-1 md:p-2">
-                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="deleteSaved(${slot.index})" class="text-red-500 hover:text-red-700 shrink-0 p-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                 </svg>
               </button>
@@ -1719,11 +1927,11 @@
         const matchedNums = item.numbers.filter(n => winning.numbers.includes(n));
 
         return `
-          <div class="p-3 rounded-xl ${rankClass} ${clickable}"
+          <div class="p-2 rounded-xl ${rankClass} ${clickable}"
                ${rankInfo ? `onclick="showCongratsModal(${winning.drawNumber}, {rank: ${rankInfo.rank}, text: '${rankInfo.text}'}, ${JSON.stringify(matchedNums)})"` : ''}>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-xs ${rankInfo && rankInfo.rank <= 3 ? 'text-gray-700 font-bold' : 'text-gray-500'} font-medium w-6 shrink-0">#${index + 1}</span>
-              <div class="flex gap-1 md:gap-1.5 flex-1 justify-center">
+            <div class="flex items-center gap-1 mb-1.5">
+              <span class="text-xs ${rankInfo && rankInfo.rank <= 3 ? 'text-gray-700 font-bold' : 'text-gray-500'} font-medium w-5 shrink-0">#${index + 1}</span>
+              <div class="flex gap-1 flex-1 justify-center">
                 ${item.numbers.map(num => {
                   const isMatch = winning.numbers.includes(num);
                   return renderBall(num, isMatch ? 'matched' : 'normal');
@@ -1732,8 +1940,8 @@
             </div>
             ${rankInfo ? `
               <div class="text-center">
-                <div class="inline-block ${badgeClass} text-white px-3 py-1.5 rounded-full font-bold text-sm shadow-md">
-                  ${rankInfo.rank <= 3 ? '🏆' : '🎉'} ${match.count}개 일치 - ${rankInfo.text}
+                <div class="inline-block ${badgeClass} text-white px-2 py-1 rounded-full font-bold text-xs shadow-md">
+                  ${rankInfo.rank <= 3 ? '🏆' : '🎉'} ${match.count}개 - ${rankInfo.text}
                 </div>
               </div>
             ` : `
@@ -1793,7 +2001,7 @@
 
       if (type === 'bonus') {
         colorClass = 'from-green-400 to-green-600';
-        return `<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shadow-md border-2 border-white">${num}</div>`;
+        return `<div class="number-ball bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white font-bold shadow-md border-2 border-white">${num}</div>`;
       }
 
       if (type === 'matched') {
@@ -1806,7 +2014,7 @@
         else colorClass = 'from-green-400 to-green-600';
       }
 
-      return `<div class="w-8 h-8 md:w-10 md:h-10 shrink-0 bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white text-xs md:text-sm font-bold shadow-md">${num}</div>`;
+      return `<div class="number-ball bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white font-bold shadow-md">${num}</div>`;
     }
 
     function getMatchRank(count) {
