@@ -702,16 +702,19 @@
           <div class="text-xs text-orange-600 mt-1">* 친구 초대는 하루 1회만 보너스 적용</div>
         </div>
 
-        <div class="border-t pt-4">
-          <button onclick="resetQuota()" class="w-full bg-red-50 text-red-600 font-semibold py-3 rounded-xl hover:bg-red-100 transition-colors">
-            할당량 초기화 (테스트용)
-          </button>
-        </div>
+        <!-- 관리자 전용 (로그인 후 표시) -->
+        <div id="adminSection" class="hidden">
+          <div class="border-t pt-4">
+            <button onclick="resetQuota()" class="w-full bg-red-50 text-red-600 font-semibold py-3 rounded-xl hover:bg-red-100 transition-colors">
+              할당량 초기화 (테스트용)
+            </button>
+          </div>
 
-        <div class="border-t pt-4">
-          <button onclick="clearAllData()" class="w-full bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors">
-            모든 데이터 삭제
-          </button>
+          <div class="border-t pt-4">
+            <button onclick="clearAllData()" class="w-full bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors">
+              모든 데이터 삭제
+            </button>
+          </div>
         </div>
 
         <!-- 기타 정보 -->
@@ -727,6 +730,12 @@
             <button onclick="openTermsModal()" class="text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
               이용약관
             </button>
+            <button id="adminLoginBtn" onclick="openAdminLoginModal()" class="text-xs text-gray-500 hover:text-gray-700 px-3 py-1.5 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              관리자
+            </button>
+            <button id="adminLogoutBtn" onclick="adminLogout()" class="hidden text-xs text-red-500 hover:text-red-700 px-3 py-1.5 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+              로그아웃
+            </button>
           </div>
         </div>
 
@@ -734,6 +743,36 @@
           <p>HOXY NUMBER v1.4</p>
           <p class="mt-1">© 2026 HOXY NUMBER. All rights reserved</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 관리자 로그인 모달 -->
+  <div id="adminLoginModal" class="modal-backdrop" onclick="if(event.target === this) closeAdminLoginModal()">
+    <div class="bg-white rounded-2xl p-6 max-w-[360px] w-full mx-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-gray-900">관리자 로그인</h3>
+        <button onclick="closeAdminLoginModal()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="text-sm font-semibold text-gray-700 block mb-2">ID</label>
+          <input type="text" id="adminIdInput" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none" placeholder="아이디 입력">
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-gray-700 block mb-2">PW</label>
+          <input type="password" id="adminPwInput" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none" placeholder="비밀번호 입력" onkeypress="if(event.key === 'Enter') adminLogin()">
+        </div>
+        <div id="adminLoginError" class="text-sm text-red-500 text-center hidden">
+          아이디 또는 비밀번호가 일치하지 않습니다.
+        </div>
+        <button onclick="adminLogin()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all">
+          로그인
+        </button>
       </div>
     </div>
   </div>

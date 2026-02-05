@@ -2004,6 +2004,67 @@
       if (modalEl) modalEl.classList.remove('active');
     }
 
+    // ==================== 관리자 로그인 ====================
+
+    const ADMIN_CREDENTIALS = {
+      id: 'dunsmile',
+      pw: 'a123'
+    };
+
+    let isAdminLoggedIn = false;
+
+    function openAdminLoginModal() {
+      const modalEl = document.getElementById('adminLoginModal');
+      if (modalEl) {
+        modalEl.classList.add('active');
+        document.getElementById('adminIdInput').value = '';
+        document.getElementById('adminPwInput').value = '';
+        document.getElementById('adminLoginError').classList.add('hidden');
+      }
+    }
+
+    function closeAdminLoginModal() {
+      const modalEl = document.getElementById('adminLoginModal');
+      if (modalEl) modalEl.classList.remove('active');
+    }
+
+    function adminLogin() {
+      const idInput = document.getElementById('adminIdInput').value;
+      const pwInput = document.getElementById('adminPwInput').value;
+      const errorEl = document.getElementById('adminLoginError');
+
+      if (idInput === ADMIN_CREDENTIALS.id && pwInput === ADMIN_CREDENTIALS.pw) {
+        isAdminLoggedIn = true;
+        closeAdminLoginModal();
+        updateAdminUI();
+        showToast('관리자 로그인 성공', 1500);
+      } else {
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    function adminLogout() {
+      isAdminLoggedIn = false;
+      updateAdminUI();
+      showToast('로그아웃 되었습니다', 1500);
+    }
+
+    function updateAdminUI() {
+      const adminSection = document.getElementById('adminSection');
+      const loginBtn = document.getElementById('adminLoginBtn');
+      const logoutBtn = document.getElementById('adminLogoutBtn');
+
+      if (isAdminLoggedIn) {
+        adminSection.classList.remove('hidden');
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+      } else {
+        adminSection.classList.add('hidden');
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+      }
+    }
+
     function clearAllData() {
       if (confirm('모든 데이터를 삭제하시겠습니까?\n\n다음 항목이 초기화됩니다:\n- 오늘 남은 생성 횟수 (10회로 초기화)\n- 최근 생성 번호 리스트\n- 저장된 번호 리스트')) {
         // 할당량 초기화 (10회)
@@ -2098,6 +2159,10 @@
     window.closePrivacyModal = closePrivacyModal;
     window.openTermsModal = openTermsModal;
     window.closeTermsModal = closeTermsModal;
+    window.openAdminLoginModal = openAdminLoginModal;
+    window.closeAdminLoginModal = closeAdminLoginModal;
+    window.adminLogin = adminLogin;
+    window.adminLogout = adminLogout;
     window.showGenerateConfirm = showGenerateConfirm;
     window.closeGenerateConfirm = closeGenerateConfirm;
     window.confirmGenerate = confirmGenerate;
