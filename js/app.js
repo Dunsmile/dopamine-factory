@@ -689,8 +689,9 @@
       const recent = getRecent();
       recent.splice(index, 1);
       localStorage.setItem(STORAGE_KEYS.RECENT, JSON.stringify(recent));
-      
+
       renderCurrentPage();
+      updateRecentNumbersPreview();  // 내 번호 탭 프리뷰도 업데이트
       showToast('삭제되었습니다', 1500);
     }
     
