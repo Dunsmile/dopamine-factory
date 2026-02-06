@@ -2497,32 +2497,41 @@
     }
 
     function clearAllData() {
-      if (confirm('모든 데이터를 삭제하시겠습니까?\n\n다음 항목이 초기화됩니다:\n- 오늘 남은 생성 횟수 (10회로 초기화)\n- 최근 생성 번호 리스트\n- 저장된 번호 리스트')) {
+      if (confirm('모든 데이터를 삭제하시겠습니까?\n\n다음 항목이 초기화됩니다:\n- 오늘 남은 생성 횟수 (10회로 초기화)\n- 최근 생성 번호 리스트\n- 저장된 번호 리스트\n- 오늘의 럭키넘버 (다시 공개 필요)\n- 무료 충전 횟수 (3회로 초기화)\n- 통계 배너 숨김 상태')) {
         // 할당량 초기화 (10회)
         const today = new Date().toDateString();
         const quota = { date: today, total: 10, used: 0 };
         localStorage.setItem(STORAGE_KEYS.QUOTA, JSON.stringify(quota));
-        
+
         // 최근 생성 번호 초기화
         localStorage.removeItem(STORAGE_KEYS.RECENT);
-        
+
         // 저장된 번호 초기화
         localStorage.removeItem(STORAGE_KEYS.SAVED);
-        
+
         // 최근 생성 번호 슬롯 초기화
         recentSlots = 5;
         localStorage.setItem(STORAGE_KEYS.RECENT_SLOTS, '5');
-        
+
         // 최근 생성 번호 페이지 초기화
         currentPageIndex = 0;
         unlockedPages = 1;
         localStorage.setItem(STORAGE_KEYS.PAGES_UNLOCKED, '1');
-        
+
         // 저장된 번호 페이지 초기화
         savedCurrentPageIndex = 0;
         savedUnlockedPages = 1;
         localStorage.setItem(STORAGE_KEYS.SAVED_PAGES_UNLOCKED, '1');
-        
+
+        // 럭키넘버 초기화 (다시 공개 필요)
+        localStorage.removeItem(STORAGE_KEYS.LUCKY);
+
+        // 무료 충전 횟수 초기화 (12시간 3회)
+        localStorage.removeItem(STORAGE_KEYS.AD_QUOTA_LIMIT);
+
+        // 통계 배너 숨김 상태 초기화
+        localStorage.removeItem('hoxy_stats_hidden_date');
+
         // UI 업데이트
         updateUI();
         showToast('모든 데이터가 초기화되었습니다!', 2000);
