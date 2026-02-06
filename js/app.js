@@ -1025,6 +1025,50 @@
       updateManualSaveButton();
     }
 
+    // 포커스 벗어날 때 중복 체크 (길이 상관없이)
+    function onManualNumberBlur(input, index) {
+      checkManualDuplicateOnBlur(input, index);
+    }
+
+    function checkManualDuplicateOnBlur(currentInput, currentIndex) {
+      const hintEl = document.getElementById('manualNumberHint');
+      if (!hintEl) return;
+
+      const currentValue = currentInput.value;
+      if (!currentValue) {
+        currentInput.classList.remove('border-red-500');
+        return;
+      }
+
+      const currentNum = parseInt(currentValue);
+
+      // 다른 입력칸과 중복 체크 (숫자 값으로 비교)
+      let hasDuplicate = false;
+      for (let i = 1; i <= 6; i++) {
+        if (i === currentIndex) continue;
+        const otherInput = document.getElementById(`manualNum${i}`);
+        if (otherInput && otherInput.value) {
+          const otherNum = parseInt(otherInput.value);
+          if (currentNum === otherNum) {
+            hasDuplicate = true;
+            break;
+          }
+        }
+      }
+
+      if (hasDuplicate) {
+        hintEl.textContent = '⚠️ 중복된 번호입니다. 다시 입력해주세요.';
+        hintEl.className = 'text-xs text-center text-red-500 font-medium mb-3';
+        currentInput.classList.add('border-red-500');
+        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+      } else {
+        resetManualHint();
+        currentInput.classList.remove('border-red-500');
+      }
+    }
+
+    window.onManualNumberBlur = onManualNumberBlur;
+
     function checkManualDuplicate(currentInput, currentIndex) {
       const hintEl = document.getElementById('manualNumberHint');
       if (!hintEl) return;
@@ -1668,6 +1712,7 @@
                  class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
                  id="manual_${manualInputLineCount}_${i}"
                  oninput="onCheckManualInput(this, ${manualInputLineCount}, ${i})"
+                 onblur="onCheckManualBlur(this, ${manualInputLineCount}, ${i})"
                  placeholder="${i}">
         `).join('')}
         <button onclick="removeManualInputLine(this)" class="text-red-500 hover:text-red-700 flex-shrink-0 ml-1">
@@ -1772,6 +1817,42 @@
     }
 
     window.onCheckManualInput = onCheckManualInput;
+
+    // 포커스 벗어날 때 중복 체크 (길이 상관없이)
+    function onCheckManualBlur(input, lineNum, fieldNum) {
+      const currentValue = input.value;
+      if (!currentValue) {
+        input.classList.remove('border-red-500');
+        input.classList.add('border-gray-300');
+        return;
+      }
+
+      const currentNum = parseInt(currentValue);
+
+      // 같은 줄의 다른 입력값과 비교
+      let hasDuplicate = false;
+      for (let i = 1; i <= 6; i++) {
+        if (i === fieldNum) continue;
+        const otherInput = document.getElementById(`manual_${lineNum}_${i}`);
+        if (otherInput && otherInput.value) {
+          const otherNum = parseInt(otherInput.value);
+          if (currentNum === otherNum) {
+            hasDuplicate = true;
+            break;
+          }
+        }
+      }
+
+      if (hasDuplicate) {
+        input.classList.add('border-red-500');
+        input.classList.remove('border-gray-300', 'border-blue-500');
+        showToast('⚠️ 중복된 번호입니다', 1500);
+      } else {
+        input.classList.remove('border-red-500');
+      }
+    }
+
+    window.onCheckManualBlur = onCheckManualBlur;
 
     function checkManualNumbers() {
       const lines = document.querySelectorAll('#manualInputLines > div');

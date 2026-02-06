@@ -265,22 +265,22 @@
             <div class="flex items-center justify-center gap-2 mb-2">
               <input type="text" id="manualNum1" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 1)" placeholder="1">
+                oninput="onManualNumberInput(this, 1)" onblur="onManualNumberBlur(this, 1)" placeholder="1">
               <input type="text" id="manualNum2" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 2)" placeholder="2">
+                oninput="onManualNumberInput(this, 2)" onblur="onManualNumberBlur(this, 2)" placeholder="2">
               <input type="text" id="manualNum3" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 3)" placeholder="3">
+                oninput="onManualNumberInput(this, 3)" onblur="onManualNumberBlur(this, 3)" placeholder="3">
               <input type="text" id="manualNum4" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 4)" placeholder="4">
+                oninput="onManualNumberInput(this, 4)" onblur="onManualNumberBlur(this, 4)" placeholder="4">
               <input type="text" id="manualNum5" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 5)" placeholder="5">
+                oninput="onManualNumberInput(this, 5)" onblur="onManualNumberBlur(this, 5)" placeholder="5">
               <input type="text" id="manualNum6" maxlength="2" inputmode="numeric" pattern="[0-9]*"
                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
-                oninput="onManualNumberInput(this, 6)" placeholder="6">
+                oninput="onManualNumberInput(this, 6)" onblur="onManualNumberBlur(this, 6)" placeholder="6">
             </div>
             <p id="manualNumberHint" class="text-xs text-center text-gray-400 mb-3">1~45 사이 숫자, 중복 불가</p>
             <button id="saveManualNumberBtn" onclick="saveManualNumber()" disabled
