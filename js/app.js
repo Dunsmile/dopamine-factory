@@ -1003,6 +1003,9 @@
       // 숫자만 허용
       input.value = input.value.replace(/[^0-9]/g, '');
 
+      // 중복 체크 및 경고 표시
+      checkManualDuplicate(input, index);
+
       // 2자리 입력 시 다음 칸으로 자동 이동
       if (input.value.length === 2 && index < 6) {
         const nextInput = document.getElementById(`manualNum${index + 1}`);
@@ -1011,6 +1014,50 @@
 
       // 저장 버튼 상태 업데이트
       updateManualSaveButton();
+    }
+
+    function checkManualDuplicate(currentInput, currentIndex) {
+      const hintEl = document.getElementById('manualNumberHint');
+      if (!hintEl) return;
+
+      const currentValue = currentInput.value;
+      if (!currentValue) {
+        // 입력값이 없으면 기본 힌트로 복원
+        resetManualHint();
+        currentInput.classList.remove('border-red-500');
+        return;
+      }
+
+      // 다른 입력칸과 중복 체크
+      let hasDuplicate = false;
+      for (let i = 1; i <= 6; i++) {
+        if (i === currentIndex) continue;
+        const otherInput = document.getElementById(`manualNum${i}`);
+        if (otherInput && otherInput.value === currentValue) {
+          hasDuplicate = true;
+          break;
+        }
+      }
+
+      if (hasDuplicate) {
+        // 중복 경고 표시
+        hintEl.textContent = '⚠️ 중복된 번호입니다. 다시 입력해주세요.';
+        hintEl.className = 'text-xs text-center text-red-500 font-medium mb-3';
+        currentInput.classList.add('border-red-500');
+        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+      } else {
+        // 정상 상태로 복원
+        resetManualHint();
+        currentInput.classList.remove('border-red-500');
+      }
+    }
+
+    function resetManualHint() {
+      const hintEl = document.getElementById('manualNumberHint');
+      if (hintEl) {
+        hintEl.textContent = '1~45 사이 숫자, 중복 불가';
+        hintEl.className = 'text-xs text-center text-gray-400 mb-3';
+      }
     }
 
     function getManualNumbers() {
@@ -1079,8 +1126,13 @@
     function clearManualInputs() {
       for (let i = 1; i <= 6; i++) {
         const input = document.getElementById(`manualNum${i}`);
-        if (input) input.value = '';
+        if (input) {
+          input.value = '';
+          input.classList.remove('border-red-500');
+          input.classList.add('border-gray-300');
+        }
       }
+      resetManualHint();
       updateManualSaveButton();
     }
 
