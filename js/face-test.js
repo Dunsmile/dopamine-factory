@@ -185,10 +185,9 @@ function pickPoints(hash) {
   return points;
 }
 
-function renderBar(score, max = 8) {
-  const filled = '◼︎'.repeat(Math.min(score, max));
-  const empty = '◻︎'.repeat(Math.max(0, max - score));
-  return filled + empty;
+function renderBarWidth(score, max = 8) {
+  const clamped = Math.max(0, Math.min(score, max));
+  return Math.round((clamped / max) * 100);
 }
 
 function buildAnalysisText(result) {
@@ -445,9 +444,9 @@ function displayResult() {
   document.getElementById('pointLabel1').textContent = `관상 포인트1 · ${testResult.points[0].label}`;
   document.getElementById('pointLabel2').textContent = `관상 포인트2 · ${testResult.points[1].label}`;
   document.getElementById('pointLabel3').textContent = `관상 포인트3 · ${testResult.points[2].label}`;
-  document.getElementById('pointBar1').textContent = renderBar(testResult.points[0].score);
-  document.getElementById('pointBar2').textContent = renderBar(testResult.points[1].score);
-  document.getElementById('pointBar3').textContent = renderBar(testResult.points[2].score);
+  document.getElementById('pointBar1').style.width = `${renderBarWidth(testResult.points[0].score)}%`;
+  document.getElementById('pointBar2').style.width = `${renderBarWidth(testResult.points[1].score)}%`;
+  document.getElementById('pointBar3').style.width = `${renderBarWidth(testResult.points[2].score)}%`;
 
   document.getElementById('resultAnalysis').textContent = buildAnalysisText(testResult);
   document.getElementById('resultMatchType').textContent = `${testResult.storyline.match.name} · ${testResult.storyline.match.desc}`;
