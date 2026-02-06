@@ -1776,6 +1776,7 @@
     function checkManualNumbers() {
       const lines = document.querySelectorAll('#manualInputLines > div');
       const allNumbers = [];
+      let hasDuplicateError = false;
 
       lines.forEach((line, lineIndex) => {
         const inputs = line.querySelectorAll('input');
@@ -1788,9 +1789,31 @@
         });
 
         if (numbers.length === 6) {
-          allNumbers.push({ line: lineIndex + 1, numbers: numbers.sort((a, b) => a - b) });
+          // 한 줄 내 중복 체크
+          const uniqueNumbers = new Set(numbers);
+          if (uniqueNumbers.size !== 6) {
+            hasDuplicateError = true;
+            // 중복된 입력칸에 빨간 테두리 표시
+            const seen = new Set();
+            inputs.forEach(input => {
+              const num = parseInt(input.value);
+              if (seen.has(num)) {
+                input.classList.add('border-red-500');
+                input.classList.remove('border-gray-300');
+              } else {
+                seen.add(num);
+              }
+            });
+          } else {
+            allNumbers.push({ line: lineIndex + 1, numbers: numbers.sort((a, b) => a - b) });
+          }
         }
       });
+
+      if (hasDuplicateError) {
+        showToast('⚠️ 중복된 번호가 있습니다. 수정해주세요.', 2000);
+        return;
+      }
 
       if (allNumbers.length === 0) {
         showToast('번호를 입력해주세요', 2000);
