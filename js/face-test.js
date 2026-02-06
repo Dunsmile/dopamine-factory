@@ -193,17 +193,11 @@ function renderBar(score, max = 8) {
 
 function buildAnalysisText(result) {
   const lines = [];
-  lines.push(result.analysis);
+  lines.push(`${result.analysis} 표정의 균형과 시선의 응집력이 함께 보이며, 감정에 휘둘리기보다 일관된 판단을 내리는 경향이 강합니다. 이런 흐름은 장기 목표를 세우고 구조를 쌓아가는 데 유리한 신호로 읽힙니다.`);
   lines.push('');
-  lines.push('또한 표정의 균형과 시선의 응집력이 눈에 띄어, 감정에 휘둘리기보다 일관된 판단을 내리는 경향이 있습니다.');
-  lines.push('이런 흐름은 장기 목표를 세우고 구조를 쌓아가는 데 유리한 신호로 해석됩니다.');
+  lines.push(`${result.celebrity.name}은(는) ${result.celebrity.desc}로서 자신만의 흐름을 만들며 성과를 쌓아왔고, 당신의 관상에서도 유사한 집중력과 추진력이 느껴져 비슷한 성장 스토리를 그릴 가능성이 큽니다. 중요한 순간에 타이밍을 잡는 감각이 있으며, 주변의 신뢰를 얻을 때 성과가 더 크게 확장되는 타입입니다.`);
   lines.push('');
-  lines.push(`${result.celebrity.name}은(는) ${result.celebrity.desc}로서 자신만의 흐름을 만들며 성과를 쌓아왔습니다.`);
-  lines.push('당신의 관상에서도 유사한 집중력과 추진력이 느껴져, 비슷한 성장 스토리를 그릴 가능성이 큽니다.');
-  lines.push('중요한 순간에 타이밍을 잡는 감각이 보이며, 주변의 신뢰를 얻을 때 성과가 더 크게 확장되는 타입입니다.');
-  lines.push('');
-  lines.push('긍정적인 신호가 보입니다. 지금의 선택과 실행이 쌓이면, 큰 전환점으로 이어질 수 있습니다.');
-  lines.push('오늘의 작은 시도가 내일의 결과를 만드는 흐름을 기억해보세요.');
+  lines.push('긍정적인 신호가 이어집니다. 지금의 선택과 실행이 차곡차곡 쌓이면 큰 전환점으로 이어질 수 있으니, 오늘의 작은 시도가 내일의 결과를 만드는 흐름을 기억해보세요.');
   lines.push('');
   lines.push(`관상 핵심 키워드 ${result.storyline.points.map(p => `#${p}`).join(' ')}`);
   return lines.join('\n');
