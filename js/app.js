@@ -336,11 +336,6 @@
         } else {
           return `
             <div class="swipe-item relative group" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}'>
-              <div class="swipe-hint md:hidden">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </div>
               <div class="swipe-content flex items-center justify-between gap-1 p-2 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
                 <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-5 shrink-0">#${slot.index + 1}</span>
                 <div class="flex gap-1 justify-center flex-1">
@@ -702,11 +697,9 @@
     // 전역으로 명시적 노출
     window.deleteRecentNumber = deleteRecentNumber;
 
-    // 액션시트 관련 변수
+    // 액션 관련 변수
     let currentActionIndex = null;
     let currentActionNumbers = null;
-    let longPressTimer = null;
-    const LONG_PRESS_DURATION = 800; // 0.8초 (UX 개선)
 
     // 스와이프 상태 변수 (이벤트 위임용)
     let swipeState = {
@@ -715,8 +708,7 @@
       startX: 0,
       startY: 0,
       currentX: 0,
-      isSwiping: false,
-      isLongPress: false
+      isSwiping: false
     };
 
     // 스와이프 상태 초기화
@@ -733,33 +725,11 @@
         startX: 0,
         startY: 0,
         currentX: 0,
-        isSwiping: false,
-        isLongPress: false
+        isSwiping: false
       };
     }
 
-    // 롱프레스 취소
-    function cancelLongPress() {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        longPressTimer = null;
-      }
-      swipeState.isLongPress = false;
-    }
-
-    // 롱프레스 시작
-    function startLongPress(itemEl) {
-      cancelLongPress();
-      longPressTimer = setTimeout(() => {
-        swipeState.isLongPress = true;
-        // 진동 피드백 (지원 시)
-        if (navigator.vibrate) navigator.vibrate(50);
-        openSaveConfirm(itemEl);
-        resetSwipe();
-      }, LONG_PRESS_DURATION);
-    }
-
-    // 이벤트 위임 방식으로 스와이프/롱프레스 처리 (한 번만 등록)
+    // 이벤트 위임 방식으로 스와이프 처리 (한 번만 등록)
     function initSwipeListeners() {
       const container = document.getElementById('recentNumbersList');
       if (!container || container.dataset.swipeInit === 'true') return;
@@ -780,10 +750,8 @@
         swipeState.startY = e.touches[0].clientY;
         swipeState.currentX = swipeState.startX;
         swipeState.isSwiping = true;
-        swipeState.isLongPress = false;
 
         item.classList.add('swiping');
-        startLongPress(item);
       }, { passive: true });
 
       // 터치 이동
@@ -795,23 +763,22 @@
         const diffX = swipeState.currentX - swipeState.startX;
         const diffY = Math.abs(currentY - swipeState.startY);
 
-        // 움직이면 롱프레스 취소
-        if (Math.abs(diffX) > 10 || diffY > 10) {
-          cancelLongPress();
+        // 세로 스크롤 시 스와이프 취소
+        if (diffY > 30) {
+          resetSwipe();
+          return;
         }
 
-        // 좌측 스와이프만 (최대 -80px)
-        if (diffX < 0 && swipeState.content) {
-          const translateX = Math.max(-80, diffX);
+        // 양방향 스와이프 (최대 ±80px)
+        if (swipeState.content) {
+          const translateX = Math.max(-80, Math.min(80, diffX));
           swipeState.content.style.transform = `translateX(${translateX}px)`;
         }
       }, { passive: true });
 
       // 터치 종료
       container.addEventListener('touchend', () => {
-        cancelLongPress();
-
-        if (!swipeState.isSwiping || swipeState.isLongPress || !swipeState.item) {
+        if (!swipeState.isSwiping || !swipeState.item) {
           resetSwipe();
           return;
         }
@@ -819,11 +786,19 @@
         const diffX = swipeState.currentX - swipeState.startX;
         const item = swipeState.item;
 
-        // 50px 이상 좌측 스와이프하면 바로 삭제
-        if (diffX < -50) {
-          const idx = parseInt(item.dataset.index);
+        // 50px 이상 우측 스와이프 (좌→우) = 저장 확인
+        if (diffX > 50) {
+          if (navigator.vibrate) navigator.vibrate(30);
+          openSaveConfirm(item);
           resetSwipe();
-          deleteRecentNumber(idx);
+          return;
+        }
+
+        // 50px 이상 좌측 스와이프 (우→좌) = 삭제 확인
+        if (diffX < -50) {
+          if (navigator.vibrate) navigator.vibrate(30);
+          openDeleteConfirm(item);
+          resetSwipe();
           return;
         }
 
@@ -832,12 +807,11 @@
 
       // 터치 취소
       container.addEventListener('touchcancel', () => {
-        cancelLongPress();
         resetSwipe();
       });
     }
 
-    // 저장 확인 모달 열기 (롱프레스용)
+    // 저장 확인 모달 열기 (스와이프용)
     function openSaveConfirm(item) {
       currentActionIndex = parseInt(item.dataset.index);
       currentActionNumbers = JSON.parse(item.dataset.numbers);
@@ -872,6 +846,41 @@
       closeSaveConfirm();
     }
 
+    // 삭제 확인 모달 열기 (스와이프용)
+    function openDeleteConfirm(item) {
+      currentActionIndex = parseInt(item.dataset.index);
+      currentActionNumbers = JSON.parse(item.dataset.numbers);
+
+      const modal = document.getElementById('deleteConfirmModal');
+      const numbersEl = document.getElementById('deleteConfirmNumbers');
+
+      if (numbersEl && currentActionNumbers) {
+        numbersEl.innerHTML = renderNumberBalls(currentActionNumbers);
+      }
+
+      if (modal) {
+        modal.classList.add('active');
+      }
+    }
+
+    // 삭제 확인 모달 닫기
+    function closeDeleteConfirm() {
+      const modal = document.getElementById('deleteConfirmModal');
+      if (modal) {
+        modal.classList.remove('active');
+      }
+      currentActionIndex = null;
+      currentActionNumbers = null;
+    }
+
+    // 삭제 확인
+    function confirmDeleteNumber() {
+      if (currentActionIndex !== null) {
+        deleteRecentNumber(currentActionIndex);
+      }
+      closeDeleteConfirm();
+    }
+
     // PC 호버 버튼 - 저장
     function hoverSave(index) {
       const recent = getRecent();
@@ -889,6 +898,9 @@
     window.openSaveConfirm = openSaveConfirm;
     window.closeSaveConfirm = closeSaveConfirm;
     window.confirmSaveNumber = confirmSaveNumber;
+    window.openDeleteConfirm = openDeleteConfirm;
+    window.closeDeleteConfirm = closeDeleteConfirm;
+    window.confirmDeleteNumber = confirmDeleteNumber;
     window.hoverSave = hoverSave;
     window.hoverDelete = hoverDelete;
 

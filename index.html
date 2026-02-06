@@ -269,7 +269,7 @@
             </div>
 
             <div class="text-xs text-center text-gray-400 mt-3 md:hidden">
-              스와이프→삭제 / 길게 누르기→저장
+              ← 삭제 | 저장 →
             </div>
 
             <button onclick="showExpandSlotsModal()" class="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-1.5 border-2 border-purple-200 shadow-sm text-sm">
@@ -990,12 +990,13 @@
     </div>
   </div>
 
-  <!-- 저장 확인 모달 (롱프레스용) -->
+  <!-- 저장 확인 모달 (스와이프용) -->
   <div id="saveConfirmModal" class="modal-backdrop" onclick="if(event.target === this) closeSaveConfirm()">
     <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
       <div class="text-center mb-4">
-        <div class="text-lg font-bold text-gray-900 mb-3">번호를 저장하시겠습니까?</div>
-        <div id="saveConfirmNumbers" class="flex gap-1 justify-center p-3 bg-gray-50 rounded-xl">
+        <div class="text-3xl mb-2">💾</div>
+        <div class="text-lg font-bold text-gray-900 mb-3">저장하시겠습니까?</div>
+        <div id="saveConfirmNumbers" class="flex gap-1 justify-center p-3 bg-blue-50 rounded-xl">
           <!-- 동적으로 생성 -->
         </div>
       </div>
@@ -1005,6 +1006,27 @@
         </button>
         <button onclick="confirmSaveNumber()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-sm">
           저장하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 삭제 확인 모달 (스와이프용) -->
+  <div id="deleteConfirmModal" class="modal-backdrop" onclick="if(event.target === this) closeDeleteConfirm()">
+    <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
+      <div class="text-center mb-4">
+        <div class="text-3xl mb-2">🗑️</div>
+        <div class="text-lg font-bold text-gray-900 mb-3">삭제하시겠습니까?</div>
+        <div id="deleteConfirmNumbers" class="flex gap-1 justify-center p-3 bg-red-50 rounded-xl">
+          <!-- 동적으로 생성 -->
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="closeDeleteConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+          취소
+        </button>
+        <button onclick="confirmDeleteNumber()" class="flex-1 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl hover:from-red-600 hover:to-red-700 transition-all text-sm">
+          삭제하기
         </button>
       </div>
     </div>
