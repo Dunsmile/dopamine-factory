@@ -555,3 +555,59 @@
       0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
       100% { transform: translateY(400%) rotate(720deg); opacity: 0; }
     }
+
+    /* 럭키넘버 모달 애니메이션 */
+    .lucky-bounce {
+      animation: luckyBounce 1s ease-in-out infinite;
+    }
+
+    @keyframes luckyBounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-15px) rotate(-5deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .lucky-dot {
+      animation: luckyDot 1.4s ease-in-out infinite;
+    }
+
+    @keyframes luckyDot {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 럭키넘버 카드 공개 애니메이션 */
+    .lucky-reveal-animation {
+      animation: luckyReveal 0.6s ease-out forwards;
+    }
+
+    @keyframes luckyReveal {
+      0% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* 럭키넘버 저장 버튼 슬라이드 */
+    .lucky-actions-show {
+      animation: slideDown 0.3s ease-out forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }

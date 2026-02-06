@@ -1678,42 +1678,92 @@
     }
 
     function revealLuckyNumber() {
+      const modal = document.getElementById('luckyRevealModal');
+      const loadingEl = document.getElementById('luckyModalLoading');
+      const readyEl = document.getElementById('luckyModalReady');
+
+      if (!modal || !loadingEl || !readyEl) return;
+
+      // 모달 열기 (로딩 상태)
+      loadingEl.classList.remove('hidden');
+      readyEl.classList.add('hidden');
+      modal.classList.add('active');
+
+      // 3초 후 준비 완료 상태로 전환
+      setTimeout(() => {
+        loadingEl.classList.add('hidden');
+        readyEl.classList.remove('hidden');
+      }, 3000);
+    }
+
+    function confirmLuckyReveal() {
+      const modal = document.getElementById('luckyRevealModal');
       const revealEl = document.getElementById('luckyNumberReveal');
       const blurredEl = document.getElementById('luckyNumberBlurred');
+      const actionsEl = document.getElementById('luckyNumberActions');
+      const cardEl = document.getElementById('luckyNumberCard');
 
-      if (!revealEl || !blurredEl) return;
+      // 모달 닫기
+      if (modal) modal.classList.remove('active');
 
-      // 버튼을 로딩 애니메이션으로 변경
-      revealEl.innerHTML = `
-        <div class="flex flex-col items-center gap-2">
-          <div class="text-3xl animate-bounce">🍀</div>
-          <div class="text-sm font-bold text-purple-700">행운을 불러오는 중...</div>
-          <div class="flex gap-1">
-            <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-            <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
-            <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.4s"></div>
-          </div>
-        </div>
-      `;
+      // 럭키넘버 데이터 저장
+      const lucky = getLuckyNumber();
+      lucky.revealed = true;
+      localStorage.setItem(STORAGE_KEYS.LUCKY, JSON.stringify(lucky));
 
-      // 5초 후 번호 공개
-      setTimeout(() => {
-        const lucky = getLuckyNumber();
-        lucky.revealed = true;
-        localStorage.setItem(STORAGE_KEYS.LUCKY, JSON.stringify(lucky));
+      // 홈 화면 럭키넘버 공개 애니메이션
+      if (blurredEl) {
+        blurredEl.style.filter = 'none';
+        blurredEl.innerHTML = renderNumberBalls(lucky.numbers);
+        blurredEl.classList.add('lucky-reveal-animation');
+      }
 
-        if (blurredEl) {
-          blurredEl.style.filter = 'none';
-          blurredEl.innerHTML = renderNumberBalls(lucky.numbers);
-        }
+      if (revealEl) {
+        revealEl.style.display = 'none';
+      }
 
-        if (revealEl) {
-          revealEl.style.display = 'none';
-        }
+      // 저장 버튼 표시
+      if (actionsEl) {
+        actionsEl.classList.remove('hidden');
+        actionsEl.classList.add('lucky-actions-show');
+      }
 
-        showToast('오늘의 럭키 넘버가 공개되었습니다! 🍀', 2000);
-      }, 5000);
+      // 카드 강조 효과
+      if (cardEl) {
+        cardEl.classList.add('lucky-reveal-animation');
+      }
+
+      showToast('오늘의 럭키 넘버가 공개되었습니다! 🍀', 2000);
     }
+
+    function saveLuckyNumber() {
+      const lucky = getLuckyNumber();
+      if (!lucky || !lucky.numbers) {
+        showToast('저장할 럭키넘버가 없습니다', 2000);
+        return;
+      }
+
+      saveNumber(lucky.numbers);
+      showToast('럭키넘버가 저장되었습니다! 🍀', 2000);
+
+      // 저장 버튼 비활성화 (중복 저장 방지)
+      const actionsEl = document.getElementById('luckyNumberActions');
+      if (actionsEl) {
+        actionsEl.innerHTML = `
+          <div class="w-full py-2 bg-gray-200 text-gray-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            저장 완료
+          </div>
+        `;
+      }
+    }
+
+    // 전역 함수 등록
+    window.revealLuckyNumber = revealLuckyNumber;
+    window.confirmLuckyReveal = confirmLuckyReveal;
+    window.saveLuckyNumber = saveLuckyNumber;
 
     // ==================== 당첨 확인 ====================
     
@@ -2140,13 +2190,19 @@
       const messageEl = document.getElementById('luckyMessage');
       const blurredEl = document.getElementById('luckyNumberBlurred');
       const revealEl = document.getElementById('luckyNumberReveal');
-      
+      const actionsEl = document.getElementById('luckyNumberActions');
+
       if (messageEl) messageEl.textContent = lucky.message;
-      
+
       if (lucky.revealed && blurredEl && revealEl) {
         blurredEl.style.filter = 'none';
         blurredEl.innerHTML = renderNumberBalls(lucky.numbers);
         revealEl.style.display = 'none';
+
+        // 저장 버튼 표시
+        if (actionsEl) {
+          actionsEl.classList.remove('hidden');
+        }
       }
     }
 
