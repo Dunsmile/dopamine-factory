@@ -11,7 +11,7 @@ const CELEBRITIES_MALE = [
   { name: '정주영', desc: '현대그룹 창업주' },
   { name: '이병철', desc: '삼성그룹 창업주' },
   { name: '빌 게이츠', desc: '마이크로소프트 창업자' },
-  { name: '워렌 버핏', desc: '버크셔 해서웨이' },
+  { name: '워렌 버핏', desc: '버크셔 해서웨이 투자자' },
   { name: '잭 마', desc: '알리바바 창업자' },
   { name: '일론 머스크', desc: '테슬라·스페이스X' },
   { name: '스티브 잡스', desc: '애플 창업자' },
@@ -26,7 +26,7 @@ const CELEBRITIES_MALE = [
   { name: '세르게이 브린', desc: '구글 공동 창업자' },
   { name: '마크 저커버그', desc: '메타 창업자' },
   { name: '젠슨 황', desc: '엔비디아 CEO' },
-  { name: '카를로스 슬림', desc: '텔멕스 회장' },
+  { name: '카를로스 슬림', desc: '통신 기업가' },
   { name: '무케시 암바니', desc: '릴라이언스 회장' },
   { name: '아만시오 오르테가', desc: '인디텍스 창업자' }
 ];
@@ -47,12 +47,13 @@ const CELEBRITIES_FEMALE = [
   { name: '카트리나 레이크', desc: '스티치 픽스 창업자' },
   { name: '토리 버치', desc: '패션 기업가' },
   { name: '아리아나 허핑턴', desc: '미디어 기업가' },
-  { name: '아리안나 번스', desc: '핀테크 CEO' },
   { name: '줄리아 코크', desc: '투자자' },
   { name: '앨리스 월턴', desc: '월마트 상속인' },
   { name: '지나 라인하트', desc: '자원 기업가' },
   { name: '수잔 클라텐', desc: '산업 투자자' },
-  { name: '재클린 마스', desc: '식품 기업가' }
+  { name: '재클린 마스', desc: '식품 기업가' },
+  { name: '에스티 로더', desc: '뷰티 브랜드 창업자' },
+  { name: '메리 케이 애쉬', desc: '화장품 기업가' }
 ];
 
 const LUCK_MESSAGES = [
@@ -145,11 +146,16 @@ function pickStoryline(hash) {
 function buildAnalysisText(result) {
   const lines = [];
   lines.push(result.analysis);
-  lines.push('또한 표정의 균형과 시선의 응집력이 눈에 띄어, 감정에 휘둘리기보다 일관된 판단을 내리는 경향이 있습니다. 이는 장기적인 목표를 세우고 천천히 구조를 쌓아가는 데 유리한 신호로 해석됩니다.');
   lines.push('');
-  lines.push(`${result.celebrity.name}은(는) ${result.celebrity.desc}로서 자신만의 흐름을 만들며 성과를 쌓아왔습니다. 당신의 관상에서도 유사한 집중력과 추진력이 느껴져, 비슷한 성장 스토리를 그릴 가능성이 큽니다. 중요한 순간에 타이밍을 잡는 감각이 보이며, 주변의 신뢰를 얻을 때 성과가 더 크게 확장되는 타입입니다.`);
+  lines.push('또한 표정의 균형과 시선의 응집력이 눈에 띄어, 감정에 휘둘리기보다 일관된 판단을 내리는 경향이 있습니다.');
+  lines.push('이런 흐름은 장기 목표를 세우고 구조를 쌓아가는 데 유리한 신호로 해석됩니다.');
   lines.push('');
-  lines.push('긍정적인 신호가 보입니다. 지금의 선택과 실행이 쌓이면, 큰 전환점으로 이어질 수 있습니다. 오늘의 작은 시도가 내일의 결과를 만드는 흐름을 기억해보세요.');
+  lines.push(`${result.celebrity.name}은(는) ${result.celebrity.desc}로서 자신만의 흐름을 만들며 성과를 쌓아왔습니다.`);
+  lines.push('당신의 관상에서도 유사한 집중력과 추진력이 느껴져, 비슷한 성장 스토리를 그릴 가능성이 큽니다.');
+  lines.push('중요한 순간에 타이밍을 잡는 감각이 보이며, 주변의 신뢰를 얻을 때 성과가 더 크게 확장되는 타입입니다.');
+  lines.push('');
+  lines.push('긍정적인 신호가 보입니다. 지금의 선택과 실행이 쌓이면, 큰 전환점으로 이어질 수 있습니다.');
+  lines.push('오늘의 작은 시도가 내일의 결과를 만드는 흐름을 기억해보세요.');
   lines.push('');
   lines.push(`관상 핵심 키워드 ${result.storyline.points.map(p => `#${p}`).join(' ')}`);
   lines.push('────────────────');
