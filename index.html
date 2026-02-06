@@ -217,16 +217,7 @@
               <p class="text-xs text-gray-600">버튼 한 번으로 이번 주 로또 번호를 생성해드립니다</p>
             </div>
 
-            <button id="generateButton" onclick="showGenerateConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] mb-4 text-base">
-              로또 번호 생성하기
-            </button>
-
-            <!-- 할당량 소진 안내 메시지 -->
-            <div id="quotaDepletedMessage" class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 mb-4 text-center" style="display: none;">
-              <p class="text-xs text-gray-700 font-medium">오늘 생성 가능한 번호를 모두 사용했어요</p>
-            </div>
-
-            <div class="bg-gray-50 rounded-xl p-3 border border-gray-200">
+            <div class="bg-gray-50 rounded-xl p-3 border border-gray-200 mb-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs font-medium text-gray-700">오늘 남은 생성 횟수</span>
                 <span class="text-xl font-bold text-blue-600"><span id="remainingQuota">10</span>회</span>
@@ -239,6 +230,15 @@
               <div class="text-xs text-center text-gray-500">
                 총 10회 중 <span id="quotaProgressText">10회</span> 남음
               </div>
+            </div>
+
+            <button id="generateButton" onclick="showGenerateConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-base">
+              로또 번호 생성하기
+            </button>
+
+            <!-- 할당량 소진 안내 메시지 -->
+            <div id="quotaDepletedMessage" class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 mt-4 text-center" style="display: none;">
+              <p class="text-xs text-gray-700 font-medium">오늘 생성 가능한 번호를 모두 사용했어요</p>
             </div>
           </div>
 
