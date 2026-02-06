@@ -335,7 +335,7 @@
           `;
         } else {
           return `
-            <div class="swipe-item relative group" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}'>
+            <div class="swipe-item relative group" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}' data-target-draw="${slot.data.targetDraw || getNextDrawNumber()}">
               <div class="swipe-content flex items-center justify-between gap-1 p-2 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
                 <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-5 shrink-0">#${slot.index + 1}</span>
                 <div class="flex gap-1 justify-center flex-1">
@@ -656,16 +656,17 @@
     }
 
     // ==================== 최근 번호 관리 ====================
-    
+
     function addToRecent(numbers) {
       const recent = getRecent();
-      
+      const targetDraw = getNextDrawNumber(); // 다음 회차용 번호
+
       // 최대 50개까지만 저장
       if (recent.length >= 50) {
         recent.pop();
       }
-      
-      recent.unshift({ numbers, timestamp: Date.now() });
+
+      recent.unshift({ numbers, timestamp: Date.now(), targetDraw });
       localStorage.setItem(STORAGE_KEYS.RECENT, JSON.stringify(recent));
     }
 
@@ -701,6 +702,7 @@
     // 액션 관련 변수
     let currentActionIndex = null;
     let currentActionNumbers = null;
+    let currentActionTargetDraw = null;
 
     // 스와이프 상태 변수 (이벤트 위임용)
     let swipeState = {
@@ -816,6 +818,7 @@
     function openSaveConfirm(item) {
       currentActionIndex = parseInt(item.dataset.index);
       currentActionNumbers = JSON.parse(item.dataset.numbers);
+      currentActionTargetDraw = parseInt(item.dataset.targetDraw) || getNextDrawNumber();
 
       const modal = document.getElementById('saveConfirmModal');
       const numbersEl = document.getElementById('saveConfirmNumbers');
@@ -837,12 +840,13 @@
       }
       currentActionIndex = null;
       currentActionNumbers = null;
+      currentActionTargetDraw = null;
     }
 
     // 저장 확인
     function confirmSaveNumber() {
       if (currentActionNumbers) {
-        saveNumber(currentActionNumbers);
+        saveNumber(currentActionNumbers, currentActionTargetDraw);
       }
       closeSaveConfirm();
     }
@@ -886,7 +890,7 @@
     function hoverSave(index) {
       const recent = getRecent();
       if (recent[index]) {
-        saveNumber(recent[index].numbers);
+        saveNumber(recent[index].numbers, recent[index].targetDraw);
       }
     }
 
@@ -907,7 +911,7 @@
 
     // ==================== 저장된 번호 관리 ====================
     
-    function saveNumber(numbers) {
+    function saveNumber(numbers, targetDraw = null) {
       const saved = getSaved();
       // 저장 가능한 최대 수량 = 잠금해제된 페이지 * 페이지당 항목 수
       const maxSavable = savedUnlockedPages * savedItemsPerPage;
@@ -917,6 +921,9 @@
         return;
       }
 
+      // targetDraw가 없으면 다음 회차로 설정
+      const drawNumber = targetDraw || getNextDrawNumber();
+
       const exists = saved.some(item => JSON.stringify(item.numbers) === JSON.stringify(numbers));
 
       if (exists) {
@@ -924,7 +931,7 @@
         return;
       }
 
-      saved.push({ numbers, timestamp: Date.now() });
+      saved.push({ numbers, timestamp: Date.now(), targetDraw: drawNumber });
       localStorage.setItem(STORAGE_KEYS.SAVED, JSON.stringify(saved));
       updateUI();
       updateWinningStats();
@@ -959,7 +966,9 @@
 
         const exists = saved.some(s => JSON.stringify(s.numbers) === JSON.stringify(item.numbers));
         if (!exists) {
-          saved.push({ numbers: item.numbers, timestamp: Date.now() });
+          // targetDraw가 있으면 유지, 없으면 다음 회차
+          const targetDraw = item.targetDraw || getNextDrawNumber();
+          saved.push({ numbers: item.numbers, timestamp: Date.now(), targetDraw });
           savedCount++;
         }
       }
@@ -1116,11 +1125,13 @@
         return;
       }
 
+      const targetDraw = getNextDrawNumber();
+
       // 최근 생성 번호에 추가 (사용자가 '생성'한 것으로 처리)
       addToRecent(validation.numbers);
 
-      // 내 번호에 저장
-      saveNumber(validation.numbers);
+      // 내 번호에 저장 (동일한 targetDraw 사용)
+      saveNumber(validation.numbers, targetDraw);
 
       // UI 업데이트
       updateUI();
@@ -1741,17 +1752,17 @@
     function checkManualNumbers() {
       const lines = document.querySelectorAll('#manualInputLines > div');
       const allNumbers = [];
-      
+
       lines.forEach((line, lineIndex) => {
         const inputs = line.querySelectorAll('input');
         const numbers = [];
-        
+
         inputs.forEach(input => {
           if (input.value) {
             numbers.push(parseInt(input.value));
           }
         });
-        
+
         if (numbers.length === 6) {
           allNumbers.push({ line: lineIndex + 1, numbers: numbers.sort((a, b) => a - b) });
         }
@@ -1762,47 +1773,109 @@
         return;
       }
 
+      // 저장 없이 바로 결과 표시
+      const winning = getWinningNumbers();
+      let bestWin = null;
+      const results = [];
+
       allNumbers.forEach(item => {
-        saveNumber(item.numbers);
+        const match = checkMatch(item.numbers, winning.numbers);
+        const rankInfo = getMatchRank(match.count);
+        const matchedNums = item.numbers.filter(n => winning.numbers.includes(n));
+
+        results.push({
+          numbers: item.numbers,
+          match,
+          rankInfo,
+          matchedNums
+        });
+
+        if (rankInfo && (!bestWin || rankInfo.rank < bestWin.rank)) {
+          bestWin = {
+            rank: rankInfo.rank,
+            rankInfo: rankInfo,
+            matchedNumbers: matchedNums
+          };
+        }
       });
 
+      // 직접 입력 결과 표시 영역 업데이트
+      showDirectCheckResults(results, winning);
+
+      // 입력창 초기화
       document.querySelectorAll('#manualInputLines input').forEach(input => {
         if (input) {
           input.value = '';
           if (input.classList) {
-            input.classList.remove('filled');
+            input.classList.remove('filled', 'border-red-500');
+            input.classList.add('border-gray-300');
           }
         }
       });
 
-      showToast(`${allNumbers.length}줄이 저장되었습니다!`, 2000);
+      showToast(`${allNumbers.length}개 번호 확인 완료!`, 2000);
 
-      setTimeout(() => {
-        updateCheckUI();
+      // 당첨 시 축하 팝업
+      if (bestWin) {
+        setTimeout(() => {
+          showCongratsModal(winning.drawNumber, bestWin.rankInfo, bestWin.matchedNumbers);
+        }, 500);
+      }
+    }
 
-        // 당첨 여부 확인 후 팝업 표시
-        const winning = getWinningNumbers();
-        let bestWin = null;
+    // 직접 입력 번호 확인 결과 표시
+    function showDirectCheckResults(results, winning) {
+      // 결과 표시 영역 생성 또는 가져오기
+      let resultContainer = document.getElementById('directCheckResults');
+      if (!resultContainer) {
+        const manualSection = document.querySelector('#manualInputLines').parentElement;
+        const resultDiv = document.createElement('div');
+        resultDiv.id = 'directCheckResults';
+        resultDiv.className = 'mt-3 space-y-2';
+        manualSection.insertBefore(resultDiv, manualSection.querySelector('button[onclick="addManualInputLine()"]'));
+        resultContainer = resultDiv;
+      }
 
-        allNumbers.forEach(item => {
-          const match = checkMatch(item.numbers, winning.numbers);
-          const rankInfo = getMatchRank(match.count);
+      resultContainer.innerHTML = `
+        <div class="text-xs font-bold text-gray-700 mb-2">📋 확인 결과 (${winning.drawNumber}회차 기준)</div>
+        ${results.map((item, index) => {
+          let rankClass = 'bg-gray-50 border border-gray-200';
+          let badgeClass = 'bg-gray-400';
 
-          if (rankInfo && (!bestWin || rankInfo.rank < bestWin.rank)) {
-            bestWin = {
-              rank: rankInfo.rank,
-              rankInfo: rankInfo,
-              matchedNumbers: item.numbers.filter(n => winning.numbers.includes(n))
-            };
+          if (item.rankInfo) {
+            rankClass = `rank-${item.rankInfo.rank}`;
+            if (item.rankInfo.rank === 1) badgeClass = 'bg-gradient-to-r from-yellow-500 to-orange-500';
+            else if (item.rankInfo.rank === 2) badgeClass = 'bg-gradient-to-r from-gray-400 to-gray-500';
+            else if (item.rankInfo.rank === 3) badgeClass = 'bg-gradient-to-r from-orange-400 to-orange-600';
+            else badgeClass = 'bg-green-600';
           }
-        });
 
-        if (bestWin) {
-          setTimeout(() => {
-            showCongratsModal(winning.drawNumber, bestWin.rankInfo, bestWin.matchedNumbers);
-          }, 500);
-        }
-      }, 100);
+          return `
+            <div class="p-2 rounded-xl ${rankClass}">
+              <div class="flex items-center gap-1 mb-1.5">
+                <span class="text-xs text-gray-500 font-medium w-5 shrink-0">#${index + 1}</span>
+                <div class="flex gap-1 flex-1 justify-center">
+                  ${item.numbers.map(num => {
+                    const isMatch = winning.numbers.includes(num);
+                    return renderBall(num, isMatch ? 'matched' : 'normal');
+                  }).join('')}
+                </div>
+              </div>
+              ${item.rankInfo ? `
+                <div class="text-center">
+                  <div class="inline-block ${badgeClass} text-white px-2 py-1 rounded-full font-bold text-xs shadow-md">
+                    ${item.rankInfo.rank <= 3 ? '🏆' : '🎉'} ${item.match.count}개 - ${item.rankInfo.text}
+                  </div>
+                </div>
+              ` : `
+                <div class="text-center text-xs text-gray-500">
+                  ${item.match.count}개 일치 - 미당첨
+                </div>
+              `}
+            </div>
+          `;
+        }).join('')}
+      `;
     }
 
     // ==================== 오늘의 행운 번호 ====================
@@ -2100,7 +2173,7 @@
           <div class="flex gap-1 flex-1 justify-center">
             ${renderNumberBalls(item.numbers)}
           </div>
-          <button onclick="saveNumber(${JSON.stringify(item.numbers).replace(/"/g, '&quot;')})" class="p-1 text-blue-500 hover:bg-blue-100 rounded transition-colors" title="저장">
+          <button onclick="saveNumber(${JSON.stringify(item.numbers).replace(/"/g, '&quot;')}, ${item.targetDraw || getNextDrawNumber()})" class="p-1 text-blue-500 hover:bg-blue-100 rounded transition-colors" title="저장">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
             </svg>
@@ -2309,9 +2382,12 @@
       const container = document.getElementById('savedNumbersCheck');
       const noSaved = document.getElementById('noSavedForCheck');
 
+      // 해당 회차용 번호만 필터링 (targetDraw 기준)
+      const filteredSaved = saved.filter(item => item.targetDraw === winning.drawNumber);
+
       // 내 번호 탭에서 잠금해제된 범위만 표시 (광고 수익화 보호)
       const maxVisible = savedUnlockedPages * savedItemsPerPage;
-      const visibleSaved = saved.slice(0, maxVisible);
+      const visibleSaved = filteredSaved.slice(0, maxVisible);
 
       const drawNumberEl = document.getElementById('checkDrawNumber');
       const drawDateEl = document.getElementById('checkDrawDate');
@@ -2323,7 +2399,7 @@
       if (drawDateEl) drawDateEl.textContent = winning.drawDate;
       if (firstPrizeEl) firstPrizeEl.textContent = formatPrize(winning.firstPrize);
       if (winningNumbersEl) winningNumbersEl.innerHTML = renderNumberBalls(winning.numbers, winning.bonus);
-      // 표시되는 개수만 카운트 (잠금해제된 범위)
+      // 해당 회차 번호만 카운트
       if (savedCheckCountEl) savedCheckCountEl.textContent = visibleSaved.length;
 
       if (!container || !noSaved) return;
