@@ -11,13 +11,24 @@ const CELEBRITIES = [
   { name: '정주영', desc: '현대그룹 창업주' },
   { name: '이병철', desc: '삼성그룹 창업주' },
   { name: '빌 게이츠', desc: '마이크로소프트 창업자' },
-  { name: '워렌 버핏', desc: '투자의 귀재' },
+  { name: '워렌 버핏', desc: '버크셔 해서웨이' },
   { name: '잭 마', desc: '알리바바 창업자' },
-  { name: '일론 머스크', desc: '테슬라 CEO' },
+  { name: '일론 머스크', desc: '테슬라·스페이스X' },
   { name: '스티브 잡스', desc: '애플 창업자' },
   { name: '손정의', desc: '소프트뱅크 회장' },
   { name: '김범수', desc: '카카오 창업자' },
-  { name: '이해진', desc: '네이버 창업자' }
+  { name: '이해진', desc: '네이버 창업자' },
+  { name: '제프 베이조스', desc: '아마존 창업자' },
+  { name: '버나드 아르노', desc: 'LVMH 회장' },
+  { name: '마이클 블룸버그', desc: '블룸버그 창업자' },
+  { name: '래리 엘리슨', desc: '오라클 창업자' },
+  { name: '래리 페이지', desc: '구글 공동 창업자' },
+  { name: '세르게이 브린', desc: '구글 공동 창업자' },
+  { name: '마크 저커버그', desc: '메타 창업자' },
+  { name: '젠슨 황', desc: '엔비디아 CEO' },
+  { name: '카를로스 슬림', desc: '텔멕스 회장' },
+  { name: '무케시 암바니', desc: '릴라이언스 회장' },
+  { name: '아만시오 오르테가', desc: '인디텍스 창업자' }
 ];
 
 const LUCK_MESSAGES = [
@@ -44,16 +55,42 @@ const LUCK_MESSAGES = [
 ];
 
 const ANALYSIS_TEXTS = [
-  "당신의 얼굴에서 강한 의지와 결단력이 느껴집니다. 특히 눈매에서 성공을 향한 열정이 보이며, 이마의 형태는 지혜로운 판단력을 암시합니다. 재물을 모으는 데 타고난 감각이 있는 상입니다.",
-  "부드러우면서도 날카로운 인상이 조화를 이루고 있습니다. 이런 관상은 대인관계에서 신뢰를 쌓기 좋고, 사업적 성공의 기회가 많습니다. 특히 40대 이후 크게 발복할 상입니다.",
-  "당신의 관상에서 끈기와 인내의 기운이 강하게 느껴집니다. 한 번 시작한 일은 끝까지 해내는 성향으로, 장기적인 투자에서 큰 수익을 올릴 가능성이 높습니다.",
-  "창의적이고 독창적인 아이디어가 넘치는 상입니다. 기존에 없던 새로운 것을 만들어 성공하는 타입으로, 스타트업이나 신사업에서 대박을 칠 운명입니다.",
-  "타인을 이끄는 리더십이 관상에서 드러납니다. 조직을 이끌며 함께 성장하는 타입으로, 큰 사업체를 운영할 그릇을 가지고 있습니다.",
-  "섬세하면서도 대담한 기질이 공존하는 특이한 상입니다. 위험과 기회를 동시에 포착하는 능력이 있어, 투자에서 높은 수익률을 기록할 확률이 높습니다.",
-  "복을 끌어당기는 인덕이 있는 상입니다. 주변 사람들의 도움으로 예상치 못한 횡재수가 따르며, 인맥을 통한 기회가 많이 찾아올 것입니다.",
-  "분석력과 직감이 뛰어난 상입니다. 숫자와 데이터를 다루는 데 재능이 있어, 금융이나 투자 분야에서 성공할 가능성이 높습니다.",
-  "인내심과 끈기의 상입니다. 당장의 이익보다 장기적인 안목으로 부를 축적하는 타입으로, 꾸준한 저축과 투자로 큰 부자가 될 운명입니다.",
-  "변화와 도전을 즐기는 모험가의 상입니다. 새로운 기회를 포착하는 능력이 뛰어나 여러 번의 성공을 경험할 것이며, 특히 해외에서 큰 재물운이 있습니다."
+  "당신의 얼굴에서 강한 의지와 결단력이 느껴집니다. 특히 눈빛이 흔들림 없이 목표를 향해 가는 타입이라, 중요한 순간에 큰 결정을 잘 내리는 편입니다. 꾸준함과 추진력이 결합되어 장기적으로 자산을 키우는 상입니다.",
+  "부드러우면서도 날카로운 인상이 균형을 이루고 있습니다. 사람을 편하게 만드는 친화력과 일 처리를 빠르게 끝내는 실행력이 함께 보여, 사업·프로젝트에서 신뢰를 얻기 좋은 관상입니다.",
+  "끈기와 인내의 기운이 강하게 느껴집니다. 한 번 시작한 일은 끝까지 해내는 성향이라 장기 투자나 누적형 성과에서 강점을 보입니다. 시간이 지날수록 안정적으로 성장하는 타입입니다.",
+  "독창적인 발상이 돋보이는 상입니다. 남들이 하지 않는 방법을 먼저 시도하는 감각이 있어, 신규 서비스나 신사업에서 기회를 잡기 쉽습니다. 변화에 대한 두려움이 적은 편입니다.",
+  "리더십의 기운이 드러납니다. 조직 안에서 중심을 잡고 사람을 모으는 타입으로, 팀을 꾸려 성과를 내기 좋습니다. 책임을 지는 성향이 강해 위기 상황에도 중심을 유지합니다.",
+  "섬세함과 대담함이 공존합니다. 위험을 감지하는 직감이 있고, 타이밍이 맞을 때는 과감한 선택을 할 수 있어 투자나 사업에서 수익 구간을 잘 포착합니다.",
+  "인덕이 있는 상입니다. 주변 사람들과의 관계가 기회를 만들어주는 타입이라 협업이나 소개를 통해 좋은 흐름이 생깁니다. 인맥이 곧 자산이 되는 경우가 많습니다.",
+  "분석력과 직감이 균형 있게 발달했습니다. 숫자와 데이터 흐름을 읽는 능력이 있어 금융, 전략, 기획 분야에서 강점을 가질 가능성이 높습니다.",
+  "장기적 관점이 강한 타입입니다. 단기 이익보다 큰 흐름을 보며 꾸준히 축적하는 경향이 있어, 시간이 지날수록 안정적인 부를 만드는 상입니다.",
+  "도전과 변화를 즐기는 모험가의 기운이 있습니다. 새로운 기회를 빠르게 캐치하는 편이라 여러 번의 성장 기회를 경험할 가능성이 높습니다.",
+  "균형 잡힌 인상으로 신뢰를 얻는 상입니다. 말보다 행동으로 증명하는 성향이 있어, 장기 파트너십과 안정적 사업 운영에 유리합니다.",
+  "결과 지향적인 성향이 강합니다. 목표를 세우고 단기간 집중해 성과를 만드는 데 강점이 있어, 프로젝트형 업무에서 두각을 나타냅니다.",
+  "현실 감각이 뛰어난 타입입니다. 수입과 지출의 균형을 잘 잡아, 리스크를 크게 늘리지 않고도 안정적인 성장을 만들어냅니다.",
+  "자기 통제력이 돋보입니다. 감정에 휘둘리지 않는 편이라 의사결정이 일관되고, 장기 목표를 향해 안정적으로 전진할 수 있습니다."
+];
+
+const MATCH_TYPES = [
+  "리더형·결단형",
+  "전략형·분석형",
+  "창의형·도전형",
+  "협업형·인맥형",
+  "실행형·속도형",
+  "안정형·축적형",
+  "직감형·타이밍형",
+  "장기형·비전형"
+];
+
+const MISMATCH_TYPES = [
+  "우유부단·미루기형",
+  "충동형·과소비형",
+  "과도한 완벽주의형",
+  "비관형·위축형",
+  "단기 과열형",
+  "무계획·즉흥형",
+  "고집형·변화거부형",
+  "과도한 의존형"
 ];
 
 // ==================== 해시 함수 ====================
@@ -215,6 +252,8 @@ function startAnalysis() {
     luckPercent: (hash % 40) + 50,        // 50~89%
     celebrity: CELEBRITIES[hash % CELEBRITIES.length],
     analysis: ANALYSIS_TEXTS[hash % ANALYSIS_TEXTS.length],
+    matchType: MATCH_TYPES[hash % MATCH_TYPES.length],
+    mismatchType: MISMATCH_TYPES[(hash * 7) % MISMATCH_TYPES.length],
     luckMessage: LUCK_MESSAGES[hash % LUCK_MESSAGES.length],
     photo: uploadedPhotoData
   };
@@ -261,7 +300,10 @@ function displayResult() {
   document.getElementById('resultPercent').textContent = testResult.richPercent;
   document.getElementById('resultPhoto').src = testResult.photo;
   document.getElementById('resultCelebrity').textContent = testResult.celebrity.name;
+  document.getElementById('resultCelebrityDesc').textContent = testResult.celebrity.desc;
   document.getElementById('resultAnalysis').textContent = testResult.analysis;
+  document.getElementById('resultMatchType').textContent = testResult.matchType;
+  document.getElementById('resultMismatchType').textContent = testResult.mismatchType;
   document.getElementById('luckPercent').textContent = testResult.luckPercent;
   document.getElementById('luckBar').style.width = testResult.luckPercent + '%';
   document.getElementById('luckMessage').textContent = `"${testResult.luckMessage}"`;
@@ -282,6 +324,9 @@ async function saveToFirebase(result) {
       richPercent: result.richPercent,
       luckPercent: result.luckPercent,
       celebrity: result.celebrity.name,
+      celebrityDesc: result.celebrity.desc,
+      matchType: result.matchType,
+      mismatchType: result.mismatchType,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     console.log('Face test result saved to Firebase');
