@@ -345,7 +345,7 @@
                 <div class="hidden md:flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                   <button onclick="hoverSave(${slot.index})" class="p-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" title="저장">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                     </svg>
                   </button>
                   <button onclick="hoverDelete(${slot.index})" class="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="삭제">
@@ -1635,12 +1635,13 @@
       if (!container) return;
 
       const lineDiv = document.createElement('div');
-      lineDiv.className = 'flex items-center gap-1.5';
+      lineDiv.className = 'flex items-center gap-2';
+      lineDiv.dataset.lineNum = manualInputLineCount;
       lineDiv.innerHTML = `
         <span class="text-xs text-gray-500 w-5 flex-shrink-0">#${manualInputLineCount}</span>
         ${[1,2,3,4,5,6].map(i => `
           <input type="text" maxlength="2" inputmode="numeric" pattern="[0-9]*"
-                 class="w-9 h-9 text-center text-base font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
+                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
                  id="manual_${manualInputLineCount}_${i}"
                  oninput="onCheckManualInput(this, ${manualInputLineCount}, ${i})"
                  placeholder="${i}">
@@ -1682,7 +1683,7 @@
       }
     }
 
-    // 당첨 확인 탭 직접 입력 핸들러 (중복 허용)
+    // 당첨 확인 탭 직접 입력 핸들러 (한 줄 내 중복 불가)
     function onCheckManualInput(input, lineNum, fieldNum) {
       // 숫자만 허용
       input.value = input.value.replace(/[^0-9]/g, '');
@@ -1697,10 +1698,41 @@
         }
       }
 
+      // 같은 줄 내 중복 체크
+      checkLineDuplicate(input, lineNum, fieldNum);
+
       // 2자리 입력 시 다음 칸으로 자동 이동
       if (input.value.length === 2 && fieldNum < 6) {
         const nextInput = document.getElementById(`manual_${lineNum}_${fieldNum + 1}`);
         if (nextInput) nextInput.focus();
+      }
+    }
+
+    function checkLineDuplicate(currentInput, lineNum, currentFieldNum) {
+      const currentValue = currentInput.value;
+      if (!currentValue) {
+        currentInput.classList.remove('border-red-500');
+        currentInput.classList.add('border-gray-300');
+        return;
+      }
+
+      // 같은 줄의 다른 입력값과 비교
+      let hasDuplicate = false;
+      for (let i = 1; i <= 6; i++) {
+        if (i === currentFieldNum) continue;
+        const otherInput = document.getElementById(`manual_${lineNum}_${i}`);
+        if (otherInput && otherInput.value === currentValue) {
+          hasDuplicate = true;
+          break;
+        }
+      }
+
+      if (hasDuplicate) {
+        currentInput.classList.add('border-red-500');
+        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+        showToast('⚠️ 중복된 번호입니다', 1500);
+      } else {
+        currentInput.classList.remove('border-red-500');
       }
     }
 
@@ -2070,7 +2102,7 @@
           </div>
           <button onclick="saveNumber(${JSON.stringify(item.numbers).replace(/"/g, '&quot;')})" class="p-1 text-blue-500 hover:bg-blue-100 rounded transition-colors" title="저장">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
             </svg>
           </button>
         </div>
