@@ -1037,12 +1037,19 @@
         return;
       }
 
+      // 2자리 입력 완료 시에만 중복 체크 (입력 중에는 체크하지 않음)
+      if (currentValue.length < 2) {
+        currentInput.classList.remove('border-red-500');
+        return;
+      }
+
       // 다른 입력칸과 중복 체크
       let hasDuplicate = false;
       for (let i = 1; i <= 6; i++) {
         if (i === currentIndex) continue;
         const otherInput = document.getElementById(`manualNum${i}`);
-        if (otherInput && otherInput.value === currentValue) {
+        // 상대방도 2자리 완성된 경우에만 비교
+        if (otherInput && otherInput.value.length === 2 && otherInput.value === currentValue) {
           hasDuplicate = true;
           break;
         }
@@ -1727,12 +1734,18 @@
         return;
       }
 
-      // 같은 줄의 다른 입력값과 비교
+      // 2자리 입력 완료 시에만 중복 체크
+      if (currentValue.length < 2) {
+        currentInput.classList.remove('border-red-500');
+        return;
+      }
+
+      // 같은 줄의 다른 입력값과 비교 (상대방도 2자리 완성된 경우에만)
       let hasDuplicate = false;
       for (let i = 1; i <= 6; i++) {
         if (i === currentFieldNum) continue;
         const otherInput = document.getElementById(`manual_${lineNum}_${i}`);
-        if (otherInput && otherInput.value === currentValue) {
+        if (otherInput && otherInput.value.length === 2 && otherInput.value === currentValue) {
           hasDuplicate = true;
           break;
         }
