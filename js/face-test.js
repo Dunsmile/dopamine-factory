@@ -444,9 +444,17 @@ function displayResult() {
   document.getElementById('pointLabel1').textContent = `#결단`;
   document.getElementById('pointLabel2').textContent = `#협업 능력`;
   document.getElementById('pointLabel3').textContent = `#타고난 운`;
-  document.getElementById('pointBar1').style.width = `${renderBarWidth(testResult.points[0].score)}%`;
-  document.getElementById('pointBar2').style.width = `${renderBarWidth(testResult.points[1].score)}%`;
-  document.getElementById('pointBar3').style.width = `${renderBarWidth(testResult.points[2].score)}%`;
+  const bar1 = document.getElementById('pointBar1');
+  const bar2 = document.getElementById('pointBar2');
+  const bar3 = document.getElementById('pointBar3');
+  bar1.style.width = '0%';
+  bar2.style.width = '0%';
+  bar3.style.width = '0%';
+  requestAnimationFrame(() => {
+    bar1.style.width = `${renderBarWidth(testResult.points[0].score)}%`;
+    bar2.style.width = `${renderBarWidth(testResult.points[1].score)}%`;
+    bar3.style.width = `${renderBarWidth(testResult.points[2].score)}%`;
+  });
 
   document.getElementById('resultAnalysis').textContent = buildAnalysisText(testResult);
   document.getElementById('resultMatchType').textContent = `${testResult.storyline.match.name} · ${testResult.storyline.match.desc}`;
