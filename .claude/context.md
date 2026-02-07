@@ -81,6 +81,7 @@ HOXY는 다양한 운세/행운 관련 서비스를 제공하는 플랫폼입니
   - Firebase `daily_fortune_results` 컬렉션 저장
   - 앰버/오렌지 테마 (기존 서비스와 차별화)
 - ✅ 오늘의 운세 → 오늘의 운세 풀이 명칭 통일 + daily-fortune GTM/AdSense 중복 제거 (2026-02-08)
+- ✅ 확장자 없는 경로 대응을 위해 index 경로 구성 + guide 페이지 GTM 보강 (2026-02-08)
 
 ## Firebase 설정
 - **Project ID**: hoxy-number
