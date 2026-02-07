@@ -1907,8 +1907,8 @@
       const results = [];
 
       allNumbers.forEach(item => {
-        const match = checkMatch(item.numbers, winning.numbers);
-        const rankInfo = getMatchRank(match.count);
+        const match = checkMatch(item.numbers, winning.numbers, winning.bonus);
+        const rankInfo = getMatchRank(match.count, match.hasBonus);
         const matchedNums = item.numbers.filter(n => winning.numbers.includes(n));
 
         results.push({
@@ -2179,7 +2179,7 @@
       
       let hasWinning = false;
       saved.forEach(item => {
-        const match = checkMatch(item.numbers, winning.numbers);
+        const match = checkMatch(item.numbers, winning.numbers, winning.bonus);
         if (match.count >= 3) {
           hasWinning = true;
         }
@@ -2190,11 +2190,12 @@
       }
     }
 
-    function checkMatch(numbers, winningNumbers) {
+    function checkMatch(numbers, winningNumbers, bonusNumber = null) {
       const matches = numbers.filter(n => winningNumbers.includes(n));
       return {
         count: matches.length,
-        numbers: matches
+        numbers: matches,
+        hasBonus: bonusNumber ? numbers.includes(bonusNumber) : false
       };
     }
 
@@ -2542,8 +2543,8 @@
       noSaved.style.display = 'none';
 
       container.innerHTML = visibleSaved.map((item, index) => {
-        const match = checkMatch(item.numbers, winning.numbers);
-        const rankInfo = getMatchRank(match.count);
+        const match = checkMatch(item.numbers, winning.numbers, winning.bonus);
+        const rankInfo = getMatchRank(match.count, match.hasBonus);
 
         // 등수별 스타일 클래스
         let rankClass = 'bg-gray-50 border border-gray-200';
@@ -2687,9 +2688,10 @@
       return `<div class="number-ball bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white font-bold shadow-md">${num}</div>`;
     }
 
-    function getMatchRank(count) {
+    function getMatchRank(count, hasBonus = false) {
       if (count === 6) return { rank: 1, text: '1등 당첨!' };
-      if (count === 5) return { rank: 3, text: '3등 당첨!' };  // 보너스 미확인으로 3등
+      if (count === 5 && hasBonus) return { rank: 2, text: '2등 당첨!' };
+      if (count === 5) return { rank: 3, text: '3등 당첨!' };
       if (count === 4) return { rank: 4, text: '4등 당첨!' };
       if (count === 3) return { rank: 5, text: '5등 당첨!' };
       return null;
