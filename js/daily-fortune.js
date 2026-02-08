@@ -590,15 +590,21 @@ function handleWelcomeCta() {
 }
 
 function goToInputForm() {
-  const userInfo = getSavedUserInfo();
-  // 폼 프리필
-  if (userInfo) {
-    document.getElementById('userName').value = userInfo.name;
-    document.getElementById('birthYear').value = userInfo.birthYear;
-    document.getElementById('birthMonth').value = userInfo.birthMonth;
-    document.getElementById('birthDay').value = userInfo.birthDay;
-    selectGender(userInfo.gender);
-  }
+  // 저장 정보 삭제 + 입력 폼 초기화
+  clearSavedData();
+  document.getElementById('userName').value = '';
+  document.getElementById('birthYear').value = '';
+  document.getElementById('birthMonth').value = '';
+  document.getElementById('birthDay').value = '';
+  const rememberMe = document.getElementById('rememberMe');
+  if (rememberMe) rememberMe.checked = false;
+  const agreeTerms = document.getElementById('agreeTerms');
+  if (agreeTerms) agreeTerms.checked = false;
+  selectedGender = null;
+  const maleBtn = document.getElementById('genderMale');
+  const femaleBtn = document.getElementById('genderFemale');
+  if (maleBtn) maleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+  if (femaleBtn) femaleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
   showStep(1);
 }
 
