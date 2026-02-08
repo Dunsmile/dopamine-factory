@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF7E6"/>
+      <stop offset="1" stop-color="#FFE7CC"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+
+  <!-- Star icon -->
+  <g transform="translate(140 150)">
+    <polygon points="140,0 178,98 280,105 200,165 226,265 140,210 54,265 80,165 0,105 102,98" fill="url(#star)"/>
+    <circle cx="140" cy="140" r="28" fill="white" fill-opacity="0.35"/>
+  </g>
+
+  <!-- Text -->
+  <text x="420" y="230" fill="#111827" font-size="56" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">
+    오늘의 운세 풀이
+  </text>
+  <text x="420" y="310" fill="#6B7280" font-size="30" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">
+    별자리 · 띠 · 사주로 보는 나만의 운세 풀이
+  </text>
+</svg>

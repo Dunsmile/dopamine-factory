@@ -1,0 +1,29 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7F1FF"/>
+      <stop offset="1" stop-color="#FFE9F4"/>
+    </linearGradient>
+    <linearGradient id="ball" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+
+  <!-- Magic ball icon -->
+  <g transform="translate(120 140)">
+    <circle cx="140" cy="140" r="120" fill="url(#ball)"/>
+    <circle cx="110" cy="105" r="26" fill="white" fill-opacity="0.45"/>
+    <circle cx="175" cy="165" r="14" fill="white" fill-opacity="0.3"/>
+    <rect x="55" y="250" width="170" height="30" rx="15" fill="#8B5CF6"/>
+  </g>
+
+  <!-- Text -->
+  <text x="420" y="230" fill="#111827" font-size="56" font-weight="800" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">
+    내가 부자가 될 상인가?
+  </text>
+  <text x="420" y="310" fill="#6B7280" font-size="32" font-weight="600" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif">
+    AI 관상 테스트
+  </text>
+</svg>
