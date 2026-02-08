@@ -4,6 +4,13 @@
 let selectedGender = null;
 let fortuneResult = null;
 
+// localStorage 키 상수
+const FORTUNE_STORAGE = {
+  USER: 'hoxy_fortune_user',
+  RESULT: 'hoxy_fortune_result',
+  REMEMBER: 'hoxy_fortune_remember'
+};
+
 // ==================== 별자리 데이터 ====================
 
 const ZODIAC_SIGNS = [
@@ -491,6 +498,110 @@ function validateBirthDate() {
   return true;
 }
 
+// ==================== localStorage 함수 ====================
+
+function getSavedUserInfo() {
+  try {
+    const data = localStorage.getItem(FORTUNE_STORAGE.USER);
+    return data ? JSON.parse(data) : null;
+  } catch (e) { return null; }
+}
+
+function getSavedResult() {
+  try {
+    const data = localStorage.getItem(FORTUNE_STORAGE.RESULT);
+    return data ? JSON.parse(data) : null;
+  } catch (e) { return null; }
+}
+
+function saveUserInfo(name, gender, birthYear, birthMonth, birthDay) {
+  localStorage.setItem(FORTUNE_STORAGE.USER, JSON.stringify({ name, gender, birthYear, birthMonth, birthDay }));
+  localStorage.setItem(FORTUNE_STORAGE.REMEMBER, 'true');
+}
+
+function saveFortuneResult(result) {
+  localStorage.setItem(FORTUNE_STORAGE.RESULT, JSON.stringify(result));
+}
+
+function clearSavedData() {
+  localStorage.removeItem(FORTUNE_STORAGE.USER);
+  localStorage.removeItem(FORTUNE_STORAGE.RESULT);
+  localStorage.removeItem(FORTUNE_STORAGE.REMEMBER);
+}
+
+// ==================== Step 0 초기화 ====================
+
+function getTodayDateStr() {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+}
+
+function initDailyFortune() {
+  const remember = localStorage.getItem(FORTUNE_STORAGE.REMEMBER);
+  const userInfo = getSavedUserInfo();
+
+  if (remember === 'true' && userInfo) {
+    const savedResult = getSavedResult();
+    const hasResultToday = savedResult && savedResult.date === getTodayDateStr();
+    setupWelcomeScreen(userInfo, hasResultToday);
+    showStep(0);
+  } else {
+    showStep(1);
+  }
+}
+
+function setupWelcomeScreen(userInfo, hasResultToday) {
+  const titleEl = document.getElementById('welcomeTitle');
+  const subtitleEl = document.getElementById('welcomeSubtitle');
+  const ctaBtn = document.getElementById('welcomeCta');
+
+  if (hasResultToday) {
+    titleEl.textContent = `${userInfo.name}님! 좋은 하루 보내세요!`;
+    subtitleEl.textContent = '오늘의 운세가 준비되어 있어요';
+    ctaBtn.textContent = '오늘의 운세 다시 보기';
+  } else {
+    titleEl.textContent = `${userInfo.name}님! 오늘의 운세가 도착했어요!`;
+    subtitleEl.textContent = '별자리 · 띠 · 사주로 보는 나만의 운세 풀이';
+    ctaBtn.textContent = '오늘의 운세 풀이 보기';
+  }
+}
+
+function handleWelcomeCta() {
+  const userInfo = getSavedUserInfo();
+  if (!userInfo) { showStep(1); return; }
+
+  const savedResult = getSavedResult();
+  const hasResultToday = savedResult && savedResult.date === getTodayDateStr();
+
+  if (hasResultToday) {
+    // 캐시된 결과 즉시 표시
+    fortuneResult = savedResult;
+    showStep(3);
+    displayResult();
+  } else {
+    // 새 운세 생성
+    selectedGender = userInfo.gender;
+    fortuneResult = generateFortune(userInfo.name, userInfo.gender, userInfo.birthYear, userInfo.birthMonth, userInfo.birthDay);
+    saveFortuneResult(fortuneResult);
+    saveToFirebase(fortuneResult);
+    showStep(2);
+    startLoadingAnimation();
+  }
+}
+
+function goToInputForm() {
+  const userInfo = getSavedUserInfo();
+  // 폼 프리필
+  if (userInfo) {
+    document.getElementById('userName').value = userInfo.name;
+    document.getElementById('birthYear').value = userInfo.birthYear;
+    document.getElementById('birthMonth').value = userInfo.birthMonth;
+    document.getElementById('birthDay').value = userInfo.birthDay;
+    selectGender(userInfo.gender);
+  }
+  showStep(1);
+}
+
 // ==================== 분석 시작 ====================
 
 function startFortune() {
@@ -504,6 +615,15 @@ function startFortune() {
 
   const birth = getBirthDate();
   fortuneResult = generateFortune(name, selectedGender, birth.year, birth.month, birth.day);
+
+  // 내 정보 기억하기 처리
+  const rememberMe = document.getElementById('rememberMe');
+  if (rememberMe && rememberMe.checked) {
+    saveUserInfo(name, selectedGender, birth.year, birth.month, birth.day);
+    saveFortuneResult(fortuneResult);
+  } else {
+    clearSavedData();
+  }
 
   // Firebase 저장
   saveToFirebase(fortuneResult);
@@ -684,14 +804,25 @@ function shareResult() {
 function retakeFortune() {
   selectedGender = null;
   fortuneResult = null;
-  document.getElementById('userName').value = '';
-  document.getElementById('birthYear').value = '';
-  document.getElementById('birthMonth').value = '';
-  document.getElementById('birthDay').value = '';
-  document.getElementById('agreeTerms').checked = false;
-  document.getElementById('genderMale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
-  document.getElementById('genderFemale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
-  showStep(1);
+
+  const remember = localStorage.getItem(FORTUNE_STORAGE.REMEMBER);
+  const userInfo = getSavedUserInfo();
+
+  if (remember === 'true' && userInfo) {
+    const savedResult = getSavedResult();
+    const hasResultToday = savedResult && savedResult.date === getTodayDateStr();
+    setupWelcomeScreen(userInfo, hasResultToday);
+    showStep(0);
+  } else {
+    document.getElementById('userName').value = '';
+    document.getElementById('birthYear').value = '';
+    document.getElementById('birthMonth').value = '';
+    document.getElementById('birthDay').value = '';
+    document.getElementById('agreeTerms').checked = false;
+    document.getElementById('genderMale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+    document.getElementById('genderFemale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+    showStep(1);
+  }
 }
 
 // ==================== 서비스 메뉴 ====================
@@ -737,3 +868,8 @@ window.closeServiceMenu = closeServiceMenu;
 window.openSettings = openSettings;
 window.closeSettings = closeSettings;
 window.autoFocusNext = autoFocusNext;
+window.handleWelcomeCta = handleWelcomeCta;
+window.goToInputForm = goToInputForm;
+
+// 페이지 로드 시 초기화
+initDailyFortune();

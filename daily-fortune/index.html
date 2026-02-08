@@ -158,8 +158,106 @@
           </div>
         </div>
 
+        <!-- Step 0: 환영 화면 (기억된 사용자) -->
+        <div id="step0" class="step p-4 space-y-4">
+
+          <!-- 환영 헤더 -->
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">🌟</div>
+            <h2 id="welcomeTitle" class="text-2xl font-black text-gray-900 mb-2"></h2>
+            <p id="welcomeSubtitle" class="text-gray-600"></p>
+          </div>
+
+          <!-- CTA 버튼 -->
+          <button id="welcomeCta" onclick="handleWelcomeCta()" class="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg text-lg" data-analytics="cta_click|daily_fortune|welcome|welcome_cta|">
+          </button>
+
+          <!-- 다시 입력하기 링크 -->
+          <div class="text-center">
+            <button onclick="goToInputForm()" class="text-sm text-gray-500 underline hover:text-gray-700 transition-colors" data-analytics="cta_click|daily_fortune|welcome|go_to_input|">
+              다른 정보로 운세 보기
+            </button>
+          </div>
+
+          <!-- 하단 안내 콘텐츠 -->
+          <div class="space-y-4 mt-6">
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-200">
+              <h3 class="font-bold text-gray-900 mb-3">별자리·띠·사주, 세 가지 운세를 한 번에!</h3>
+              <div class="space-y-2 text-sm text-gray-700">
+                <p><span class="font-semibold">별자리 운세</span>는 서양 점성술을 기반으로 태양이 위치한 별자리에 따라 성격과 운세를 분석합니다. 12개 별자리는 각각 고유한 원소(불, 흙, 공기, 물)와 수호성을 가지고 있어요.</p>
+                <p><span class="font-semibold">띠별 운세</span>는 동양의 12지신을 바탕으로 태어난 해의 동물에 따라 운세를 풀이합니다. 각 띠는 오행(목, 화, 토, 금, 수)과 연결되어 있습니다.</p>
+                <p><span class="font-semibold">사주팔자</span>는 태어난 연·월·일·시의 천간과 지지를 통해 타고난 운명의 흐름을 파악하는 동양 역학의 핵심입니다.</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-3">자주 묻는 질문</h3>
+              <div class="space-y-3 text-sm text-gray-700">
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세는 매일 바뀌나요?</p>
+                  <p class="mt-1">네, 매일 자정을 기준으로 새로운 운세가 제공됩니다. 같은 사람이라도 날마다 다른 운세를 확인할 수 있어요.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세 결과는 어떻게 만들어지나요?</p>
+                  <p class="mt-1">사용자의 이름, 성별, 생년월일 정보와 오늘의 날짜를 조합하여 별자리, 띠, 사주를 종합 분석한 결과입니다.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 기억된 정보를 초기화하려면?</p>
+                  <p class="mt-1">브라우저 캐시 삭제 시 저장된 정보가 초기화됩니다. 또는 "다른 정보로 운세 보기"를 통해 새로운 정보로 다시 입력할 수 있어요.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 개인정보는 안전한가요?</p>
+                  <p class="mt-1">입력된 정보는 브라우저에만 저장되며, 서버에 별도로 전송되지 않습니다. 운세 결과 생성 목적으로만 사용됩니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 다른 서비스 캐러셀 -->
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-3">행운을 이어가세요!</h3>
+            <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
+              <style>.flex.snap-x::-webkit-scrollbar { display: none; }</style>
+              <!-- 관상 테스트 카드 -->
+              <a href="face-test.html" class="flex-shrink-0 w-[75%] snap-center rounded-2xl overflow-hidden shadow-lg border-2 border-purple-200 hover:border-purple-400 transition-all" data-analytics="cta_click|daily_fortune|carousel|go_to_face_test|">
+                <div class="bg-gradient-to-br from-purple-500 to-pink-600 p-5 text-white">
+                  <div class="text-3xl mb-2">🔮</div>
+                  <div class="text-lg font-bold">부자가 될 상인가?</div>
+                  <div class="text-sm opacity-90 mt-1">AI가 분석하는 나의 관상</div>
+                </div>
+                <div class="bg-white p-4">
+                  <div class="text-xs text-gray-500 mb-2">AI 관상 테스트</div>
+                  <div class="text-sm text-gray-700">사진 한 장으로 부자 관상을 분석해보세요. 닮은 유명인과 부자 확률까지 확인!</div>
+                  <div class="mt-3 text-purple-600 font-bold text-sm flex items-center gap-1">
+                    관상 테스트 하기 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                </div>
+              </a>
+              <!-- 로또 번호 카드 -->
+              <a href="index.html" class="flex-shrink-0 w-[75%] snap-center rounded-2xl overflow-hidden shadow-lg border-2 border-blue-200 hover:border-blue-400 transition-all" data-analytics="cta_click|daily_fortune|carousel|go_to_hoxy_number|">
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-5 text-white">
+                  <div class="text-3xl mb-2">🎰</div>
+                  <div class="text-lg font-bold">행운의 번호 뽑기</div>
+                  <div class="text-sm opacity-90 mt-1">오늘의 행운을 로또 번호로!</div>
+                </div>
+                <div class="bg-white p-4">
+                  <div class="text-xs text-gray-500 mb-2">HOXY NUMBER</div>
+                  <div class="text-sm text-gray-700">운세를 확인했다면 행운의 번호도 받아보세요. 오늘의 행운 숫자가 대박으로 이어질지도?</div>
+                  <div class="mt-3 text-blue-600 font-bold text-sm flex items-center gap-1">
+                    번호 뽑으러 가기 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="flex justify-center gap-2 mt-3">
+              <div class="w-6 h-1.5 rounded-full bg-amber-400"></div>
+              <div class="w-6 h-1.5 rounded-full bg-gray-200"></div>
+            </div>
+          </div>
+        </div>
+
         <!-- Step 1: 입력 폼 -->
-        <div id="step1" class="step active p-4 space-y-4">
+        <div id="step1" class="step p-4 space-y-4">
 
           <!-- 헤더 -->
           <div class="text-center py-6">
@@ -216,6 +314,17 @@
                 <span class="text-sm text-gray-600">
                   <span class="font-semibold text-gray-800">[필수]</span> 개인정보 수집 및 이용에 동의합니다.
                   <br><span class="text-xs text-gray-400">수집항목: 이름, 성별, 생년월일 / 이용목적: 운세 결과 생성</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- 내 정보 기억하기 -->
+            <div class="bg-amber-50 rounded-xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="rememberMe" class="w-5 h-5 mt-0.5 text-amber-600 rounded">
+                <span class="text-sm text-gray-600">
+                  <span class="font-semibold text-amber-700">[선택]</span> 내 정보 기억하기
+                  <br><span class="text-xs text-gray-400">다음 방문 시 바로 운세를 확인할 수 있어요</span>
                 </span>
               </label>
             </div>
