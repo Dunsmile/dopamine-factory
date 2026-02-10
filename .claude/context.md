@@ -112,6 +112,17 @@ dopamine-factory/
   - [선택] 체크 시 localStorage에 이름/성별/생년월일 저장
   - 재방문 시 Step 0 환영 화면 (이름 표시 + 바로 운세 확인)
   - 같은 날 재방문: 캐시된 결과 즉시 표시 / 새로운 날: 로딩 후 새 결과
+- ✅ v3.0 도파민 공작소 팀 플랫폼 구조 재편 (2026-02-10)
+  - hoxy-number 레포 → dopamine-factory로 rename
+  - 서비스 파일을 dunsmile/ 폴더로 이동 (팀원별 폴더 구조)
+  - 서비스별 클린 URL 경로: /dunsmile/hoxy-number/, /dunsmile/rich-face/, /dunsmile/daily-fortune/
+  - 가이드 페이지 서비스 폴더 내 guide/로 이동
+  - 포털 랜딩 페이지 생성 (index.html)
+  - 팀원 폴더 (teammate/) + 공용 폴더 (assets/) 준비
+  - 모든 절대경로, 도메인 URL, 상대경로 일괄 변경
+  - Cloudflare Pages 새 프로젝트 생성 (dopamine-factory.pages.dev)
+  - Google Search Console 새 도메인 등록 + 사이트맵 제출
+  - AdSense 새 도메인 등록
   - "다른 정보로 운세 보기" 링크 (폼 프리필)
   - 체크 해제 시 저장 정보 삭제
 
