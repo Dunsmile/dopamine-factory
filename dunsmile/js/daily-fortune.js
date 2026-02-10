@@ -789,7 +789,7 @@ function showStep(stepNumber) {
 // ==================== 공유 & 다시하기 ====================
 
 function shareResult() {
-  const shareUrl = window.location.origin + '/daily-fortune';
+  const shareUrl = window.location.origin + '/dunsmile/daily-fortune/';
   const shareText = `오늘의 운세 종합 점수 ${fortuneResult.overallScore}점! ${getScoreEmoji(fortuneResult.overallScore)} 나의 별자리 ${fortuneResult.zodiac.name}, ${fortuneResult.chineseZodiac.name} 운세를 확인해보세요!`;
 
   if (navigator.share) {

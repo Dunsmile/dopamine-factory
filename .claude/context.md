@@ -1,14 +1,15 @@
-# HOXY 프로젝트 컨텍스트
+# 도파민 공작소 (Dopamine Factory) 프로젝트 컨텍스트
 
 ## 프로젝트 개요
-HOXY는 다양한 운세/행운 관련 서비스를 제공하는 플랫폼입니다.
+도파민 공작소는 운세/행운 관련 서비스를 제공하는 팀 협업 플랫폼입니다.
+레포 구조가 팀원별 폴더로 재편되었습니다 (v3.0, 2026-02-10).
 
 ## 서비스 목록
 
 ### ✅ 운영 중
-1. **HOXY NUMBER** - 로또 번호 생성기 (index.html)
-2. **부자가 될 상인가?** - AI 관상 테스트 (face-test.html)
-3. **오늘의 운세 풀이** - 별자리·띠·사주 운세 (daily-fortune.html)
+1. **HOXY NUMBER** - 로또 번호 생성기 (dunsmile/hoxy-number/)
+2. **부자가 될 상인가?** - AI 관상 테스트 (dunsmile/rich-face/)
+3. **오늘의 운세 풀이** - 별자리·띠·사주 운세 (dunsmile/daily-fortune/)
 
 ### 📋 개발 예정
 4. **ONE DAY MY CARD** - 타로 카드 오늘의 운세 (1순위)
@@ -20,17 +21,40 @@ HOXY는 다양한 운세/행운 관련 서비스를 제공하는 플랫폼입니
 - **Storage**: LocalStorage + Firebase Firestore
 - **Backend**: Firebase (Firestore Database)
 - **Hosting**: Cloudflare Pages
-  - Repository: https://github.com/Dunsmile/hoxy-number.git
-  - Live URL: https://hoxy-number.pages.dev
+  - Repository: https://github.com/Dunsmile/hoxy-number.git (→ dopamine-factory로 변경 예정)
+  - Live URL: https://dopamine-factory.pages.dev
+
+## 폴더 구조
+```
+dopamine-factory/
+├── index.html              (포털 랜딩 페이지)
+├── robots.txt, sitemap.xml, ads.txt, _headers
+├── dunsmile/                (Dunsmile 서비스)
+│   ├── hoxy-number/         (HOXY NUMBER)
+│   │   ├── index.html
+│   │   └── guide/index.html
+│   ├── rich-face/           (관상 테스트)
+│   │   ├── index.html
+│   │   └── guide/index.html
+│   ├── daily-fortune/       (오늘의 운세)
+│   │   ├── index.html
+│   │   └── guide/index.html
+│   ├── css/, js/            (공유 스타일/스크립트)
+│   ├── about.html, privacy.html, terms.html
+│   └── favicons, og-images
+├── teammate/                (팀원 서비스 - 준비 중)
+└── assets/                  (공용 리소스)
+```
 
 ## 주요 파일
-- `index.html` - HOXY NUMBER (로또 번호 생성기)
-- `face-test.html` - 관상 테스트 페이지
-- `daily-fortune.html` - 오늘의 운세 풀이 페이지
-- `js/app.js` - 로또 앱 로직
-- `js/face-test.js` - 관상 테스트 로직
-- `js/daily-fortune.js` - 오늘의 운세 풀이 로직
-- `css/style.css` - 공통 스타일
+- `index.html` - 도파민 공작소 포털 랜딩
+- `dunsmile/hoxy-number/index.html` - HOXY NUMBER (로또 번호 생성기)
+- `dunsmile/rich-face/index.html` - 관상 테스트 페이지
+- `dunsmile/daily-fortune/index.html` - 오늘의 운세 풀이 페이지
+- `dunsmile/js/app.js` - 로또 앱 로직
+- `dunsmile/js/face-test.js` - 관상 테스트 로직
+- `dunsmile/js/daily-fortune.js` - 오늘의 운세 풀이 로직
+- `dunsmile/css/style.css` - 공통 스타일
 
 ## 핵심 기능
 1. **로또 번호 생성** - 1~45 중 6개 랜덤 생성
@@ -132,42 +156,43 @@ let savedItemsPerPage = 10;      // 페이지당 항목 수
 - PC/모바일 반응형 레이아웃
 
 ## 프로젝트 정보
-- **버전**: v2.03 (2026-02-08)
-- **이전 버전**: v2.0, v1.9, v1.8.1, v1.8, v1.7, v1.6, v1.5, v1.4, v1.3, v1.2, v1.1, v1.0
+- **버전**: v3.0 (2026-02-10) - 도파민 공작소 팀 구조 재편
+- **이전 버전**: v2.03, v2.0, v1.9, v1.8.1, v1.8, v1.7, v1.6, v1.5, v1.4, v1.3, v1.2, v1.1, v1.0
 - **개발자**: 스티브 (UX/UI Designer & Developer)
 - **연락처**: poilkjmnb122@gmail.com
 - **라이센스**: MIT License
 
 ## 🏭 도파민 공작소 (통합 플랫폼)
-- **Repository**: https://github.com/Dunsmile/dopamine-factory
-- **설명**: 일상에 재미를 더하는 다양한 서비스 모음 플랫폼
-- **상태**: 초기 설정 완료, 배포 대기
+- **Repository**: https://github.com/Dunsmile/hoxy-number (→ dopamine-factory로 rename 예정)
+- **Live URL**: https://dopamine-factory.pages.dev
+- **상태**: 팀 협업 구조로 재편 완료 (v3.0)
 
 ### 서비스 구조
 ```
-도파민 공작소 (Portal)
-├── HOXY 시리즈 (by Steve)
-│   ├── HOXY NUMBER (hoxy-number.pages.dev)
-│   ├── AI 관상 테스트 (hoxy-number.pages.dev/face-test.html)
-│   ├── 오늘의 운세 풀이 (hoxy-number.pages.dev/daily-fortune.html)
+도파민 공작소 (dopamine-factory.pages.dev)
+├── 포털 랜딩 (/)
+├── Dunsmile 서비스 (/dunsmile/)
+│   ├── HOXY NUMBER (/dunsmile/hoxy-number/)
+│   ├── 부자가 될 상인가? (/dunsmile/rich-face/)
+│   ├── 오늘의 운세 풀이 (/dunsmile/daily-fortune/)
 │   ├── ONE DAY MY CARD (예정)
-│   ├── 부자 DNA MBTI (예정)
-│   └── 부자 손금 테스트 (예정)
-└── 기타 시리즈 (협업자)
-    └── 새로운 서비스 (추후 추가)
+│   └── ...
+├── 팀원 서비스 (/teammate/) - 준비 중
+└── 공용 리소스 (/assets/)
 ```
 
 ### 협업 구조
 | 영역 | 담당자 | 권한 |
 |------|--------|------|
-| HOXY 시리즈 | Steve | 전용 (별도 레포) |
+| dunsmile/ | Dunsmile | 전용 |
 | 포털 (index.html) | 공동 | 협업 |
-| 신규 서비스 | 각자 | 본인 서비스 전용 |
+| teammate/ | 팀원 | 본인 서비스 전용 |
 
 ### 새 서비스 추가 방법
-1. 본인 서비스 레포를 별도로 생성
-2. Cloudflare Pages로 배포
-3. dopamine-factory 레포의 `index.html`에 서비스 카드 추가 (PR)
+1. 본인 이름으로 폴더 생성 (예: `jane/`)
+2. 서비스 파일 구성 (index.html, css/, js/)
+3. 루트 index.html 포털에 서비스 카드 추가
+4. sitemap.xml에 URL 추가
 
 ## 🎯 비즈니스 모델 & 수익화 전략
 

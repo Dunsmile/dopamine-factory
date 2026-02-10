@@ -1,11 +1,6 @@
-# HOXY NUMBER - robots.txt
-# https://hoxy-number.pages.dev/
-
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://hoxy-number.pages.dev/sitemap.xml
+Sitemap: https://dopamine-factory.pages.dev/sitemap.xml
 
-# Crawl-delay (optional)
 Crawl-delay: 1

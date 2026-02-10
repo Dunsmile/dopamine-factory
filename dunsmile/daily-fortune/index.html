@@ -14,22 +14,22 @@
   <meta name="build-id" content="daily-fortune-2026-02-07-01">
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://hoxy-number.pages.dev/daily-fortune.html">
+  <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/daily-fortune/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="HOXY">
   <meta property="og:title" content="오늘의 운세 풀이 - 별자리·띠별·사주 무료 운세">
   <meta property="og:description" content="별자리, 띠, 사주로 보는 오늘의 운세 풀이! 매일 새로운 운세를 무료로 확인하세요.">
-  <meta property="og:image" content="https://hoxy-number.pages.dev/og-image.png">
-  <meta property="og:url" content="https://hoxy-number.pages.dev/daily-fortune.html">
+  <meta property="og:image" content="https://dopamine-factory.pages.dev/dunsmile/og-image-daily-fortune.svg">
+  <meta property="og:url" content="https://dopamine-factory.pages.dev/dunsmile/daily-fortune/">
   <meta property="og:locale" content="ko_KR">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="오늘의 운세 풀이 - 별자리·띠별·사주 무료 운세">
   <meta name="twitter:description" content="별자리, 띠, 사주로 보는 오늘의 운세 풀이! 매일 새로운 운세를 무료로 확인하세요.">
-  <meta name="twitter:image" content="https://hoxy-number.pages.dev/og-image.png">
+  <meta name="twitter:image" content="https://dopamine-factory.pages.dev/dunsmile/og-image-daily-fortune.svg">
 
   <!-- JSON-LD 구조화 데이터 -->
   <script type="application/ld+json">
@@ -38,7 +38,7 @@
     "@type": "WebApplication",
     "name": "오늘의 운세 풀이 - HOXY",
     "description": "별자리, 띠, 사주팔자로 보는 오늘의 운세 풀이. 총운, 애정운, 금전운, 건강운, 직장운까지 매일 새로운 운세를 무료로 확인하세요.",
-    "url": "https://hoxy-number.pages.dev/daily-fortune.html",
+    "url": "https://dopamine-factory.pages.dev/dunsmile/daily-fortune/",
     "applicationCategory": "LifestyleApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -76,12 +76,12 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7301223136166743" crossorigin="anonymous"></script>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/dunsmile/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/dunsmile/apple-touch-icon.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <style>
     .step { display: none; }
     .step.active { display: block; }
@@ -121,7 +121,7 @@
     }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-white md:bg-gray-50">
   <!-- Google Tag Manager (noscript) -->
   <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TD8GQFFB"
@@ -175,7 +175,7 @@
           <!-- 다시 입력하기 링크 -->
           <div class="text-center">
             <button onclick="goToInputForm()" class="text-sm text-gray-500 underline hover:text-gray-700 transition-colors" data-analytics="cta_click|daily_fortune|welcome|go_to_input|">
-              다른 정보로 운세 보기
+              운세 정보 다시 입력하기
             </button>
           </div>
 
@@ -203,7 +203,7 @@
                 </div>
                 <div>
                   <p class="font-semibold text-gray-900">Q. 기억된 정보를 초기화하려면?</p>
-                  <p class="mt-1">브라우저 캐시 삭제 시 저장된 정보가 초기화됩니다. 또는 "다른 정보로 운세 보기"를 통해 새로운 정보로 다시 입력할 수 있어요.</p>
+                  <p class="mt-1">브라우저 캐시 삭제 시 저장된 정보가 초기화됩니다. 또는 "운세 정보 다시 입력하기"를 통해 새로운 정보로 다시 입력할 수 있어요.</p>
                 </div>
                 <div>
                   <p class="font-semibold text-gray-900">Q. 개인정보는 안전한가요?</p>
@@ -323,7 +323,7 @@
               <label class="flex items-start gap-3 cursor-pointer">
                 <input type="checkbox" id="rememberMe" class="w-5 h-5 mt-0.5 text-amber-600 rounded">
                 <span class="text-sm text-gray-600">
-                  <span class="font-semibold text-amber-700">[선택]</span> 내 정보 기억하기
+                  <span class="font-semibold text-amber-700">[선택]</span> 내 운세 기억해 둘래요
                   <br><span class="text-xs text-gray-400">다음 방문 시 바로 운세를 확인할 수 있어요</span>
                 </span>
               </label>
@@ -538,7 +538,7 @@
           </div>
 
           <!-- 2. 운세 가이드 -->
-          <a href="/daily-fortune-guide.html" class="block w-full py-3 bg-white border-2 border-amber-200 text-amber-700 font-bold rounded-xl text-center shadow-lg text-sm hover:bg-amber-50 transition-all">
+          <a href="/dunsmile/daily-fortune/guide/" class="block w-full py-3 bg-white border-2 border-amber-200 text-amber-700 font-bold rounded-xl text-center shadow-lg text-sm hover:bg-amber-50 transition-all">
             운세 해석의 비밀 공식
           </a>
 
@@ -617,8 +617,8 @@
 
   <!-- 서비스 메뉴 사이드바 -->
   <div id="serviceMenuBackdrop" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="closeServiceMenu()"></div>
-  <div id="serviceMenuSidebar" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300">
-    <div class="p-4 border-b border-gray-200">
+  <div id="serviceMenuSidebar" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-3 border-b border-gray-200">
       <div class="flex items-center justify-between">
         <div class="text-lg font-bold text-gray-900">HOXY 서비스</div>
         <button onclick="closeServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -628,10 +628,10 @@
         </button>
       </div>
     </div>
-    <div class="p-2">
+    <div class="p-2 flex-1 overflow-y-auto">
       <!-- HOXY NUMBER -->
-      <a href="index.html" class="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-2xl">🎰</div>
+      <a href="index.html" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-xl">🎰</div>
         <div class="flex-1">
           <div class="font-bold text-gray-900">HOXY NUMBER</div>
           <div class="text-xs text-gray-500">랜덤 로또 번호 생성기</div>
@@ -642,8 +642,8 @@
       </a>
 
       <!-- 관상 테스트 -->
-      <a href="face-test.html" class="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
-        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center text-2xl">🔮</div>
+      <a href="face-test.html" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center text-xl">🔮</div>
         <div class="flex-1">
           <div class="font-bold text-gray-900">부자가 될 상인가?</div>
           <div class="text-xs text-gray-500">AI 관상 테스트</div>
@@ -654,8 +654,8 @@
       </a>
 
       <!-- 오늘의 운세 풀이 (현재) -->
-      <a href="daily-fortune.html" class="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border-2 border-amber-200 mb-2">
-        <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center text-2xl">🌟</div>
+      <a href="daily-fortune.html" class="flex items-center gap-3 p-3 rounded-lg bg-amber-50 border-2 border-amber-200 mb-2">
+        <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center text-xl">🌟</div>
         <div class="flex-1">
           <div class="font-bold text-gray-900">오늘의 운세 풀이</div>
           <div class="text-xs text-gray-500">별자리·띠·사주 운세</div>
@@ -666,15 +666,57 @@
       </a>
 
       <!-- 준비 중 -->
-      <div class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 mb-2 opacity-60">
-        <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl">🔒</div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-500">준비 중</div>
+          <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
+        <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
         <div class="flex-1">
           <div class="font-bold text-gray-500">준비 중</div>
           <div class="text-xs text-gray-400">새로운 서비스 coming soon</div>
         </div>
       </div>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
+    <div class="mt-auto p-4 border-t border-gray-200 bg-gray-50">
       <div class="text-xs text-gray-500 text-center">
         <p>HOXY 서비스 v1.0</p>
         <p class="mt-1">&copy; 2026 HOXY. All rights reserved</p>
@@ -694,16 +736,16 @@
         </button>
       </div>
       <div class="space-y-2">
-        <a href="/daily-fortune-guide.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+        <a href="/dunsmile/daily-fortune/guide/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
           운세 가이드
         </a>
-        <a href="/about.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+        <a href="/dunsmile/about.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
           서비스 소개
         </a>
-        <a href="/privacy.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+        <a href="/dunsmile/privacy.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
           개인정보처리방침
         </a>
-        <a href="/terms.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+        <a href="/dunsmile/terms.html" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
           이용약관
         </a>
       </div>
@@ -729,6 +771,6 @@
     const db = firebase.firestore();
   </script>
 
-  <script src="js/daily-fortune.js"></script>
+  <script src="../js/daily-fortune.js"></script>
 </body>
 </html>

@@ -511,7 +511,7 @@ function showStep(stepNumber) {
 // ==================== 공유 & 다시하기 ====================
 
 function shareResult() {
-  const shareUrl = window.location.origin + '/face-test.html';
+  const shareUrl = window.location.origin + '/dunsmile/rich-face/';
   const shareText = `나의 부자 관상 테스트 결과! 💰 ${testResult.richPercent}%의 확률로 부자가 될 상이래요! 당신도 테스트해보세요!`;
 
   if (navigator.share) {
