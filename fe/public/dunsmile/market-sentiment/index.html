@@ -24,6 +24,26 @@
   <link rel="stylesheet" href="/assets/css/tailwind-built.css">
   <link rel="stylesheet" href="../css/style.css">
   <style>
+    :root {
+      --pulse-a: #047857;
+      --pulse-b: #0f766e;
+      --pulse-c: #1d4ed8;
+      --danger: #dc2626;
+      --warn: #d97706;
+      --soft-line: rgba(5, 150, 105, 0.16);
+    }
+
+    @keyframes radarPulse {
+      0% { transform: scale(0.92); opacity: 0.68; }
+      70% { transform: scale(1.05); opacity: 0.08; }
+      100% { transform: scale(1.09); opacity: 0; }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(8px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
     .line-dot {
       width: 7px;
       height: 7px;
@@ -32,6 +52,10 @@
       position: absolute;
       transform: translate(-50%, -50%);
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
+    }
+
+    .feed-card {
+      animation: floatUp 0.35s ease both;
     }
 
     .history-line {
@@ -44,6 +68,19 @@
     .glass-panel {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(8px);
+    }
+
+    .pulse-orbit {
+      position: absolute;
+      inset: -12px;
+      border-radius: 999px;
+      border: 1px solid var(--soft-line);
+      animation: radarPulse 1.8s ease-out infinite;
+      pointer-events: none;
+    }
+
+    .pulse-orbit.delay {
+      animation-delay: 0.7s;
     }
   </style>
 </head>
@@ -72,34 +109,59 @@
             <select id="assetSelect" class="text-sm text-gray-900 px-3 py-2 rounded-lg border border-white/30 bg-white min-w-[180px]"></select>
             <span id="statusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-white/20">NEUTRAL</span>
           </div>
-          <p class="mt-3 text-sm text-emerald-100">펨코/디씨 게시글을 15분 주기로 분석합니다.</p>
+          <p class="mt-3 text-sm text-emerald-100">디씨·레딧·유튜브 반응을 15분 주기로 분석합니다.</p>
         </section>
 
-        <section class="grid md:grid-cols-2 gap-4">
-          <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-            <div class="flex items-end justify-between">
+        <section id="pumpAlert" class="hidden rounded-2xl border px-4 py-3 text-sm font-semibold"></section>
+
+        <section class="grid lg:grid-cols-3 gap-4">
+          <div class="bg-white rounded-2xl border border-emerald-100 p-5 shadow-sm lg:col-span-2">
+            <div class="flex items-start justify-between gap-4">
               <div>
-                <p class="text-xs text-gray-500">감성 점수</p>
-                <p id="scoreValue" class="text-4xl font-black text-gray-900">--</p>
+                <p class="text-xs uppercase tracking-wider text-emerald-700">시장 심박수</p>
+                <p id="marketHeartbeat" class="text-5xl md:text-6xl font-black text-gray-900 mt-1">--</p>
+                <p id="heartbeatMeta" class="text-sm text-gray-500 mt-1">데이터 동기화 중</p>
               </div>
-              <div>
-                <p class="text-xs text-gray-500 text-right">언급량</p>
-                <p id="mentionVolume" class="text-xl font-bold text-gray-900 text-right">0</p>
+              <div class="relative w-24 h-24 rounded-full border border-emerald-200 bg-emerald-50 flex items-center justify-center">
+                <span class="pulse-orbit"></span>
+                <span class="pulse-orbit delay"></span>
+                <div class="text-center relative z-10">
+                  <p id="mentionVolume" class="text-2xl font-black text-emerald-800">0</p>
+                  <p class="text-[10px] uppercase tracking-wider text-emerald-700">mentions</p>
+                </div>
               </div>
             </div>
             <div class="mt-4 h-3 rounded-full bg-gray-100 overflow-hidden">
-              <div id="scoreBar" class="h-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500" style="width: 50%"></div>
+              <div id="scoreBar" class="h-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500 transition-all duration-500" style="width: 50%"></div>
             </div>
-            <p id="updatedAt" class="mt-3 text-xs text-gray-500">업데이트: -</p>
+            <div class="mt-3 flex items-center justify-between gap-3 text-xs">
+              <p id="updatedAt" class="text-gray-500">업데이트: -</p>
+              <p id="scoreValue" class="text-gray-500">감성 점수: --</p>
+            </div>
           </div>
 
           <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-            <h2 class="text-sm font-bold text-gray-900">핵심 키워드</h2>
-            <div id="keywords" class="mt-3 flex flex-wrap gap-2"></div>
-            <div class="mt-4 text-xs text-gray-500">
-              상태 구간: EXTREME_FEAR(0-20) · FEAR(21-40) · NEUTRAL(41-60) · GREED(61-80) · EXTREME_GREED(81-100)
+            <h2 class="text-sm font-bold text-gray-900">15분 급변</h2>
+            <div class="mt-2">
+              <p id="momentumValue" class="text-4xl font-black text-gray-900">--</p>
+              <p id="momentumLabel" class="text-sm text-gray-500 mt-1">비교 데이터 부족</p>
+              <p id="momentumVolume" class="text-xs text-gray-500 mt-2">언급량 변화: -</p>
+            </div>
+            <div class="mt-4 rounded-xl bg-gray-50 border border-gray-100 px-3 py-2 text-xs text-gray-600">
+              급변 기준: 최근 15분 score 변화량
             </div>
           </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-gray-900">키워드 전쟁</h2>
+            <span class="text-xs text-gray-500">실시간 반응 대결</span>
+          </div>
+          <div id="keywordWar" class="mt-4 space-y-3">
+            <div class="text-sm text-gray-400">키워드 데이터가 아직 없습니다.</div>
+          </div>
+          <div id="keywords" class="mt-3 flex flex-wrap gap-2"></div>
         </section>
 
         <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
@@ -116,8 +178,8 @@
 
         <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
           <div class="flex items-center justify-between">
-            <h2 class="text-sm font-bold text-gray-900">최근 게시글</h2>
-            <span class="text-xs text-gray-500">펨코/디씨 수집</span>
+            <h2 class="text-sm font-bold text-gray-900">실시간 반응 피드</h2>
+            <span id="feedMeta" class="text-xs text-gray-500">커뮤니티 수집</span>
           </div>
           <div id="posts" class="mt-4 space-y-3"></div>
         </section>
