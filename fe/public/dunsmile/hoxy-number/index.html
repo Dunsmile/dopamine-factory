@@ -248,6 +248,10 @@
               로또 번호 생성하기
             </button>
 
+            <button onclick="downloadHoxyShareCard()" class="w-full mt-2 py-3 bg-white border-2 border-blue-200 text-blue-700 font-bold rounded-xl hover:bg-blue-50 transition-all" data-analytics="share_click|hoxy_number|home|download_share_card|">
+              결과 이미지 카드 저장
+            </button>
+
             <!-- 할당량 소진 안내 메시지 -->
             <div id="quotaDepletedMessage" class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 mt-4 text-center" style="display: none;">
               <p class="text-xs text-gray-700 font-medium">오늘 생성 가능한 번호를 모두 사용했어요</p>
@@ -1243,6 +1247,26 @@
       </a>
 
       <!-- 준비 중 -->
+      <a href="/dunsmile/balance-game/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center text-xl">⚖️</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">오늘의 밸런스 게임</div>
+          <div class="text-xs text-gray-500">선택하고 비율 확인하기</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+      </a>
+      <a href="/dunsmile/name-compatibility/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-lg flex items-center justify-center text-xl">💞</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">이름 궁합 테스트</div>
+          <div class="text-xs text-gray-500">이니셜 케미 분석</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+      </a>
       <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
         <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
         <div class="flex-1">
@@ -1324,6 +1348,7 @@
     const db = firebase.firestore();
   </script>
 
+  <script src="../js/share-card.js"></script>
   <script src="../js/app.js"></script>
 </body>
 </html>

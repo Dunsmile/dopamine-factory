@@ -807,6 +807,33 @@ function shareResult() {
   }
 }
 
+async function downloadFortuneShareCard() {
+  if (!fortuneResult) {
+    showToast('먼저 운세 결과를 생성해주세요');
+    return;
+  }
+  if (!window.DopaminShareCard) {
+    showToast('공유 카드 기능을 불러오지 못했습니다');
+    return;
+  }
+
+  await window.DopaminShareCard.download({
+    title: '오늘의 운세',
+    subtitle: `${fortuneResult.name}님의 결과`,
+    highlight: `종합 점수 ${fortuneResult.overallScore}점`,
+    tags: [
+      fortuneResult.zodiac.name,
+      fortuneResult.chineseZodiac.name,
+      fortuneResult.mainElement
+    ],
+    footer: 'dopamine-factory.pages.dev/dunsmile/daily-fortune/',
+    fromColor: '#f59e0b',
+    toColor: '#f97316',
+    filePrefix: 'daily-fortune'
+  });
+  showToast('결과 이미지 카드가 저장되었습니다!');
+}
+
 function retakeFortune() {
   selectedGender = null;
   fortuneResult = null;
@@ -868,6 +895,7 @@ function closeSettings() {
 window.selectGender = selectGender;
 window.startFortune = startFortune;
 window.shareResult = shareResult;
+window.downloadFortuneShareCard = downloadFortuneShareCard;
 window.retakeFortune = retakeFortune;
 window.openServiceMenu = openServiceMenu;
 window.closeServiceMenu = closeServiceMenu;
