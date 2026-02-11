@@ -7,8 +7,15 @@
 ## 로컬 실행
 
 ```bash
+npm install
+npm run build:tailwind
 python3 -m http.server 8080 --directory fe/public
 ```
+
+## 스타일 빌드
+
+- Tailwind CSS는 런타임 CDN이 아니라 빌드 산출물(`/assets/css/tailwind-built.css`)을 사용합니다.
+- 유틸리티 클래스 변경 후에는 `npm run build:tailwind`를 다시 실행하세요.
 
 ## 배포
 
