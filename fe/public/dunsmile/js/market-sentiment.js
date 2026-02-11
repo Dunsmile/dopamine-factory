@@ -10,16 +10,24 @@
   const el = {
     assetSelect: document.getElementById("assetSelect"),
     statusBadge: document.getElementById("statusBadge"),
+    marketHeartbeat: document.getElementById("marketHeartbeat"),
+    heartbeatMeta: document.getElementById("heartbeatMeta"),
     scoreValue: document.getElementById("scoreValue"),
     mentionVolume: document.getElementById("mentionVolume"),
     scoreBar: document.getElementById("scoreBar"),
     updatedAt: document.getElementById("updatedAt"),
+    momentumValue: document.getElementById("momentumValue"),
+    momentumLabel: document.getElementById("momentumLabel"),
+    momentumVolume: document.getElementById("momentumVolume"),
     keywords: document.getElementById("keywords"),
+    keywordWar: document.getElementById("keywordWar"),
+    pumpAlert: document.getElementById("pumpAlert"),
     historyLine: document.getElementById("historyLine"),
     historyDots: document.getElementById("historyDots"),
     historyLabels: document.getElementById("historyLabels"),
     pointCount: document.getElementById("pointCount"),
     posts: document.getElementById("posts"),
+    feedMeta: document.getElementById("feedMeta"),
     refreshBtn: document.getElementById("refreshBtn"),
   };
 
@@ -31,12 +39,74 @@
     EXTREME_GREED: "bg-teal-100 text-teal-700",
   };
 
+  const sourceLabelMap = {
+    dcinside: "디씨",
+    fmkorea: "펨코",
+    reddit: "레딧",
+    youtube: "유튜브",
+  };
+
+  const sourceBadgeMap = {
+    dcinside: "bg-indigo-50 border-indigo-200 text-indigo-700",
+    fmkorea: "bg-sky-50 border-sky-200 text-sky-700",
+    reddit: "bg-orange-50 border-orange-200 text-orange-700",
+    youtube: "bg-rose-50 border-rose-200 text-rose-700",
+  };
+
   async function fetchJson(path) {
     const response = await fetch(`${API_BASE}${path}`);
     if (!response.ok) {
       throw new Error(`API ${response.status}`);
     }
     return response.json();
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function formatKoreanDate(value) {
+    const date = new Date(value || "");
+    if (Number.isNaN(date.getTime())) {
+      return "-";
+    }
+    return date.toLocaleString("ko-KR");
+  }
+
+  function formatSign(value) {
+    const numeric = Number(value);
+    if (!Number.isFinite(numeric)) {
+      return "--";
+    }
+    if (numeric > 0) {
+      return `+${numeric.toFixed(1)}`;
+    }
+    return numeric.toFixed(1);
+  }
+
+  function formatRelativeTime(value) {
+    const date = new Date(value || "");
+    if (Number.isNaN(date.getTime())) {
+      return "시간 미확인";
+    }
+    const diffMs = Date.now() - date.getTime();
+    const diffMin = Math.floor(diffMs / (60 * 1000));
+    if (diffMin < 1) {
+      return "방금 전";
+    }
+    if (diffMin < 60) {
+      return `${diffMin}분 전`;
+    }
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) {
+      return `${diffHour}시간 전`;
+    }
+    return `${Math.floor(diffHour / 24)}일 전`;
+  }
+
+  function parseTimeMs(value) {
+    const ms = new Date(value || "").getTime();
+    return Number.isFinite(ms) ? ms : null;
   }
 
   function renderAssets(assets) {
@@ -50,14 +120,33 @@
     el.assetSelect.value = state.asset;
   }
 
+  function buildSourceSummary(sourceBreakdown) {
+    const entries = Object.entries(sourceBreakdown || {})
+      .map(([source, count]) => ({ source, count: Number(count || 0) }))
+      .filter((entry) => entry.count > 0)
+      .sort((a, b) => b.count - a.count);
+
+    if (!entries.length) {
+      return "수집 소스 없음";
+    }
+
+    return entries
+      .slice(0, 3)
+      .map((entry) => `${sourceLabelMap[entry.source] || entry.source} ${entry.count}`)
+      .join(" · ");
+  }
+
   function renderCurrent(current) {
     const score = Number(current.score || 50);
     const status = current.status || "NEUTRAL";
+    const mentionVolume = Number(current.mentionVolume || 0);
 
-    el.scoreValue.textContent = String(score);
-    el.mentionVolume.textContent = String(current.mentionVolume || 0);
-    el.scoreBar.style.width = `${Math.max(0, Math.min(score, 100))}%`;
-    el.updatedAt.textContent = `업데이트: ${new Date(current.updatedAt).toLocaleString("ko-KR")}`;
+    el.marketHeartbeat.textContent = String(Math.round(score));
+    el.scoreValue.textContent = `감성 점수: ${Math.round(score)}`;
+    el.mentionVolume.textContent = String(mentionVolume);
+    el.scoreBar.style.width = `${clamp(score, 0, 100)}%`;
+    el.updatedAt.textContent = `업데이트: ${formatKoreanDate(current.updatedAt)}`;
+    el.heartbeatMeta.textContent = `${status} · ${buildSourceSummary(current.sourceBreakdown)}`;
 
     el.statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold";
     el.statusBadge.classList.add(...(statusClassMap[status] || statusClassMap.NEUTRAL).split(" "));
@@ -68,10 +157,64 @@
       ? keywords
           .map(
             (keyword) =>
-              `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">#${keyword}</span>`
+              `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">#${escapeHtml(keyword)}</span>`
           )
           .join("")
       : '<span class="text-sm text-gray-400">키워드 데이터가 아직 없습니다.</span>';
+  }
+
+  function renderMomentum(history) {
+    const points = Array.isArray(history.points) ? history.points : [];
+    if (points.length < 2) {
+      el.momentumValue.textContent = "--";
+      el.momentumValue.className = "text-4xl font-black text-gray-900";
+      el.momentumLabel.textContent = "비교 데이터 부족";
+      el.momentumVolume.textContent = "언급량 변화: -";
+      return { delta: null, volumeDelta: null, latestVolume: 0 };
+    }
+
+    const latest = points[points.length - 1];
+    const latestMs = parseTimeMs(latest.time);
+    if (!latestMs) {
+      el.momentumValue.textContent = "--";
+      el.momentumLabel.textContent = "비교 데이터 부족";
+      el.momentumVolume.textContent = "언급량 변화: -";
+      return { delta: null, volumeDelta: null, latestVolume: Number(latest.volume || 0) };
+    }
+
+    const thresholdMs = latestMs - 15 * 60 * 1000;
+    let baseline = null;
+    for (let index = points.length - 2; index >= 0; index -= 1) {
+      const candidate = points[index];
+      const candidateMs = parseTimeMs(candidate.time);
+      if (!candidateMs) {
+        continue;
+      }
+      baseline = candidate;
+      if (candidateMs <= thresholdMs) {
+        break;
+      }
+    }
+
+    baseline = baseline || points[Math.max(0, points.length - 2)];
+    const delta = Number(latest.score || 50) - Number(baseline.score || 50);
+    const volumeDelta = Number(latest.volume || 0) - Number(baseline.volume || 0);
+
+    el.momentumValue.textContent = `${formatSign(delta)}p`;
+    el.momentumValue.className = `text-4xl font-black ${
+      delta >= 4 ? "text-red-600" : delta <= -4 ? "text-blue-600" : "text-gray-900"
+    }`;
+
+    if (delta >= 4) {
+      el.momentumLabel.textContent = "단기 급등 구간";
+    } else if (delta <= -4) {
+      el.momentumLabel.textContent = "단기 급락 구간";
+    } else {
+      el.momentumLabel.textContent = "변화 미미";
+    }
+
+    el.momentumVolume.textContent = `언급량 변화: ${formatSign(volumeDelta)}`;
+    return { delta, volumeDelta, latestVolume: Number(latest.volume || 0) };
   }
 
   function renderHistory(history) {
@@ -101,27 +244,25 @@
     });
 
     const line = coords
-      .map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
+      .map((point, index) => `${index === 0 ? "M" : "L"}${point.x.toFixed(1)} ${point.y.toFixed(1)}`)
       .join(" ");
 
-    el.historyLine.innerHTML = `
-      <path d="${line}" fill="none" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-    `;
+    el.historyLine.innerHTML = `<path d="${line}" fill="none" stroke="#0f766e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>`;
 
-    coords.forEach((p) => {
+    coords.forEach((point) => {
       const dot = document.createElement("div");
       dot.className = "line-dot";
-      dot.style.left = `${(p.x / width) * 100}%`;
-      dot.style.top = `${(p.y / height) * 100}%`;
-      dot.title = `${p.time} · ${p.score}`;
+      dot.style.left = `${(point.x / width) * 100}%`;
+      dot.style.top = `${(point.y / height) * 100}%`;
+      dot.title = `${point.time} · ${point.score}`;
       el.historyDots.appendChild(dot);
     });
 
     const labelIndexes = [0, Math.floor(points.length / 2), points.length - 1];
     const uniqueIndexes = [...new Set(labelIndexes)];
-    uniqueIndexes.forEach((idx) => {
+    uniqueIndexes.forEach((index) => {
       const label = document.createElement("span");
-      label.textContent = String(points[idx].time || "-").slice(11, 16);
+      label.textContent = String(points[index].time || "-").slice(11, 16);
       el.historyLabels.appendChild(label);
     });
   }
@@ -135,26 +276,143 @@
       .replace(/'/g, "&#039;");
   }
 
-  function renderPosts(data) {
+  function buildKeywordWarData(current, posts) {
+    const keywordCandidates = Array.isArray(current.topKeywords) ? current.topKeywords.filter(Boolean) : [];
+    const fallback = ["반등", "나락", "롱", "숏"];
+    const keywords = (keywordCandidates.length ? keywordCandidates : fallback).slice(0, 6);
+    const textPool = (posts || []).map((post) => `${post.title || ""} ${post.body || ""}`.toLowerCase());
+
+    const weighted = keywords.map((keyword) => {
+      const normalized = String(keyword).toLowerCase();
+      const score = textPool.reduce((acc, text) => acc + (text.includes(normalized) ? 1 : 0), 0);
+      return { keyword, score: score || 1 };
+    });
+
+    weighted.sort((a, b) => b.score - a.score);
+    const left = weighted[0] || { keyword: "반등", score: 1 };
+    const right = weighted[1] || { keyword: "나락", score: 1 };
+    const total = left.score + right.score || 1;
+
+    return {
+      left,
+      right,
+      leftPct: Math.round((left.score / total) * 100),
+      rightPct: Math.round((right.score / total) * 100),
+    };
+  }
+
+  function renderKeywordWar(data) {
+    if (!data) {
+      el.keywordWar.innerHTML = '<div class="text-sm text-gray-400">키워드 데이터가 아직 없습니다.</div>';
+      return;
+    }
+
+    el.keywordWar.innerHTML = `
+      <div class="flex items-center justify-between text-sm font-bold text-gray-800">
+        <span>#${escapeHtml(data.left.keyword)}</span>
+        <span class="text-xs text-gray-500">VS</span>
+        <span>#${escapeHtml(data.right.keyword)}</span>
+      </div>
+      <div class="h-3 rounded-full bg-gray-100 overflow-hidden flex">
+        <div class="h-full bg-gradient-to-r from-rose-500 to-orange-500 transition-all duration-500" style="width:${data.leftPct}%"></div>
+        <div class="h-full bg-gradient-to-r from-sky-500 to-indigo-500 transition-all duration-500" style="width:${data.rightPct}%"></div>
+      </div>
+      <div class="flex items-center justify-between text-xs text-gray-500">
+        <span>${data.left.score} vote</span>
+        <span>${data.right.score} vote</span>
+      </div>
+    `;
+  }
+
+  function buildPumpAlertData(current, momentum, history) {
+    const mention = Number(current.mentionVolume || 0);
+    const score = Number(current.score || 50);
+    const delta = Number(momentum.delta || 0);
+    const points = Array.isArray(history.points) ? history.points : [];
+
+    const recentVolumes = points.slice(-7, -1).map((point) => Number(point.volume || 0)).filter((v) => Number.isFinite(v));
+    const avgRecentVolume = recentVolumes.length
+      ? recentVolumes.reduce((sum, value) => sum + value, 0) / recentVolumes.length
+      : 0;
+    const volumeJump = avgRecentVolume > 0 ? mention / avgRecentVolume : mention >= 6 ? 2 : 1;
+
+    if (delta >= 8 && mention >= 4 && volumeJump >= 1.3) {
+      return {
+        active: true,
+        className: "bg-rose-50 border-rose-200 text-rose-700",
+        title: "펌프 감지",
+        message: `15분 +${delta.toFixed(1)}p · 언급량 급증(${mention})`,
+      };
+    }
+
+    if (score >= 75 && delta >= 5 && mention >= 6) {
+      return {
+        active: true,
+        className: "bg-amber-50 border-amber-200 text-amber-700",
+        title: "과열 경보",
+        message: `탐욕 구간 진입 · 변동성 확대(${mention})`,
+      };
+    }
+
+    if (delta <= -8 && mention >= 4) {
+      return {
+        active: true,
+        className: "bg-sky-50 border-sky-200 text-sky-700",
+        title: "역방향 급락 경보",
+        message: `15분 ${delta.toFixed(1)}p · 공포 반응 증가(${mention})`,
+      };
+    }
+
+    return { active: false };
+  }
+
+  function renderPumpAlert(data) {
+    if (!data || !data.active) {
+      el.pumpAlert.className = "hidden rounded-2xl border px-4 py-3 text-sm font-semibold";
+      el.pumpAlert.textContent = "";
+      return;
+    }
+
+    el.pumpAlert.className = `rounded-2xl border px-4 py-3 text-sm font-semibold ${data.className}`;
+    el.pumpAlert.textContent = `${data.title} · ${data.message}`;
+  }
+
+  function renderPosts(data, sourceBreakdown) {
     const posts = Array.isArray(data.posts) ? data.posts : [];
+    const activeSources = Object.entries(sourceBreakdown || {})
+      .filter(([, count]) => Number(count || 0) > 0)
+      .map(([source]) => sourceLabelMap[source] || source);
+
+    el.feedMeta.textContent = activeSources.length
+      ? `활성 소스: ${activeSources.join(" · ")}`
+      : "수집 소스 준비 중";
+
     if (!posts.length) {
       el.posts.innerHTML = '<div class="text-sm text-gray-400">아직 수집된 게시글이 없습니다.</div>';
       return;
     }
 
     el.posts.innerHTML = posts
-      .map((post) => {
+      .map((post, index) => {
         const title = escapeHtml(post.title || "제목 없음");
         const body = escapeHtml((post.body || "").slice(0, 180));
-        const source = post.source === "dcinside" ? "디씨" : "펨코";
-        const time = post.postedAt ? new Date(post.postedAt).toLocaleString("ko-KR") : "시간 미확인";
-        const link = post.url ? `<a class="text-xs text-emerald-700 hover:underline" target="_blank" rel="noopener" href="${post.url}">원문 보기</a>` : "";
+        const source = sourceLabelMap[post.source] || post.source || "커뮤니티";
+        const badgeClass = sourceBadgeMap[post.source] || "bg-gray-50 border-gray-200 text-gray-700";
+        const postedAt = post.postedAt || post.collectedAt;
+        const time = formatRelativeTime(postedAt);
+        const link = post.url
+          ? `<a class="text-xs text-emerald-700 hover:underline" target="_blank" rel="noopener" href="${post.url}">원문 보기</a>`
+          : "";
+        const liveFlag = index < 2 ? '<span class="text-[10px] font-black text-rose-600">LIVE</span>' : "";
 
         return `
-          <article class="rounded-xl border border-gray-100 p-3 bg-gray-50/70">
+          <article class="feed-card rounded-xl border border-gray-100 p-3 bg-gray-50/70" style="animation-delay:${Math.min(index * 0.05, 0.35)}s">
             <div class="flex items-center justify-between gap-3">
-              <strong class="text-sm text-gray-900">${title}</strong>
-              <span class="text-[11px] px-2 py-0.5 rounded-full bg-white border text-gray-600">${source}</span>
+              <div class="flex items-center gap-2 min-w-0">
+                ${liveFlag}
+                <strong class="text-sm text-gray-900 truncate">${title}</strong>
+              </div>
+              <span class="text-[11px] px-2 py-0.5 rounded-full border ${badgeClass}">${source}</span>
             </div>
             <p class="mt-1 text-xs text-gray-600 leading-relaxed">${body || "본문 없음"}</p>
             <div class="mt-2 flex items-center justify-between">
@@ -176,8 +434,11 @@
     ]);
 
     renderCurrent(current);
+    const momentum = renderMomentum(history);
     renderHistory(history);
-    renderPosts(posts);
+    renderKeywordWar(buildKeywordWarData(current, posts.posts || []));
+    renderPumpAlert(buildPumpAlertData(current, momentum, history));
+    renderPosts(posts, current.sourceBreakdown || {});
   }
 
   async function init() {
@@ -201,6 +462,7 @@
       state.timer = setInterval(loadAll, 60 * 1000);
     } catch (error) {
       el.posts.innerHTML = `<div class="text-sm text-red-500">데이터를 불러오지 못했습니다: ${String(error)}</div>`;
+      renderPumpAlert({ active: false });
     }
   }
 
