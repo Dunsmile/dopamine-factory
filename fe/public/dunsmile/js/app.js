@@ -3037,6 +3037,32 @@
       }
     }
 
+    async function downloadHoxyShareCard() {
+      if (!window.DopaminShareCard) {
+        showToast('공유 카드 기능을 불러오지 못했습니다', 2000);
+        return;
+      }
+
+      const recent = getRecent();
+      const latest = recent.length > 0 ? recent[0] : null;
+      const lucky = getLuckyNumber();
+      const numbers = latest ? latest.numbers : lucky.numbers;
+      const targetDraw = latest && latest.targetDraw ? latest.targetDraw : getNextDrawNumber();
+
+      await window.DopaminShareCard.download({
+        title: 'HOXY NUMBER',
+        subtitle: '오늘의 행운 번호',
+        highlight: `${targetDraw}회차 도전`,
+        numbers: numbers,
+        tags: ['행운번호', '로또추천', '도파민공작소'],
+        footer: 'dopamine-factory.pages.dev/dunsmile/hoxy-number/',
+        fromColor: '#2563eb',
+        toColor: '#7c3aed',
+        filePrefix: 'hoxy-number'
+      });
+      showToast('결과 이미지 카드가 저장되었습니다!', 2000);
+    }
+
     // ==================== 서비스 메뉴 ====================
 
     function openServiceMenu() {
@@ -3081,6 +3107,7 @@
     window.closeAdForQuotaModal = closeAdForQuotaModal;
     window.confirmAdForQuota = confirmAdForQuota;
     window.shareApp = shareApp;
+    window.downloadHoxyShareCard = downloadHoxyShareCard;
     window.switchTab = switchTab;
     window.revealLuckyNumber = revealLuckyNumber;
     window.prevPage = prevPage;

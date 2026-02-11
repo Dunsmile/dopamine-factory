@@ -429,6 +429,9 @@
               </svg>
               친구에게 테스트 공유하기
             </button>
+            <button onclick="downloadFaceShareCard()" class="w-full py-3 bg-white border-2 border-purple-200 text-purple-700 font-bold rounded-xl hover:bg-purple-50 transition-all" data-analytics="share_click|face_test|result|download_share_card|">
+              결과 이미지 카드 저장
+            </button>
             <button onclick="retakeTest()" class="w-full py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors" data-analytics="cta_click|face_test|result|retake_test|">
               다시 테스트하기
             </button>
@@ -552,6 +555,26 @@
       </a>
 
       <!-- 준비 중 -->
+      <a href="/dunsmile/balance-game/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center text-xl">⚖️</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">오늘의 밸런스 게임</div>
+          <div class="text-xs text-gray-500">선택하고 비율 확인하기</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+      </a>
+      <a href="/dunsmile/name-compatibility/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all">
+        <div class="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-lg flex items-center justify-center text-xl">💞</div>
+        <div class="flex-1">
+          <div class="font-bold text-gray-900">이름 궁합 테스트</div>
+          <div class="text-xs text-gray-500">이니셜 케미 분석</div>
+        </div>
+        <div class="text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </div>
+      </a>
       <div class="flex items-center gap-3 p-3 rounded-lg bg-gray-50 mb-2 opacity-60">
         <div class="w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center text-xl">🔒</div>
         <div class="flex-1">
@@ -655,6 +678,7 @@
     const db = firebase.firestore();
   </script>
 
+  <script src="../js/share-card.js"></script>
   <script src="../js/face-test.js"></script>
 </body>
 </html>
