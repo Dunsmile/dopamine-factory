@@ -4,7 +4,11 @@ interface RedditEnv {
   REDDIT_USER_AGENT?: string;
   REDDIT_SUBREDDITS?: string;
   REDDIT_COMMENTS_PER_SUBREDDIT?: string;
+  PREFER_KOREAN_CONTENT?: string;
+  KOREAN_CONTENT_MIN_HANGUL_RATIO?: string;
+  KOREAN_CONTENT_MIN_HANGUL_CHARS?: string;
 }
+import { isKoreanDominantText } from "../utils/content-filter";
 
 export interface RedditCommentPost {
   source: "reddit";
@@ -119,6 +123,10 @@ export async function fetchRedditCommentPosts(
       const body = (comment?.body || "").trim();
       const permalink = (comment?.permalink || "").trim();
       if (!body || !permalink) {
+        continue;
+      }
+      const merged = `${comment?.link_title || ""} ${body}`.trim();
+      if (!isKoreanDominantText(merged, env)) {
         continue;
       }
 

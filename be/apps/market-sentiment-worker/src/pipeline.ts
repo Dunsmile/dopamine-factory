@@ -6,6 +6,7 @@ import { fetchYoutubeCommentPosts } from "./crawlers/youtube";
 import { FirestoreClient } from "./firebase/firestore-rest";
 import { getTrackingAssets, matchAssetSymbols } from "./matcher/assets";
 import type { AssetType, PipelineResult, TrackedAsset, WorkerEnv } from "./types";
+import { isKoreanDominantText } from "./utils/content-filter";
 import { minuteKey, sha1Hex } from "./utils/hash";
 
 interface BoardConfig {
@@ -182,6 +183,9 @@ async function crawlBoards(
         detailSuccess += 1;
         const title = detail.title || listPost.title;
         const body = detail.body || "";
+        if (!isKoreanDominantText(`${title} ${body}`, env)) {
+          continue;
+        }
         const matchedAssets = matchAssetSymbols(`${title} ${body}`, assets);
         const postId = await sha1Hex(`${listPost.source}:${listPost.url}`);
 
@@ -217,6 +221,9 @@ async function crawlBoards(
 
     for (const post of socialPosts) {
       if (existingUrls.has(post.url)) {
+        continue;
+      }
+      if (!isKoreanDominantText(`${post.title} ${post.body}`, env)) {
         continue;
       }
 
@@ -282,6 +289,9 @@ async function analyzeAssets(
 
   for (const row of rows as Array<Record<string, unknown>>) {
     const post = extractPostPayload(row);
+    if (!isKoreanDominantText(`${post.title} ${post.body || ""}`, env)) {
+      continue;
+    }
     const matchedAssets = Array.isArray(row.matchedAssets)
       ? row.matchedAssets.filter((value): value is string => typeof value === "string")
       : [];
