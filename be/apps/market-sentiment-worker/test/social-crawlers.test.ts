@@ -104,4 +104,41 @@ describe("social crawlers", () => {
     expect(posts[0].title).toContain("KR stocks thread");
     expect(posts[0].body).toContain("삼전");
   });
+
+  it("filters non-korean reddit comments by default", async () => {
+    const mockFetch = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/r/stocks/comments.json")) {
+        return new Response(
+          JSON.stringify({
+            data: {
+              children: [
+                {
+                  data: {
+                    body: "I think this stock will go up",
+                    permalink: "/r/stocks/comments/abc123/thread/comment1/",
+                    link_title: "English thread",
+                    created_utc: 1770786000,
+                  },
+                },
+              ],
+            },
+          }),
+          { status: 200 }
+        );
+      }
+      return new Response("not-found", { status: 404 });
+    });
+
+    const posts = await fetchRedditCommentPosts(
+      {
+        REDDIT_SUBREDDITS: "stocks",
+        REDDIT_COMMENTS_PER_SUBREDDIT: "1",
+        REDDIT_USER_AGENT: "dopamin-market-test/1.0",
+      },
+      mockFetch as unknown as typeof fetch
+    );
+
+    expect(posts).toHaveLength(0);
+  });
 });

@@ -5,6 +5,13 @@
     asset: "BTC",
     assets: [],
     timer: null,
+    abortController: null,
+    requestSeq: 0,
+    cache: {
+      current: new Map(),
+      history: new Map(),
+      posts: new Map(),
+    },
   };
 
   const el = {
@@ -53,12 +60,27 @@
     youtube: "bg-rose-50 border-rose-200 text-rose-700",
   };
 
-  async function fetchJson(path) {
-    const response = await fetch(`${API_BASE}${path}`);
+  async function fetchJson(path, signal) {
+    const response = await fetch(`${API_BASE}${path}`, { signal });
     if (!response.ok) {
       throw new Error(`API ${response.status}`);
     }
     return response.json();
+  }
+
+  function getCached(cacheMap, key, maxAgeMs) {
+    const item = cacheMap.get(key);
+    if (!item) {
+      return null;
+    }
+    if (Date.now() - item.at > maxAgeMs) {
+      return null;
+    }
+    return item.value;
+  }
+
+  function setCached(cacheMap, key, value) {
+    cacheMap.set(key, { value, at: Date.now() });
   }
 
   function clamp(value, min, max) {
@@ -425,20 +447,76 @@
       .join("");
   }
 
+  function renderFromCache(symbol) {
+    const cachedCurrent = getCached(state.cache.current, symbol, 30 * 1000);
+    const cachedHistory = getCached(state.cache.history, symbol, 45 * 1000);
+    const cachedPosts = getCached(state.cache.posts, symbol, 30 * 1000);
+    if (!cachedCurrent) {
+      return false;
+    }
+
+    renderCurrent(cachedCurrent);
+    if (cachedHistory) {
+      const momentum = renderMomentum(cachedHistory);
+      renderHistory(cachedHistory);
+      renderPumpAlert(buildPumpAlertData(cachedCurrent, momentum, cachedHistory));
+      if (cachedPosts) {
+        renderKeywordWar(buildKeywordWarData(cachedCurrent, cachedPosts.posts || []));
+      }
+    }
+    if (cachedPosts) {
+      renderPosts(cachedPosts, cachedCurrent.sourceBreakdown || {});
+      if (!cachedHistory) {
+        renderKeywordWar(buildKeywordWarData(cachedCurrent, cachedPosts.posts || []));
+      }
+    }
+    return true;
+  }
+
   async function loadAll() {
     const symbol = state.asset;
-    const [current, history, posts] = await Promise.all([
-      fetchJson(`/api/market/sentiment/current?asset=${encodeURIComponent(symbol)}`),
-      fetchJson(`/api/market/sentiment/history?asset=${encodeURIComponent(symbol)}&period=24h`),
-      fetchJson(`/api/market/posts?asset=${encodeURIComponent(symbol)}&limit=30`),
-    ]);
+    const requestSeq = state.requestSeq + 1;
+    state.requestSeq = requestSeq;
 
-    renderCurrent(current);
-    const momentum = renderMomentum(history);
-    renderHistory(history);
-    renderKeywordWar(buildKeywordWarData(current, posts.posts || []));
-    renderPumpAlert(buildPumpAlertData(current, momentum, history));
-    renderPosts(posts, current.sourceBreakdown || {});
+    if (state.abortController) {
+      state.abortController.abort();
+    }
+    state.abortController = new AbortController();
+    const signal = state.abortController.signal;
+
+    const hasCache = renderFromCache(symbol);
+    if (!hasCache) {
+      el.heartbeatMeta.textContent = "데이터 불러오는 중...";
+      el.posts.innerHTML = '<div class="text-sm text-gray-400">실시간 반응 피드를 불러오는 중입니다.</div>';
+    }
+
+    try {
+      const currentPromise = fetchJson(`/api/market/sentiment/current?asset=${encodeURIComponent(symbol)}`, signal);
+      const historyPromise = fetchJson(`/api/market/sentiment/history?asset=${encodeURIComponent(symbol)}&period=24h`, signal);
+      const postsPromise = fetchJson(`/api/market/posts?asset=${encodeURIComponent(symbol)}&limit=20`, signal);
+
+      const current = await currentPromise;
+      if (requestSeq !== state.requestSeq) return;
+      setCached(state.cache.current, symbol, current);
+      renderCurrent(current);
+
+      const [history, posts] = await Promise.all([historyPromise, postsPromise]);
+      if (requestSeq !== state.requestSeq) return;
+
+      setCached(state.cache.history, symbol, history);
+      setCached(state.cache.posts, symbol, posts);
+
+      const momentum = renderMomentum(history);
+      renderHistory(history);
+      renderKeywordWar(buildKeywordWarData(current, posts.posts || []));
+      renderPumpAlert(buildPumpAlertData(current, momentum, history));
+      renderPosts(posts, current.sourceBreakdown || {});
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return;
+      }
+      throw error;
+    }
   }
 
   async function init() {

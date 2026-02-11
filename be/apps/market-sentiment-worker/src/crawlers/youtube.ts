@@ -4,7 +4,11 @@ interface YoutubeEnv {
   YOUTUBE_MAX_QUERIES?: string;
   YOUTUBE_MAX_VIDEOS_PER_QUERY?: string;
   YOUTUBE_MAX_COMMENTS_PER_VIDEO?: string;
+  PREFER_KOREAN_CONTENT?: string;
+  KOREAN_CONTENT_MIN_HANGUL_RATIO?: string;
+  KOREAN_CONTENT_MIN_HANGUL_CHARS?: string;
 }
+import { isKoreanDominantText, isKoreanPreferred } from "../utils/content-filter";
 
 export interface YoutubeCommentPost {
   source: "youtube";
@@ -64,6 +68,10 @@ export async function fetchYoutubeCommentPosts(
       maxResults: String(maxVideosPerQuery),
       q: query,
     });
+    if (isKoreanPreferred(env)) {
+      searchParams.set("relevanceLanguage", "ko");
+      searchParams.set("regionCode", "KR");
+    }
 
     const searchResp = await fetcher(`https://www.googleapis.com/youtube/v3/search?${searchParams.toString()}`);
     if (!searchResp.ok) {
@@ -119,6 +127,10 @@ export async function fetchYoutubeCommentPosts(
         const commentSnippet = comment.snippet?.topLevelComment?.snippet;
         const text = (commentSnippet?.textDisplay || "").trim();
         if (!text) {
+          continue;
+        }
+        const merged = `${videoTitle} ${videoDescription} ${text}`.trim();
+        if (!isKoreanDominantText(merged, env)) {
           continue;
         }
 
