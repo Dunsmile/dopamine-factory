@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build:tailwind": "tailwindcss -c tailwind.config.js -i ./fe/styles/tailwind-input.css -o ./fe/public/assets/css/tailwind-built.css --minify"
+    "build:tailwind": "tailwindcss -c tailwind.config.js -i ./fe/styles/tailwind-input.css -o ./fe/public/assets/css/tailwind-built.css --minify",
+    "test:market": "bash tests/market_sentiment.test.sh"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"

@@ -7,6 +7,7 @@ const BALANCE_QUESTIONS = [
   { id: "q6", question: "SNS 1년 금지 vs 배달음식 1년 금지", optionA: "SNS 1년 금지", optionB: "배달음식 1년 금지" }
 ];
 
+const MARKET_SENTIMENT_ROUTE = "/dunsmile/market-sentiment/";
 const BALANCE_STORAGE_KEY = "hoxy_balance_votes";
 let currentQuestion = null;
 let selectedOption = null;
