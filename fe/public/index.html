@@ -38,116 +38,418 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
     body { font-family: 'Noto Sans KR', sans-serif; }
-    .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+
+    /* ===== 공용 중앙 정렬 ===== */
+    .content-max {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===== 메인 콘텐츠 중앙 제한 ===== */
+    .page-layout {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    /* z-index (빌트 CSS에 없음) */
+    .z-header { z-index: 40; position: sticky; top: 0; }
+    .z-search { z-index: 60; }
+    .z-sidebar-overlay { z-index: 55; }
+    .z-sidebar { z-index: 56; }
+    .z-toast { z-index: 100; }
+    .z-bottom-nav { z-index: 50; }
+
+    /* 헤더 탭 버튼 높이 */
+    .header-tab { line-height: 44px; }
+    /* 배너 이미지 높이 */
+    .banner-img { height: 150px; }
+
+
+    /* 하단 네비바 공간 확보 (모바일/태블릿) */
+    @media (max-width: 1023px) {
+      body { padding-bottom: 64px; }
+    }
+
+    /* 배너 캐러셀 scroll-snap */
+    .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 12px;
+    }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-slide {
+      scroll-snap-align: center;
+      flex: 0 0 100%;
+      min-width: 0;
+    }
+
+    /* 아이콘 그리드 */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px 8px;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      position: relative;
+    }
+    .icon-label {
+      font-size: 11px;
+      color: #374151;
+      text-align: center;
+      line-height: 1.2;
+      max-width: 64px;
+      word-break: keep-all;
+    }
+
+    /* 인기 서비스 카드 hover */
+    .popular-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .popular-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    /* 하단 네비바 (모바일/태블릿) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 50;
+    }
+    @media (min-width: 1024px) {
+      .bottom-nav { display: none; }
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      color: #9ca3af;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      padding: 4px 12px;
+    }
+    .nav-item.active { color: #8b5cf6; }
+    .nav-icon { font-size: 22px; }
+
+    /* 토스트 */
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 검색 오버레이 */
+    .search-overlay {
+      position: fixed;
+      inset: 0;
+      background: white;
+      z-index: 60;
+      display: none;
+      flex-direction: column;
+    }
+    .search-overlay.open { display: flex; }
+
+    /* 뷰 섹션 전환 */
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* 배너 화살표 (PC) */
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #e5e7eb;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #374151;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    @media (min-width: 1024px) {
+      .carousel-arrow { display: flex; }
+    }
+    .carousel-arrow:hover { background: white; }
+
+    /* 관심 하트 버튼 */
+    .fav-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .icon-item:hover .fav-btn,
+    .icon-item:active .fav-btn { opacity: 1; }
+    .fav-btn.active { opacity: 1; }
+
+    /* 모바일 우측 사이드바 오버레이 */
+    .mobile-sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 55;
+      display: none;
+    }
+    .mobile-sidebar-overlay.open { display: block; }
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 280px;
+      max-width: 80vw;
+      background: white;
+      z-index: 56;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+    .mobile-sidebar.open { transform: translateX(0); }
+
+
+    /* 사이드바 메뉴 아이템 */
+    .sidebar-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #374151;
+      font-size: 14px;
+      transition: background 0.15s;
+    }
+    .sidebar-menu-item:hover { background: #f3f4f6; }
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 16px 12px 6px;
+    }
+    .sidebar-divider {
+      border-top: 1px solid #f3f4f6;
+      margin: 8px 0;
+    }
+    .sidebar-footer-link {
+      font-size: 12px;
+      color: #9ca3af;
+      padding: 2px 0;
+      display: inline-block;
+    }
+    .sidebar-footer-link:hover { color: #6b7280; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WX7LLGBZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-  <div class="max-w-2xl mx-auto px-4 py-12">
-    <!-- 헤더 -->
-    <header class="text-center mb-12">
-      <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-3">
-        도파민 공작소
-      </h1>
-      <p class="text-gray-500 text-lg">운세, 행운, 재미를 한 곳에서</p>
-    </header>
-
-    <!-- Steve 서비스 섹션 -->
-    <section class="mb-12">
-      <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 px-1">Dunsmile's Services</h2>
-      <div class="grid gap-4">
-
-        <!-- HOXY NUMBER -->
-        <a href="/dunsmile/hoxy-number/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-2xl shrink-0">🎱</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">HOXY NUMBER</h3>
-              <p class="text-gray-500 text-sm mt-0.5">무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- 관상 테스트 -->
-        <a href="/dunsmile/rich-face/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center text-2xl shrink-0">👤</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">부자가 될 상인가?</h3>
-              <p class="text-gray-500 text-sm mt-0.5">AI 관상 분석으로 알아보는 나의 부자 확률</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- 오늘의 운세 -->
-        <a href="/dunsmile/daily-fortune/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center text-2xl shrink-0">🔮</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">오늘의 운세</h3>
-              <p class="text-gray-500 text-sm mt-0.5">별자리, 띠, 사주로 보는 오늘의 종합 운세</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- 밸런스 게임 -->
-        <a href="/dunsmile/balance-game/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center text-2xl shrink-0">⚖️</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">오늘의 밸런스 게임</h3>
-              <p class="text-gray-500 text-sm mt-0.5">두 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- 이름 궁합 -->
-        <a href="/dunsmile/name-compatibility/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-cyan-100 rounded-xl flex items-center justify-center text-2xl shrink-0">💞</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">이름 궁합 테스트</h3>
-              <p class="text-gray-500 text-sm mt-0.5">두 이름을 입력하면 케미 점수와 궁합 키워드를 확인할 수 있어요</p>
-            </div>
-          </div>
-        </a>
-
-        <!-- 시장 감성 레이더 -->
-        <a href="/dunsmile/market-sentiment/" class="card-hover block bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-2xl shrink-0">📈</div>
-            <div>
-              <h3 class="font-bold text-gray-900 text-lg">시장 감성 레이더</h3>
-              <p class="text-gray-500 text-sm mt-0.5">펨코·디씨 게시글 기반 주식/코인 커뮤니티 감성 분석</p>
-            </div>
-          </div>
-        </a>
+  <!-- ===== 상단 헤더 바 ===== -->
+  <header class="z-header bg-white border-b border-gray-100">
+    <div class="content-max px-4 h-12 flex items-center justify-between">
+      <!-- 좌: 카테고리 탭 -->
+      <div class="flex items-center gap-5">
+        <button id="tabDopamine" class="text-sm font-bold text-purple-600 border-b-2 border-purple-600 pb-0.5 header-tab">도파민 공작소</button>
+        <button id="tabGame" class="text-sm font-bold text-gray-400 pb-0.5 header-tab">Game</button>
       </div>
-    </section>
+      <!-- 우: 사이드바 토글 (모바일만 표시) -->
+      <button id="sidebarToggleBtn" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600" aria-label="메뉴">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+      </button>
+    </div>
+  </header>
 
-    <!-- 팀원 서비스 섹션 -->
-    <section class="mb-12">
-      <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 px-1">Coming Soon</h2>
-      <div class="grid gap-4">
-        <div class="block bg-gray-50 rounded-2xl p-6 border border-dashed border-gray-200">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-2xl shrink-0">🚀</div>
-            <div>
-              <h3 class="font-bold text-gray-400 text-lg">새로운 서비스 준비 중</h3>
-              <p class="text-gray-400 text-sm mt-0.5">곧 새로운 도파민이 찾아옵니다!</p>
-            </div>
+  <!-- ===== 검색 오버레이 ===== -->
+  <div id="searchOverlay" class="search-overlay">
+    <div class="flex items-center gap-3 px-4 h-12 border-b border-gray-100">
+      <button id="searchCloseBtn" class="text-xl text-gray-500">←</button>
+      <input id="searchInput" type="text" placeholder="서비스명을 검색하세요" class="flex-1 text-sm outline-none" autocomplete="off">
+    </div>
+    <div id="searchResults" class="flex-1 overflow-y-auto px-4 py-3"></div>
+  </div>
+
+  <!-- ===== 페이지 래퍼 (PC: 콘텐츠 + 우측 사이드바) ===== -->
+  <div class="page-layout">
+
+    <!-- === 메인 콘텐츠 영역 === -->
+    <div class="main-content">
+
+      <!-- === 홈 뷰 === -->
+      <div id="viewHome" class="view-section active">
+
+        <!-- 배너 캐러셀 -->
+        <section class="relative px-4 pt-4 pb-2">
+          <div id="carouselTrack" class="carousel-track">
+            <a href="/dunsmile/hoxy-number/" class="carousel-slide">
+              <img src="/assets/banners/banner-hoxy-number.png" alt="HOXY NUMBER" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/rich-face/" class="carousel-slide">
+              <img src="/assets/banners/banner-rich-face.png" alt="부자가 될 상인가?" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/daily-fortune/" class="carousel-slide">
+              <img src="/assets/banners/banner-daily-fortune.png" alt="오늘의 운세" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/balance-game/" class="carousel-slide">
+              <img src="/assets/banners/banner-balance-game.png" alt="밸런스 게임" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/name-compatibility/" class="carousel-slide">
+              <img src="/assets/banners/banner-name-compatibility.png" alt="이름 궁합" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/market-sentiment/" class="carousel-slide">
+              <img src="/assets/banners/banner-market-sentiment.png" alt="시장 감성 레이더" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+            <a href="/dunsmile/tarot-reading/" class="carousel-slide">
+              <img src="/assets/banners/banner-tarot-reading.png" alt="ONE DAY MY CARD" class="w-full banner-img object-cover rounded-2xl">
+            </a>
+          </div>
+          <!-- PC 화살표 -->
+          <button id="carouselPrev" class="carousel-arrow left-2">&lsaquo;</button>
+          <button id="carouselNext" class="carousel-arrow right-2">&rsaquo;</button>
+          <!-- 인디케이터 -->
+          <div id="carouselDots" class="flex justify-center gap-1.5 mt-3"></div>
+        </section>
+
+        <!-- 아이콘 그리드 -->
+        <section class="px-4 py-4">
+          <div class="icon-grid" id="iconGrid"></div>
+        </section>
+
+        <!-- 지금 인기 있는 서비스 -->
+        <section class="px-4 py-4">
+          <h2 class="text-base font-bold text-gray-900 mb-3">지금 인기 있는 서비스</h2>
+          <div id="popularList" class="grid gap-3"></div>
+        </section>
+
+        <!-- 푸터 -->
+        <footer class="text-center text-gray-400 text-xs py-8">
+          <p>&copy; 2025 도파민 공작소. All rights reserved.</p>
+        </footer>
+      </div>
+
+      <!-- === 운세 뷰 (하단탭 운세) === -->
+      <div id="viewFortune" class="view-section">
+        <div class="px-4 pt-6 pb-4">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">오늘의 운세 서비스</h2>
+          <div id="fortuneList"></div>
+        </div>
+      </div>
+
+      <!-- === MY (관심 서비스) 뷰 === -->
+      <div id="viewFavorites" class="view-section">
+        <div class="px-4 pt-6 pb-4">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">MY 관심 서비스</h2>
+          <div id="favList"></div>
+        </div>
+      </div>
+
+      <!-- === 프로필 뷰 === -->
+      <div id="viewProfile" class="view-section">
+        <div class="px-4 pt-6 pb-4">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">프로필</h2>
+          <div id="profileContent"></div>
+          <div class="mt-8 border-t border-gray-100 pt-4 space-y-3">
+            <a href="/dunsmile/about/" class="block text-sm text-gray-600 hover:text-purple-600">서비스 소개</a>
+            <a href="/dunsmile/privacy/" class="block text-sm text-gray-600 hover:text-purple-600">개인정보처리방침</a>
+            <a href="/dunsmile/terms/" class="block text-sm text-gray-600 hover:text-purple-600">이용약관</a>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- 푸터 -->
-    <footer class="text-center text-gray-400 text-xs">
-      <p>&copy; 2025 도파민 공작소. All rights reserved.</p>
-    </footer>
-  </div>
+    </div><!-- /.main-content -->
+
+  </div><!-- /.page-layout -->
+
+  <!-- ===== 모바일 우측 사이드바 ===== -->
+  <div id="mobileSidebarOverlay" class="mobile-sidebar-overlay" onclick="closeSidebar()"></div>
+  <aside id="mobileSidebar" class="mobile-sidebar">
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
+        <button onclick="closeSidebar()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+      <nav id="mobileSidebarNav">
+        <!-- JS에서 렌더링 -->
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ===== 하단 네비게이션 바 (모바일/태블릿) ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="nav-item active" data-nav="home">
+      <span class="nav-icon">🏠</span>
+      <span>홈</span>
+    </div>
+    <div class="nav-item" data-nav="fortune">
+      <span class="nav-icon">🔮</span>
+      <span>운세</span>
+    </div>
+    <div class="nav-item" data-nav="my">
+      <span class="nav-icon">♥</span>
+      <span>MY</span>
+    </div>
+    <div class="nav-item" data-nav="search">
+      <span class="nav-icon">🔍</span>
+      <span>검색</span>
+    </div>
+    <div class="nav-item" data-nav="profile">
+      <span class="nav-icon">👤</span>
+      <span>프로필</span>
+    </div>
+  </nav>
+
+  <!-- 토스트 -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/js/home.js"></script>
 </body>
 </html>
