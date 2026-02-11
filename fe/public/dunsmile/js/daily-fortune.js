@@ -1,5 +1,7 @@
 // ==================== 오늘의 운세 로직 ====================
 
+const MARKET_SENTIMENT_ROUTE = '/dunsmile/market-sentiment/';
+
 // 상태 관리
 let selectedGender = null;
 let fortuneResult = null;

@@ -25,6 +25,7 @@ const NAME_TYPES = [
   }
 ];
 
+const MARKET_SENTIMENT_ROUTE = "/dunsmile/market-sentiment/";
 let latestResult = null;
 
 function showToast(message, duration = 2000) {
