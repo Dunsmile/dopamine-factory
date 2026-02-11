@@ -47,8 +47,8 @@ export function isKoreanDominantText(text: string, env: KoreanPreferenceEnv): bo
     return false;
   }
 
-  const minHangulChars = Math.max(1, Math.round(parseNumber(env.KOREAN_CONTENT_MIN_HANGUL_CHARS, 4)));
-  const minHangulRatio = Math.max(0.01, Math.min(1, parseNumber(env.KOREAN_CONTENT_MIN_HANGUL_RATIO, 0.15)));
+  const minHangulChars = Math.max(1, Math.round(parseNumber(env.KOREAN_CONTENT_MIN_HANGUL_CHARS, 8)));
+  const minHangulRatio = Math.max(0.01, Math.min(1, parseNumber(env.KOREAN_CONTENT_MIN_HANGUL_RATIO, 0.3)));
 
   const hangulChars = countHangul(normalized);
   const meaningfulChars = Math.max(1, countMeaningfulChars(normalized));
