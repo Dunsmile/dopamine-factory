@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>시장 감성 레이더 | 도파민 공작소</title>
+  <meta name="description" content="펨코/디씨 커뮤니티 반응을 기반으로 주식·코인 시장 감성을 실시간으로 확인하세요.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/market-sentiment/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="도파민 공작소">
+  <meta property="og:title" content="시장 감성 레이더">
+  <meta property="og:description" content="주식·코인 커뮤니티 감성을 한 화면에서 확인하세요.">
+  <meta property="og:url" content="https://dopamine-factory.pages.dev/dunsmile/market-sentiment/">
+  <meta property="og:locale" content="ko_KR">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="시장 감성 레이더">
+  <meta name="twitter:description" content="펨코/디씨 게시글 기반 시장 감성 점수">
+
+  <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .line-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #0f766e;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
+    }
+
+    .history-line {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-cyan-50 to-indigo-50 min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 py-6 md:py-10">
+    <div class="glass-panel rounded-3xl shadow-xl border border-emerald-100 overflow-hidden">
+      <header class="sticky top-0 z-10 bg-white/90 border-b border-emerald-100">
+        <div class="h-14 px-4 md:px-6 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button onclick="openServiceMenu()" class="p-2 rounded-lg hover:bg-emerald-50" aria-label="서비스 메뉴">
+              <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+            <h1 class="text-lg md:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-indigo-700">시장 감성 레이더</h1>
+          </div>
+          <button id="refreshBtn" class="px-3 py-1.5 text-xs md:text-sm rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">새로고침</button>
+        </div>
+      </header>
+
+      <main class="p-4 md:p-6 space-y-4 md:space-y-6" data-api-current="/api/market/sentiment/current">
+        <section class="rounded-2xl bg-gradient-to-r from-emerald-700 to-indigo-700 text-white p-5 md:p-6">
+          <p class="text-xs uppercase tracking-wider text-emerald-100">Community Pulse</p>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <label for="assetSelect" class="text-sm font-semibold">자산 선택</label>
+            <select id="assetSelect" class="text-sm text-gray-900 px-3 py-2 rounded-lg border border-white/30 bg-white min-w-[180px]"></select>
+            <span id="statusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-white/20">NEUTRAL</span>
+          </div>
+          <p class="mt-3 text-sm text-emerald-100">펨코/디씨 게시글을 15분 주기로 분석합니다.</p>
+        </section>
+
+        <section class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-xs text-gray-500">감성 점수</p>
+                <p id="scoreValue" class="text-4xl font-black text-gray-900">--</p>
+              </div>
+              <div>
+                <p class="text-xs text-gray-500 text-right">언급량</p>
+                <p id="mentionVolume" class="text-xl font-bold text-gray-900 text-right">0</p>
+              </div>
+            </div>
+            <div class="mt-4 h-3 rounded-full bg-gray-100 overflow-hidden">
+              <div id="scoreBar" class="h-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500" style="width: 50%"></div>
+            </div>
+            <p id="updatedAt" class="mt-3 text-xs text-gray-500">업데이트: -</p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <h2 class="text-sm font-bold text-gray-900">핵심 키워드</h2>
+            <div id="keywords" class="mt-3 flex flex-wrap gap-2"></div>
+            <div class="mt-4 text-xs text-gray-500">
+              상태 구간: EXTREME_FEAR(0-20) · FEAR(21-40) · NEUTRAL(41-60) · GREED(61-80) · EXTREME_GREED(81-100)
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-gray-900">최근 24시간 감성 추이</h2>
+            <span id="pointCount" class="text-xs text-gray-500">0 points</span>
+          </div>
+          <div class="mt-4 relative h-48 rounded-xl bg-gradient-to-b from-emerald-50 to-white border border-emerald-100">
+            <svg id="historyLine" class="history-line" viewBox="0 0 1000 240" preserveAspectRatio="none"></svg>
+            <div id="historyDots" class="absolute inset-0"></div>
+          </div>
+          <div id="historyLabels" class="mt-2 flex justify-between text-[11px] text-gray-500"></div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-gray-900">최근 게시글</h2>
+            <span class="text-xs text-gray-500">펨코/디씨 수집</span>
+          </div>
+          <div id="posts" class="mt-4 space-y-3"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="serviceMenuBackdrop" class="fixed inset-0 bg-black/50 z-50 hidden" onclick="closeServiceMenu()"></div>
+  <div id="serviceMenuSidebar" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-3 border-b border-gray-200 flex items-center justify-between">
+      <div class="text-lg font-bold text-gray-900">도파민 서비스</div>
+      <button onclick="closeServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg">
+        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="p-2 flex-1 overflow-y-auto">
+      <a href="/dunsmile/hoxy-number/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all"><div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-xl">🎰</div><div class="flex-1"><div class="font-bold text-gray-900">HOXY NUMBER</div><div class="text-xs text-gray-500">랜덤 로또 번호 생성기</div></div></a>
+      <a href="/dunsmile/rich-face/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all"><div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center text-xl">🔮</div><div class="flex-1"><div class="font-bold text-gray-900">부자가 될 상인가?</div><div class="text-xs text-gray-500">AI 관상 테스트</div></div></a>
+      <a href="/dunsmile/daily-fortune/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all"><div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center text-xl">🌟</div><div class="flex-1"><div class="font-bold text-gray-900">오늘의 운세 풀이</div><div class="text-xs text-gray-500">별자리·띠·사주 운세</div></div></a>
+      <a href="/dunsmile/balance-game/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all"><div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-rose-500 rounded-lg flex items-center justify-center text-xl">⚖️</div><div class="flex-1"><div class="font-bold text-gray-900">오늘의 밸런스 게임</div><div class="text-xs text-gray-500">선택하고 비율 확인하기</div></div></a>
+      <a href="/dunsmile/name-compatibility/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border-2 border-transparent hover:border-gray-200 mb-2 transition-all"><div class="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-lg flex items-center justify-center text-xl">💞</div><div class="flex-1"><div class="font-bold text-gray-900">이름 궁합 테스트</div><div class="text-xs text-gray-500">이니셜 케미 분석</div></div></a>
+      <a href="/dunsmile/market-sentiment/" class="flex items-center gap-3 p-3 rounded-lg bg-emerald-50 border-2 border-emerald-200 mb-2"><div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-indigo-600 rounded-lg flex items-center justify-center text-xl">📈</div><div class="flex-1"><div class="font-bold text-gray-900">시장 감성 레이더</div><div class="text-xs text-gray-500">펨코/디씨 감성 분석</div></div></a>
+    </div>
+  </div>
+
+  <script>
+    window.MARKET_API_BASE = window.location.origin;
+  </script>
+  <script src="../js/market-sentiment.js"></script>
+</body>
+</html>

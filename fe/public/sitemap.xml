@@ -37,6 +37,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dopamine-factory.pages.dev/dunsmile/market-sentiment/</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://dopamine-factory.pages.dev/dunsmile/about.html</loc>
     <lastmod>2026-02-10</lastmod>
     <changefreq>monthly</changefreq>

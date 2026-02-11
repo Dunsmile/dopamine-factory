@@ -11,6 +11,10 @@ be/
 └── infra/        # 배포/인프라 코드
 ```
 
+## 현재 앱
+
+- `apps/market-sentiment-worker`: Cloudflare Worker 기반 시장 감성 수집/분석 API
+
 ## 운영 원칙
 
 - 프론트엔드와 릴리즈 주기를 분리
