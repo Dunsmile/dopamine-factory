@@ -12,6 +12,8 @@ interface BoardConfig {
   idOrUrl: string;
 }
 
+const MAX_DETAIL_FETCHES_PER_RUN = 10;
+
 function getBoardConfigs(env: WorkerEnv): BoardConfig[] {
   return [
     {
@@ -75,8 +77,10 @@ async function crawlBoards(
   nowIso: string,
   errors: string[]
 ): Promise<{ createdPosts: number; detailAttempts: number; detailSuccess: number }> {
+  const boardConfigs = getBoardConfigs(env);
   const listLimit = parseNumber(env.CRAWL_LIST_LIMIT, 30);
-  const detailLimit = parseNumber(env.CRAWL_DETAIL_LIMIT, 30);
+  const detailLimit = Math.min(parseNumber(env.CRAWL_DETAIL_LIMIT, MAX_DETAIL_FETCHES_PER_RUN), MAX_DETAIL_FETCHES_PER_RUN);
+  let remainingDetailBudget = detailLimit;
   const expireAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
   const recentWindowStart = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
   const existingRows = await client.runQuery({
@@ -101,7 +105,11 @@ async function crawlBoards(
   let detailSuccess = 0;
   const postWrites: Array<{ collection: string; docId: string; data: Record<string, unknown> }> = [];
 
-  for (const board of getBoardConfigs(env)) {
+  for (const board of boardConfigs) {
+    if (remainingDetailBudget <= 0) {
+      break;
+    }
+
     try {
       const listPosts =
         board.source === "dcinside"
@@ -113,18 +121,17 @@ async function crawlBoards(
               env.FMKOREA_BASE_URL || "https://www.fmkorea.com"
             );
 
-      let detailFetched = 0;
       for (const listPost of listPosts) {
+        if (remainingDetailBudget <= 0) {
+          break;
+        }
+
         if (existingUrls.has(listPost.url)) {
           continue;
         }
 
-        if (detailFetched >= detailLimit) {
-          break;
-        }
-
         detailAttempts += 1;
-        detailFetched += 1;
+        remainingDetailBudget -= 1;
 
         const detail =
           listPost.source === "dcinside"

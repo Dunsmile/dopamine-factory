@@ -25,21 +25,34 @@ function parseDate(value: string | null): string | null {
 
 export function parseDcinsideListHtml(html: string, boardType: AssetType): DcinsideListPost[] {
   const posts: DcinsideListPost[] = [];
-  const rowMatches = html.matchAll(/<tr[^>]*class="([^"]*)"[^>]*>([\s\S]*?)<\/tr>/gi);
+  const rowMatches = html.matchAll(/<tr\b([^>]*)>([\s\S]*?)<\/tr>/gi);
 
-  for (const [, rowClass = "", rowHtml = ""] of rowMatches) {
-    if (rowClass.includes("notice")) {
+  for (const [, rowAttrs = "", rowHtml = ""] of rowMatches) {
+    const rowClassMatch = rowAttrs.match(/class="([^"]*)"/i);
+    const rowClass = rowClassMatch?.[1] || "";
+    const isNotice = rowClass.includes("notice")
+      || /data-type="icon_notice"/i.test(rowAttrs)
+      || /<td[^>]*class="gall_num"[^>]*>\s*공지\s*<\/td>/i.test(rowHtml);
+    const isAd = /<td[^>]*class="gall_num"[^>]*>\s*AD\s*<\/td>/i.test(rowHtml)
+      || /addc\.dcinside\.com/i.test(rowHtml);
+
+    if (isNotice || isAd) {
       continue;
     }
 
-    const linkMatch = rowHtml.match(/<td[^>]*class="gall_tit"[^>]*>[\s\S]*?<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+    const titleCell = rowHtml.match(/<td[^>]*class="[^"]*gall_tit[^"]*"[^>]*>([\s\S]*?)<\/td>/i)?.[1] || "";
+    if (!titleCell) {
+      continue;
+    }
+
+    const linkMatch = titleCell.match(/<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
     if (!linkMatch) {
       continue;
     }
 
     const rawHref = linkMatch[1];
     const rawTitle = linkMatch[2].replace(/<[^>]+>/g, "").trim();
-    if (!rawHref || !rawTitle) {
+    if (!rawHref || !rawTitle || !/\/board\/view\/\?/.test(rawHref) || !/[?&]no=\d+/.test(rawHref)) {
       continue;
     }
 
