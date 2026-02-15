@@ -51,8 +51,66 @@
       margin: 0 auto;
     }
 
-    /* z-index */
-    .z-header { z-index: 40; position: sticky; top: 0; }
+    /* ===== 홈 셸 스타일 ===== */
+    .home-body {
+      background: #f9fafb;
+      min-height: 100vh;
+    }
+    .home-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: #fff;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .home-header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .home-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: #9333ea;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .home-header-search-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      border-radius: 999px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .home-header-search-btn:hover {
+      color: #9333ea;
+      background: #f3f4f6;
+    }
+    .home-mobile-icon-btn,
+    .home-mobile-menu-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4b5563;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .home-mobile-menu-btn:hover {
+      color: #9333ea;
+    }
+
     .z-search { z-index: 60; }
     .z-sidebar-overlay { z-index: 55; }
     .z-sidebar { z-index: 56; }
@@ -114,6 +172,24 @@
       scroll-snap-align: center;
       flex: 0 0 100%;
       min-width: 0;
+    }
+    .banner-image {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    .home-banner-section {
+      position: relative;
+      padding: 20px 16px 8px;
+    }
+    .home-grid-section {
+      padding: 0 16px;
+    }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
     }
 
     /* ===== 서비스 카드 그리드 ===== */
@@ -243,6 +319,35 @@
     }
     .nav-item.active { color: #8b5cf6; }
     .nav-icon { font-size: 22px; }
+    .home-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 50;
+    }
+    @media (min-width: 1024px) {
+      .home-bottom-nav { display: none; }
+    }
+    .home-bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      color: #9ca3af;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      padding: 4px 12px;
+    }
+    .home-bottom-nav-item.active { color: #8b5cf6; }
+    .home-bottom-nav-icon { font-size: 22px; }
 
     /* 토스트 */
     .toast {
@@ -276,6 +381,33 @@
       flex-direction: column;
     }
     .search-overlay.open { display: flex; }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      height: 48px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .search-close-btn {
+      font-size: 20px;
+      color: #6b7280;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .search-input {
+      flex: 1;
+      font-size: 14px;
+      border: 0;
+      outline: none;
+      background: transparent;
+    }
+    .search-results {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px;
+    }
 
     /* 뷰 섹션 전환 */
     .view-section { display: none; }
@@ -328,6 +460,36 @@
       overflow-y: auto;
     }
     .mobile-sidebar.open { transform: translateX(0); }
+    .home-sidebar-inner {
+      padding: 16px;
+    }
+    .home-sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .home-sidebar-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #9333ea;
+    }
+    .home-sidebar-close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+    }
+    .home-sidebar-close-btn:hover {
+      color: #4b5563;
+    }
 
     /* 사이드바 메뉴 아이템 */
     .sidebar-menu-item {
@@ -404,17 +566,60 @@
     @media (min-width: 1024px) {
       .section-title { font-size: 20px; margin-bottom: 20px; }
     }
+    .home-view-section {
+      padding: 24px 16px 16px;
+    }
+    .home-view-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+    }
+    .home-profile-links {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #f3f4f6;
+      display: grid;
+      gap: 12px;
+    }
+    .home-profile-link {
+      display: block;
+      font-size: 14px;
+      color: #4b5563;
+      text-decoration: none;
+    }
+    .home-profile-link:hover {
+      color: #9333ea;
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 16px;
+    }
+    .footer-company-text {
+      font-size: 12px;
+      color: #9ca3af;
+      line-height: 1.625;
+    }
+    .footer-copy {
+      border-top: 1px solid #e5e7eb;
+      margin-top: 24px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="home-body">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WX7LLGBZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ===== 상단 헤더 바 ===== -->
-  <header class="z-header bg-white border-b border-gray-100">
-    <div class="content-max px-4 h-12 flex items-center justify-between" style="height:52px;">
+  <header class="home-header">
+    <div class="home-header-inner">
       <!-- 좌: 로고 -->
-      <a href="/" class="text-lg font-black text-purple-600" style="white-space:nowrap;">도파민 공작소</a>
+      <a href="/" class="home-logo">도파민 공작소</a>
 
       <!-- 중앙: PC 네비게이션 -->
       <nav class="pc-nav">
@@ -426,17 +631,17 @@
 
       <!-- 우: PC 검색 아이콘 -->
       <div class="pc-nav">
-        <button onclick="window.openSearch()" class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-purple-600 rounded-full hover:bg-gray-100" aria-label="검색">
+        <button onclick="window.openSearch()" class="home-header-search-btn" aria-label="검색">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
       </div>
 
       <!-- 우: 모바일 햄버거 -->
       <div class="mobile-header-right">
-        <button onclick="window.openSearch()" class="w-8 h-8 flex items-center justify-center text-gray-600" aria-label="검색">
+        <button onclick="window.openSearch()" class="home-mobile-icon-btn" aria-label="검색">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
-        <button id="sidebarToggleBtn" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-purple-600" aria-label="메뉴">
+        <button id="sidebarToggleBtn" class="home-mobile-menu-btn" aria-label="메뉴">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
         </button>
       </div>
@@ -445,11 +650,11 @@
 
   <!-- ===== 검색 오버레이 ===== -->
   <div id="searchOverlay" class="search-overlay">
-    <div class="flex items-center gap-3 px-4 h-12 border-b border-gray-100">
-      <button id="searchCloseBtn" class="text-xl text-gray-500">&larr;</button>
-      <input id="searchInput" type="text" placeholder="서비스명을 검색하세요" class="flex-1 text-sm outline-none" autocomplete="off">
+    <div class="search-bar">
+      <button id="searchCloseBtn" class="search-close-btn">&larr;</button>
+      <input id="searchInput" type="text" placeholder="서비스명을 검색하세요" class="search-input" autocomplete="off">
     </div>
-    <div id="searchResults" class="flex-1 overflow-y-auto px-4 py-3"></div>
+    <div id="searchResults" class="search-results"></div>
   </div>
 
   <!-- ===== 페이지 래퍼 ===== -->
@@ -460,45 +665,45 @@
       <div id="viewHome" class="view-section active">
 
         <!-- 배너 캐러셀 -->
-        <section class="relative px-4 pt-5 pb-2">
+        <section class="home-banner-section">
           <div id="carouselTrack" class="carousel-track">
             <a href="/dunsmile/hoxy-number/" class="carousel-slide">
-              <img src="/assets/banners/banner-hoxy-number.png" alt="HOXY NUMBER" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-hoxy-number.png" alt="HOXY NUMBER" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/rich-face/" class="carousel-slide">
-              <img src="/assets/banners/banner-rich-face.png" alt="부자가 될 상인가?" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-rich-face.png" alt="부자가 될 상인가?" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/daily-fortune/" class="carousel-slide">
-              <img src="/assets/banners/banner-daily-fortune.png" alt="오늘의 운세" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-daily-fortune.png" alt="오늘의 운세" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/balance-game/" class="carousel-slide">
-              <img src="/assets/banners/banner-balance-game.png" alt="밸런스 게임" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-balance-game.png" alt="밸런스 게임" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/name-compatibility/" class="carousel-slide">
-              <img src="/assets/banners/banner-name-compatibility.png" alt="이름 궁합" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-name-compatibility.png" alt="이름 궁합" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/market-sentiment/" class="carousel-slide">
-              <img src="/assets/banners/banner-market-sentiment.png" alt="시장 감성 레이더" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-market-sentiment.png" alt="시장 감성 레이더" class="banner-img banner-image">
             </a>
             <a href="/dunsmile/tarot-reading/" class="carousel-slide">
-              <img src="/assets/banners/banner-tarot-reading.png" alt="ONE DAY MY CARD" class="w-full banner-img object-cover rounded-2xl">
+              <img src="/assets/banners/banner-tarot-reading.png" alt="ONE DAY MY CARD" class="banner-img banner-image">
             </a>
           </div>
           <!-- PC 화살표 -->
           <button id="carouselPrev" class="carousel-arrow" style="left:8px;">&lsaquo;</button>
           <button id="carouselNext" class="carousel-arrow" style="right:8px;">&rsaquo;</button>
           <!-- 인디케이터 -->
-          <div id="carouselDots" class="flex justify-center gap-1.5 mt-3"></div>
+          <div id="carouselDots" class="carousel-dots"></div>
         </section>
 
         <!-- 서비스 카드 그리드 -->
-        <section class="px-4 section-gap">
+        <section class="home-grid-section section-gap">
           <h2 class="section-title">서비스</h2>
           <div class="service-card-grid" id="iconGrid"></div>
         </section>
 
         <!-- 지금 인기 있는 서비스 -->
-        <section class="px-4 section-gap">
+        <section class="home-grid-section section-gap">
           <h2 class="section-title">지금 인기 있는 서비스</h2>
           <div id="popularList" class="popular-grid"></div>
         </section>
@@ -506,29 +711,29 @@
 
       <!-- === 운세 뷰 (하단탭 운세) === -->
       <div id="viewFortune" class="view-section">
-        <div class="px-4 pt-6 pb-4">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">오늘의 운세 서비스</h2>
+        <div class="home-view-section">
+          <h2 class="home-view-title">오늘의 운세 서비스</h2>
           <div id="fortuneList"></div>
         </div>
       </div>
 
       <!-- === MY (관심 서비스) 뷰 === -->
       <div id="viewFavorites" class="view-section">
-        <div class="px-4 pt-6 pb-4">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">MY 관심 서비스</h2>
+        <div class="home-view-section">
+          <h2 class="home-view-title">MY 관심 서비스</h2>
           <div id="favList"></div>
         </div>
       </div>
 
       <!-- === 프로필 뷰 === -->
       <div id="viewProfile" class="view-section">
-        <div class="px-4 pt-6 pb-4">
-          <h2 class="text-lg font-bold text-gray-900 mb-4">프로필</h2>
+        <div class="home-view-section">
+          <h2 class="home-view-title">프로필</h2>
           <div id="profileContent"></div>
-          <div class="mt-8 border-t border-gray-100 pt-4 space-y-3">
-            <a href="/dunsmile/about/" class="block text-sm text-gray-600 hover:text-purple-600">서비스 소개</a>
-            <a href="/dunsmile/privacy/" class="block text-sm text-gray-600 hover:text-purple-600">개인정보처리방침</a>
-            <a href="/dunsmile/terms/" class="block text-sm text-gray-600 hover:text-purple-600">이용약관</a>
+          <div class="home-profile-links">
+            <a href="/dunsmile/about/" class="home-profile-link">서비스 소개</a>
+            <a href="/dunsmile/privacy/" class="home-profile-link">개인정보처리방침</a>
+            <a href="/dunsmile/terms/" class="home-profile-link">이용약관</a>
           </div>
         </div>
       </div>
@@ -538,7 +743,7 @@
 
   <!-- ===== 푸터 ===== -->
   <footer class="site-footer">
-    <div class="content-max px-4 py-8">
+    <div class="footer-inner">
       <div class="footer-grid">
         <!-- 서비스 -->
         <div>
@@ -561,13 +766,13 @@
         <!-- 회사 정보 -->
         <div>
           <h3 class="footer-heading">도파민 공작소</h3>
-          <p class="text-xs text-gray-400 leading-relaxed">
+          <p class="footer-company-text">
             운세, 행운, 재미를 한 곳에서!<br>
             다양한 서비스를 만나보세요.
           </p>
         </div>
       </div>
-      <div class="border-t border-gray-200 mt-6 pt-4 text-center text-xs text-gray-400">
+      <div class="footer-copy">
         &copy; 2025 도파민 공작소. All rights reserved.
       </div>
     </div>
@@ -576,10 +781,10 @@
   <!-- ===== 모바일 우측 사이드바 ===== -->
   <div id="mobileSidebarOverlay" class="mobile-sidebar-overlay" onclick="closeSidebar()"></div>
   <aside id="mobileSidebar" class="mobile-sidebar">
-    <div class="p-4">
-      <div class="flex items-center justify-between mb-4">
-        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
-        <button onclick="closeSidebar()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+    <div class="home-sidebar-inner">
+      <div class="home-sidebar-header">
+        <span class="home-sidebar-title">도파민 공작소</span>
+        <button onclick="closeSidebar()" class="home-sidebar-close-btn">&times;</button>
       </div>
       <nav id="mobileSidebarNav">
         <!-- JS에서 렌더링 -->
@@ -588,25 +793,25 @@
   </aside>
 
   <!-- ===== 하단 네비게이션 바 (모바일/태블릿) ===== -->
-  <nav class="bottom-nav" id="bottomNav">
-    <div class="nav-item active" data-nav="home">
-      <span class="nav-icon">🏠</span>
+  <nav class="home-bottom-nav" id="bottomNav">
+    <div class="home-bottom-nav-item nav-item active" data-nav="home">
+      <span class="home-bottom-nav-icon nav-icon">🏠</span>
       <span>홈</span>
     </div>
-    <div class="nav-item" data-nav="fortune">
-      <span class="nav-icon">🔮</span>
+    <div class="home-bottom-nav-item nav-item" data-nav="fortune">
+      <span class="home-bottom-nav-icon nav-icon">🔮</span>
       <span>운세</span>
     </div>
-    <div class="nav-item" data-nav="my">
-      <span class="nav-icon">♥</span>
+    <div class="home-bottom-nav-item nav-item" data-nav="my">
+      <span class="home-bottom-nav-icon nav-icon">♥</span>
       <span>MY</span>
     </div>
-    <div class="nav-item" data-nav="search">
-      <span class="nav-icon">🔍</span>
+    <div class="home-bottom-nav-item nav-item" data-nav="search">
+      <span class="home-bottom-nav-icon nav-icon">🔍</span>
       <span>검색</span>
     </div>
-    <div class="nav-item" data-nav="profile">
-      <span class="nav-icon">👤</span>
+    <div class="home-bottom-nav-item nav-item" data-nav="profile">
+      <span class="home-bottom-nav-icon nav-icon">👤</span>
       <span>프로필</span>
     </div>
   </nav>

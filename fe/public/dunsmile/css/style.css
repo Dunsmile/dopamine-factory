@@ -39,6 +39,383 @@
     }
     .dp-divider { border-top:1px solid #f3f4f6; margin:8px 0; }
 
+    /* ========== HOXY 셸 공통 스타일 ========== */
+    .hoxy-page {
+      background: #ffffff;
+    }
+    @media (min-width: 768px) {
+      .hoxy-page {
+        background: #f9fafb;
+      }
+    }
+    .hoxy-app-shell {
+      max-width: 576px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: #ffffff;
+      position: relative;
+    }
+    @media (max-width: 767px) {
+      .hoxy-app-shell {
+        max-width: 448px;
+      }
+    }
+    .hoxy-top-nav {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      z-index: 10;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .hoxy-top-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 56px;
+    }
+    .hoxy-brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      white-space: nowrap;
+    }
+    .hoxy-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .hoxy-icon-btn {
+      padding: 8px;
+      border-radius: 8px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .hoxy-icon-btn:hover {
+      background: #f3f4f6;
+    }
+    .hoxy-desktop-tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      white-space: nowrap;
+      transition: background-color 0.2s, color 0.2s;
+      cursor: pointer;
+      user-select: none;
+      border: 0;
+      background: transparent;
+    }
+    .hoxy-desktop-tab-icon {
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+    .hoxy-desktop-tab-label {
+      pointer-events: none;
+    }
+    .hoxy-mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+    .hoxy-mobile-bottom-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      height: 64px;
+    }
+    .hoxy-mobile-tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+    .hoxy-mobile-tab-icon {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+    }
+    .hoxy-mobile-tab-label {
+      font-size: 12px;
+    }
+    .hoxy-pagination-btn {
+      padding: 6px;
+      border: 0;
+      background: transparent;
+      transition: color 0.2s, opacity 0.2s;
+      cursor: pointer;
+    }
+    .hoxy-pagination-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .hoxy-pagination-btn-prev {
+      color: #9ca3af;
+    }
+    .hoxy-pagination-btn-prev:hover:not(:disabled) {
+      color: #4b5563;
+    }
+    .hoxy-pagination-btn-next {
+      color: #4b5563;
+    }
+    .hoxy-pagination-btn-next:hover {
+      color: #111827;
+    }
+    .hoxy-inline-action-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px 0;
+      background: #f9fafb;
+      color: #374151;
+      font-weight: 500;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .hoxy-inline-action-btn:hover {
+      background: #f3f4f6;
+    }
+    .hoxy-cta-btn {
+      width: 100%;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .hoxy-cta-btn-lg {
+      padding: 16px 0;
+      font-size: 16px;
+    }
+    .hoxy-cta-btn-sm {
+      padding: 10px 0;
+      font-size: 14px;
+    }
+    .hoxy-cta-btn + .hoxy-cta-btn {
+      margin-top: 8px;
+    }
+    .hoxy-cta-btn-primary {
+      background: linear-gradient(to right, #2563eb, #1d4ed8);
+      color: #ffffff;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+    .hoxy-cta-btn-primary:hover {
+      background: linear-gradient(to right, #1d4ed8, #1e40af);
+    }
+    .hoxy-cta-btn-outline-blue {
+      background: #ffffff;
+      color: #1d4ed8;
+      border: 2px solid #bfdbfe;
+    }
+    .hoxy-cta-btn-outline-blue:hover {
+      background: #eff6ff;
+    }
+    .hoxy-cta-btn-white-purple {
+      background: #ffffff;
+      color: #7e22ce;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    }
+    .hoxy-cta-btn-white-purple:hover {
+      background: #faf5ff;
+    }
+    .hoxy-cta-btn-soft-purple {
+      background: linear-gradient(to right, #faf5ff, #fdf2f8);
+      color: #7e22ce;
+      border: 2px solid #e9d5ff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .hoxy-cta-btn-soft-purple:hover {
+      background: linear-gradient(to right, #f3e8ff, #fce7f3);
+    }
+    .hoxy-cta-btn-with-icon {
+      gap: 6px;
+    }
+    .hoxy-cta-btn-primary-mix {
+      background: linear-gradient(to right, #3b82f6, #8b5cf6);
+      color: #ffffff;
+    }
+    .hoxy-cta-btn-primary-mix:hover {
+      background: linear-gradient(to right, #2563eb, #7c3aed);
+    }
+    .hoxy-modal-confirm-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    .hoxy-select-field {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #111827;
+      font-size: 14px;
+      outline: none;
+      background: #ffffff;
+    }
+    .hoxy-select-field:focus {
+      border-color: #3b82f6;
+    }
+    .hoxy-input-field {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      outline: none;
+      background: #ffffff;
+      font-size: 14px;
+    }
+    .hoxy-input-field:focus {
+      border-color: #3b82f6;
+    }
+    .hoxy-home-stack {
+      row-gap: 12px;
+      padding-bottom: 96px;
+    }
+    .hoxy-lucky-card {
+      background: linear-gradient(to bottom right, #f3e8ff, #fdf2f8, #faf5ff);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border: 2px solid #e9d5ff;
+    }
+    .hoxy-generator-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+    .hoxy-generator-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .hoxy-generator-desc {
+      font-size: 12px;
+      color: #4b5563;
+    }
+    .hoxy-tab-stack {
+      row-gap: 12px;
+      padding-bottom: 96px;
+    }
+    .hoxy-saved-top-card {
+      background: linear-gradient(to right, #eff6ff, #f5f3ff);
+      border-radius: 16px;
+      padding: 12px;
+      border: 2px solid #bfdbfe;
+    }
+    .hoxy-check-top-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+    .hoxy-pill-btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .hoxy-pill-btn-blue {
+      color: #2563eb;
+      background: #eff6ff;
+    }
+    .hoxy-pill-btn-blue:hover {
+      color: #1d4ed8;
+      background: #dbeafe;
+    }
+    .hoxy-pill-btn-red {
+      color: #dc2626;
+      background: #fef2f2;
+    }
+    .hoxy-pill-btn-red:hover {
+      color: #b91c1c;
+      background: #fee2e2;
+    }
+    .hoxy-pill-badge {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-weight: 500;
+      display: inline-block;
+      line-height: 1.2;
+    }
+    .hoxy-panel-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+    .hoxy-carousel-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    .hoxy-carousel-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .hoxy-carousel-indicator-dot {
+      width: 24px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #e5e7eb;
+    }
+    .hoxy-carousel-indicator-dot.active {
+      background: #c084fc;
+    }
+    .hoxy-disclaimer-box {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+    }
+
     /* 전체 레이아웃 배경색 */
     html, body {
       margin: 0;

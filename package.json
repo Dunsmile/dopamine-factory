@@ -4,7 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "build:tailwind": "tailwindcss -c tailwind.config.js -i ./fe/styles/tailwind-input.css -o ./fe/public/assets/css/tailwind-built.css --minify",
-    "test:market": "bash tests/market_sentiment.test.sh"
+    "test:market": "bash tests/market_sentiment.test.sh",
+    "test:hoxy:style": "bash tests/run_hoxy_style_checks.sh",
+    "test:hoxy:structure": "bash tests/run_hoxy_structure_checks.sh",
+    "test:hoxy:logic": "bash tests/run_hoxy_logic_checks.sh",
+    "test:hoxy": "bash tests/run_hoxy_refactor_checks.sh"
   },
   "devDependencies": {
     "playwright": "^1.58.2",

@@ -99,7 +99,7 @@
   <link rel="stylesheet" href="/assets/css/tailwind-built.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
-<body class="bg-white md:bg-gray-50">
+<body class="hoxy-page">
   <!-- Google Tag Manager (noscript) -->
   <noscript>
     <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TD8GQFFB"
@@ -116,46 +116,46 @@
     
     <!-- 메인 컨텐츠 영역 -->
     <div class="content-area">
-      <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white relative">
+      <div class="hoxy-app-shell">
         
         <!-- Top Navigation -->
-        <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
-          <div class="flex items-center justify-between px-4 h-14">
+        <div class="hoxy-top-nav">
+          <div class="hoxy-top-nav-inner">
             <div class="flex items-center gap-2">
               <a href="/" class="dp-header-home">도파민 공작소</a><span class="dp-header-sep">›</span>
-              <h1 class="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent whitespace-nowrap">HOXY NUMBER</h1>
+              <h1 class="hoxy-brand-title">HOXY NUMBER</h1>
             </div>
 
             <!-- PC용 상단 네비게이션 (768px 이상) -->
             <nav class="hidden md:flex items-center gap-1 desktop-nav">
-              <button onclick="switchTab('homeTab')" id="btnHomeDesktop" class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-blue-600 bg-blue-50 font-medium text-sm whitespace-nowrap transition-colors cursor-pointer select-none" data-analytics="nav_tab_click|hoxy_number|gnb|home_tab|">
-                <svg class="w-4 h-4 pointer-events-none flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <button onclick="switchTab('homeTab')" id="btnHomeDesktop" class="hoxy-desktop-tab-btn text-blue-600 bg-blue-50" data-analytics="nav_tab_click|hoxy_number|gnb|home_tab|">
+                <svg class="hoxy-desktop-tab-icon" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
-                <span class="pointer-events-none">홈</span>
+                <span class="hoxy-desktop-tab-label">홈</span>
               </button>
-              <button onclick="switchTab('savedTab')" id="btnSavedDesktop" class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm whitespace-nowrap transition-colors cursor-pointer select-none" data-analytics="nav_tab_click|hoxy_number|gnb|saved_tab|">
-                <svg class="w-4 h-4 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="switchTab('savedTab')" id="btnSavedDesktop" class="hoxy-desktop-tab-btn text-gray-500 hover:bg-gray-100" data-analytics="nav_tab_click|hoxy_number|gnb|saved_tab|">
+                <svg class="hoxy-desktop-tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                 </svg>
-                <span class="pointer-events-none">내 번호</span>
+                <span class="hoxy-desktop-tab-label">내 번호</span>
               </button>
-              <button onclick="switchTab('checkTab')" id="btnCheckDesktop" class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-gray-500 hover:bg-gray-100 font-medium text-sm whitespace-nowrap transition-colors cursor-pointer select-none" data-analytics="nav_tab_click|hoxy_number|gnb|check_tab|">
-                <svg class="w-4 h-4 pointer-events-none flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button onclick="switchTab('checkTab')" id="btnCheckDesktop" class="hoxy-desktop-tab-btn text-gray-500 hover:bg-gray-100" data-analytics="nav_tab_click|hoxy_number|gnb|check_tab|">
+                <svg class="hoxy-desktop-tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                 </svg>
-                <span class="pointer-events-none">당첨 확인</span>
+                <span class="hoxy-desktop-tab-label">당첨 확인</span>
               </button>
             </nav>
 
-            <div class="flex items-center gap-1">
-              <button onclick="openSettings()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" data-analytics="cta_click|hoxy_number|gnb|open_settings|">
+            <div class="hoxy-top-actions">
+              <button onclick="openSettings()" class="hoxy-icon-btn" data-analytics="cta_click|hoxy_number|gnb|open_settings|">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
               </button>
-              <button onclick="openServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" data-analytics="cta_click|hoxy_number|gnb|service_menu_open|">
+              <button onclick="openServiceMenu()" class="hoxy-icon-btn" data-analytics="cta_click|hoxy_number|gnb|service_menu_open|">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -165,7 +165,7 @@
         </div>
 
         <!-- Tab Contents -->
-        <div id="homeTab" class="tab-content active tab-padding space-y-3 pb-24">
+        <div id="homeTab" class="tab-content active tab-padding space-y-3 pb-24 hoxy-home-stack">
 
           <!-- 모바일 당첨 통계 배너 (PC에서는 사이드바로 표시) -->
           <div id="mobileStatsBanner" class="lg:hidden bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl px-3 py-2 text-white flex items-center justify-between">
@@ -183,7 +183,7 @@
           </div>
 
           <!-- 오늘의 행운 번호 -->
-          <div id="luckyNumberCard" class="bg-gradient-to-br from-purple-100 via-pink-50 to-purple-50 rounded-2xl p-3 shadow-lg border-2 border-purple-200">
+          <div id="luckyNumberCard" class="hoxy-lucky-card">
             <div class="flex items-center justify-between mb-2">
               <div>
                 <div class="text-xs text-gray-700 font-bold flex items-center gap-1.5">
@@ -225,10 +225,10 @@
           </div>
 
           <!-- 로또 번호 생성기 -->
-          <div class="bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+          <div class="hoxy-generator-card">
             <div class="text-center mb-4">
-              <h2 class="text-xl font-bold text-gray-900 mb-1">로또 번호 자동 생성기</h2>
-              <p class="text-xs text-gray-600">버튼 한 번으로 이번 주 로또 번호를 생성해드립니다</p>
+              <h2 class="hoxy-generator-title">로또 번호 자동 생성기</h2>
+              <p class="hoxy-generator-desc">버튼 한 번으로 이번 주 로또 번호를 생성해드립니다</p>
             </div>
 
             <div class="bg-gray-50 rounded-xl p-3 border border-gray-200 mb-4">
@@ -246,11 +246,11 @@
               </div>
             </div>
 
-            <button id="generateButton" onclick="showGenerateConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl transform hover:scale-[1.02] text-base" data-analytics="cta_click|hoxy_number|home|generate_numbers|">
+            <button id="generateButton" onclick="showGenerateConfirm()" class="hoxy-cta-btn hoxy-cta-btn-primary hoxy-cta-btn-lg" data-analytics="cta_click|hoxy_number|home|generate_numbers|">
               로또 번호 생성하기
             </button>
 
-            <button onclick="downloadHoxyShareCard()" class="w-full mt-2 py-3 bg-white border-2 border-blue-200 text-blue-700 font-bold rounded-xl hover:bg-blue-50 transition-all" data-analytics="share_click|hoxy_number|home|download_share_card|">
+            <button onclick="downloadHoxyShareCard()" class="hoxy-cta-btn hoxy-cta-btn-outline-blue hoxy-cta-btn-sm" data-analytics="share_click|hoxy_number|home|download_share_card|">
               결과 이미지 카드 저장
             </button>
 
@@ -272,7 +272,7 @@
                 📤
               </div>
             </div>
-            <button onclick="shareApp()" class="w-full bg-white text-purple-600 font-bold py-2.5 rounded-xl hover:bg-purple-50 transition-colors shadow-lg text-sm" data-analytics="share_click|hoxy_number|home|share_banner|">
+            <button onclick="shareApp()" class="hoxy-cta-btn hoxy-cta-btn-white-purple hoxy-cta-btn-sm" data-analytics="share_click|hoxy_number|home|share_banner|">
               친구에게 공유하기
             </button>
           </div>
@@ -308,17 +308,17 @@
           </div>
 
           <!-- 최근 생성 번호 (슬롯 시스템) -->
-          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+          <div class="hoxy-panel-card">
             <div class="flex items-center justify-between mb-3">
               <h3 class="font-bold text-gray-900 text-base">최근 생성 번호</h3>
               <div class="flex items-center gap-1">
-                <button onclick="saveAllRecentNumbers()" class="text-xs text-blue-600 hover:text-blue-700 font-medium px-2 py-0.5 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors" data-analytics="cta_click|hoxy_number|home|save_all_recent|">
+                <button onclick="saveAllRecentNumbers()" class="hoxy-pill-btn hoxy-pill-btn-blue" data-analytics="cta_click|hoxy_number|home|save_all_recent|">
                   전체 저장
                 </button>
-                <button onclick="clearRecentNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-2 py-0.5 bg-red-50 rounded-full hover:bg-red-100 transition-colors" data-analytics="cta_click|hoxy_number|home|clear_recent|">
+                <button onclick="clearRecentNumbers()" class="hoxy-pill-btn hoxy-pill-btn-red" data-analytics="cta_click|hoxy_number|home|clear_recent|">
                   초기화
                 </button>
-                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="recentSlotsCount">5</span>/50</span>
+                <span class="hoxy-pill-badge"><span id="recentSlotsCount">5</span>/50</span>
               </div>
             </div>
 
@@ -330,7 +330,7 @@
               ← 삭제 | 저장 →
             </div>
 
-            <button onclick="showExpandSlotsModal()" class="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-1.5 border-2 border-purple-200 shadow-sm text-sm" data-analytics="ad_charge_click|hoxy_number|home|expand_slots|">
+            <button onclick="showExpandSlotsModal()" class="hoxy-cta-btn hoxy-cta-btn-soft-purple hoxy-cta-btn-sm hoxy-cta-btn-with-icon mt-3" data-analytics="ad_charge_click|hoxy_number|home|expand_slots|">
               <span>📦</span>
               <span>슬롯 +5개 추가하기</span>
             </button>
@@ -338,7 +338,7 @@
 
           <!-- 다른 서비스 캐러셀 -->
           <div>
-            <h3 class="text-lg font-bold text-gray-900 mb-3">행운을 이어가세요!</h3>
+            <h3 class="hoxy-carousel-title">행운을 이어가세요!</h3>
             <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 snap-x snap-mandatory" style="scrollbar-width: none; -ms-overflow-style: none;">
               <style>.flex.snap-x::-webkit-scrollbar { display: none; }</style>
               <!-- 관상 테스트 카드 -->
@@ -372,29 +372,22 @@
                 </div>
               </a>
             </div>
-            <div class="flex justify-center gap-2 mt-3">
-              <div class="w-6 h-1.5 rounded-full bg-purple-400"></div>
-              <div class="w-6 h-1.5 rounded-full bg-gray-200"></div>
+            <div class="hoxy-carousel-indicator">
+              <div class="hoxy-carousel-indicator-dot active"></div>
+              <div class="hoxy-carousel-indicator-dot"></div>
             </div>
           </div>
 
           <!-- 면책 조항 -->
-          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
-            <ul class="space-y-0.5 list-disc list-inside text-xs">
-              <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
-              <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
-              <li>개인의 책임 하에 이용 바랍니다.</li>
-            </ul>
-          </div>
+          <div id="homeDisclaimerMount" class="hoxy-disclaimer-box"></div>
 
         </div>
 
         <!-- 내 번호 탭 -->
-        <div id="savedTab" class="tab-content tab-padding space-y-3 pb-24">
+        <div id="savedTab" class="tab-content tab-padding hoxy-tab-stack">
 
           <!-- 최근 뽑은 번호 섹션 (NEW) -->
-          <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-3 border-2 border-blue-200">
+          <div class="hoxy-saved-top-card">
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-bold text-gray-900 text-sm">최근 뽑은 번호</h3>
               <span class="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">최근 5개</span>
@@ -404,7 +397,7 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+          <div class="hoxy-panel-card">
             <div class="flex items-center justify-between mb-3">
               <div>
                 <h3 class="font-bold text-gray-900 text-base">저장된 번호</h3>
@@ -413,10 +406,10 @@
                 </div>
               </div>
               <div class="flex items-center gap-1">
-                <button onclick="clearSavedNumbers()" class="text-xs text-red-600 hover:text-red-700 font-medium px-2 py-0.5 bg-red-50 rounded-full hover:bg-red-100 transition-colors" data-analytics="cta_click|hoxy_number|saved|clear_saved|">
+                <button onclick="clearSavedNumbers()" class="hoxy-pill-btn hoxy-pill-btn-red" data-analytics="cta_click|hoxy_number|saved|clear_saved|">
                   초기화
                 </button>
-                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="savedCurrentPage">1</span>/<span id="savedTotalPages">5</span></span>
+                <span class="hoxy-pill-badge"><span id="savedCurrentPage">1</span>/<span id="savedTotalPages">5</span></span>
               </div>
             </div>
 
@@ -426,7 +419,7 @@
 
             <!-- 페이지네이션 컨트롤 -->
             <div class="mt-3 flex items-center justify-center gap-3">
-              <button onclick="prevSavedPage()" id="btnPrevSaved" class="p-1.5 text-gray-400 hover:text-gray-600 disabled:opacity-30" disabled data-analytics="nav_tab_click|hoxy_number|saved|prev_page|">
+              <button onclick="prevSavedPage()" id="btnPrevSaved" class="hoxy-pagination-btn hoxy-pagination-btn-prev" disabled data-analytics="nav_tab_click|hoxy_number|saved|prev_page|">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -436,7 +429,7 @@
                 <!-- 동적으로 생성 -->
               </div>
 
-              <button onclick="nextSavedPage()" id="btnNextSaved" class="p-1.5 text-gray-600 hover:text-gray-900" data-analytics="nav_tab_click|hoxy_number|saved|next_page|">
+              <button onclick="nextSavedPage()" id="btnNextSaved" class="hoxy-pagination-btn hoxy-pagination-btn-next" data-analytics="nav_tab_click|hoxy_number|saved|next_page|">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -447,29 +440,22 @@
               최대 5페이지(50개)까지 표시됩니다
             </div>
 
-            <button onclick="showSavedExpandConfirm()" class="w-full mt-3 py-2.5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-bold rounded-xl hover:from-purple-100 hover:to-pink-100 transition-all flex items-center justify-center gap-1.5 border-2 border-purple-200 shadow-sm text-sm" data-analytics="ad_charge_click|hoxy_number|saved|expand_saved_pages|">
+            <button onclick="showSavedExpandConfirm()" class="hoxy-cta-btn hoxy-cta-btn-soft-purple hoxy-cta-btn-sm hoxy-cta-btn-with-icon mt-3" data-analytics="ad_charge_click|hoxy_number|saved|expand_saved_pages|">
               <span>📄</span>
               페이지 추가하기
             </button>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
-            <ul class="space-y-0.5 list-disc list-inside text-xs">
-              <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
-              <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
-              <li>개인의 책임 하에 이용 바랍니다.</li>
-            </ul>
-          </div>
+          <div id="savedDisclaimerMount" class="hoxy-disclaimer-box"></div>
         </div>
 
         <!-- 당첨 확인 탭 -->
-        <div id="checkTab" class="tab-content tab-padding space-y-3 pb-24">
+        <div id="checkTab" class="tab-content tab-padding hoxy-tab-stack">
 
-          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+          <div class="hoxy-check-top-card">
             <div class="mb-3">
               <label class="text-xs font-semibold text-gray-700 mb-1.5 block">당첨 회차</label>
-              <select id="drawSelect" class="w-full p-2.5 border-2 border-gray-200 rounded-xl font-semibold text-gray-900 focus:border-blue-500 focus:outline-none text-sm">
+              <select id="drawSelect" class="hoxy-select-field">
                 <!-- 동적으로 최근 10회차 생성 -->
               </select>
             </div>
@@ -494,23 +480,23 @@
                 <!-- 동적으로 생성 -->
               </div>
 
-              <button onclick="addManualInputLine()" class="w-full mt-2 py-2.5 bg-gray-50 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-1.5 border border-gray-200 text-sm" data-analytics="feature_use|hoxy_number|check|add_manual_line|">
+              <button onclick="addManualInputLine()" class="hoxy-inline-action-btn" data-analytics="feature_use|hoxy_number|check|add_manual_line|">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
                 한 줄 추가
               </button>
 
-              <button onclick="checkManualNumbers()" class="w-full mt-2 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm" data-analytics="feature_use|hoxy_number|check|check_manual_numbers|">
+              <button onclick="checkManualNumbers()" class="hoxy-cta-btn hoxy-cta-btn-primary hoxy-cta-btn-sm mt-2" data-analytics="feature_use|hoxy_number|check|check_manual_numbers|">
                 당첨 확인하기
               </button>
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl p-3 shadow-lg border border-gray-200">
+          <div class="hoxy-panel-card">
             <div class="flex items-center justify-between mb-3">
               <h3 class="font-bold text-gray-900 text-base">내 번호 당첨 확인</h3>
-              <span class="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full font-medium"><span id="savedCheckCount">0</span>개</span>
+              <span class="hoxy-pill-badge"><span id="savedCheckCount">0</span>개</span>
             </div>
 
             <div id="savedNumbersCheck" class="space-y-2">
@@ -524,37 +510,30 @@
             </div>
           </div>
 
-          <div class="bg-gray-50 rounded-xl p-3 text-xs text-gray-600 border border-gray-200">
-            <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
-            <ul class="space-y-0.5 list-disc list-inside text-xs">
-              <li>생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.</li>
-              <li>본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.</li>
-              <li>개인의 책임 하에 이용 바랍니다.</li>
-            </ul>
-          </div>
+          <div id="checkDisclaimerMount" class="hoxy-disclaimer-box"></div>
 
         </div>
 
         <!-- Bottom Navigation (모바일 전용) -->
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg bottom-nav md:hidden">
-          <div class="grid grid-cols-3 h-16">
-            <button onclick="switchTab('homeTab')" id="btnHome" class="flex flex-col items-center justify-center text-blue-600 transition-colors" data-analytics="nav_tab_click|hoxy_number|fnb|home_tab|">
-              <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <div class="hoxy-mobile-bottom-nav bottom-nav md:hidden">
+          <div class="hoxy-mobile-bottom-grid">
+            <button onclick="switchTab('homeTab')" id="btnHome" class="hoxy-mobile-tab-btn text-blue-600" data-analytics="nav_tab_click|hoxy_number|fnb|home_tab|">
+              <svg class="hoxy-mobile-tab-icon" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
               </svg>
-              <span class="text-xs font-bold">홈</span>
+              <span class="hoxy-mobile-tab-label font-bold">홈</span>
             </button>
-            <button onclick="switchTab('savedTab')" id="btnSaved" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" data-analytics="nav_tab_click|hoxy_number|fnb|saved_tab|">
-              <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="switchTab('savedTab')" id="btnSaved" class="hoxy-mobile-tab-btn text-gray-400 hover:text-gray-600" data-analytics="nav_tab_click|hoxy_number|fnb|saved_tab|">
+              <svg class="hoxy-mobile-tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
               </svg>
-              <span class="text-xs">내 번호</span>
+              <span class="hoxy-mobile-tab-label">내 번호</span>
             </button>
-            <button onclick="switchTab('checkTab')" id="btnCheck" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" data-analytics="nav_tab_click|hoxy_number|fnb|check_tab|">
-              <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button onclick="switchTab('checkTab')" id="btnCheck" class="hoxy-mobile-tab-btn text-gray-400 hover:text-gray-600" data-analytics="nav_tab_click|hoxy_number|fnb|check_tab|">
+              <svg class="hoxy-mobile-tab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
               </svg>
-              <span class="text-xs">당첨 확인</span>
+              <span class="hoxy-mobile-tab-label">당첨 확인</span>
             </button>
           </div>
         </div>
@@ -634,190 +613,20 @@
 
   </div>
 
-  <!-- 생성 확인 모달 -->
-  <div id="generateConfirmModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-5 max-w-[400px] w-full mx-4 shadow-2xl">
-      <div class="flex items-start justify-between mb-3">
-        <div class="flex-1">
-          <div class="text-sm font-semibold text-gray-700 mb-1">하루 생성할 수 있는 번호는 최대 10회</div>
-          <div class="text-2xl font-black text-blue-600 mb-1"><span id="confirmRemaining">10</span>/<span id="confirmTotal">10</span>번 남았습니다.</div>
-          <div class="text-xs text-gray-600">번호를 생성하시겠습니까?</div>
-        </div>
-        <button onclick="closeGenerateConfirm()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
+  <!-- 생성 확인 모달 마운트 -->
+  <div id="generateConfirmModalMount"></div>
 
-      <!-- 5회 이상일 때: 5회 연속 뽑기 옵션 -->
-      <label id="option5Times" class="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl mb-3 cursor-pointer hover:bg-gray-100 transition-colors">
-        <input type="checkbox" id="generate5Times" class="w-4 h-4 text-blue-600 rounded">
-        <span class="text-sm font-medium text-gray-700">연속 5회 뽑기</span>
-      </label>
+  <!-- 충전/확장 모달 마운트 -->
+  <div id="adForQuotaModalMount"></div>
+  <div id="expandSlotsModalMount"></div>
 
-      <!-- 4회 이하일 때: 남은 횟수 모두 뽑기 옵션 -->
-      <label id="optionRemaining" class="hidden flex items-center gap-2 p-2.5 bg-purple-50 rounded-xl mb-3 cursor-pointer hover:bg-purple-100 transition-colors border-2 border-purple-200">
-        <input type="checkbox" id="generateRemaining" class="w-4 h-4 text-purple-600 rounded">
-        <span class="text-sm font-medium text-purple-700">남은 <span id="remainingDrawCount">4</span>회 모두 뽑기</span>
-      </label>
+  <!-- 페이지 추가 확인 모달 마운트 -->
+  <div id="pageAddConfirmModalMount"></div>
+  <div id="savedPageAddConfirmModalMount"></div>
 
-      <div class="flex gap-2">
-        <button onclick="closeGenerateConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
-          취소
-        </button>
-        <button onclick="confirmGenerate()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm" data-analytics="feature_use|hoxy_number|modal|confirm_generate|">
-          생성하기
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 무료 횟수 충전 모달 -->
-  <div id="adForQuotaModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-6">
-        <div class="text-3xl mb-3">🎁</div>
-        <div class="text-2xl font-bold text-gray-900 mb-4">무료 횟수 +5회 충전</div>
-        <div class="text-sm text-gray-600 mb-2">생성 횟수 5회가 무료로 추가됩니다!</div>
-        <div class="text-xs text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full inline-block">
-          남은 충전 횟수: <span id="adQuotaRemaining" class="font-bold">3</span>/3회 (12시간 주기)
-        </div>
-      </div>
-
-      <div class="flex gap-3">
-        <button onclick="closeAdForQuotaModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
-          취소하기
-        </button>
-        <button onclick="confirmAdForQuota()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="ad_charge_click|hoxy_number|modal|confirm_free_charge|">
-          <span class="text-lg">🎁</span>
-          무료 충전
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5줄 확장 확인 모달 (NEW!) -->
-  <!-- 슬롯 확장 모달 -->
-  <div id="expandSlotsModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-6">
-        <div class="text-3xl mb-4">📦</div>
-        <div class="text-lg font-bold text-gray-900 mb-2">슬롯 +5개 추가</div>
-        <div class="text-sm text-gray-600 mb-4">최근 생성 번호 슬롯이 5개 추가됩니다!</div>
-        <div class="bg-purple-50 rounded-xl p-3 text-sm">
-          <div class="text-gray-700">현재 슬롯: <span class="font-bold text-purple-700"><span id="currentSlotsDisplay">5</span>개</span></div>
-          <div class="text-gray-700">추가 후: <span class="font-bold text-purple-700"><span id="afterSlotsDisplay">10</span>개</span></div>
-        </div>
-      </div>
-
-      <div class="flex gap-3">
-        <button onclick="closeExpandSlotsModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
-          취소
-        </button>
-        <button onclick="confirmExpandSlots()" class="flex-1 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="ad_charge_click|hoxy_number|modal|confirm_expand_slots|">
-          <span class="text-lg">📦</span>
-          슬롯 추가
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 페이지 추가 확인 모달 (NEW!) -->
-  <div id="pageAddConfirmModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-6">
-        <div class="text-lg font-bold text-gray-900 mb-4"><span id="nextPageNum">2</span>페이지 추가하기</div>
-        <div class="text-sm text-gray-600">다음 페이지가 추가됩니다!</div>
-      </div>
-
-      <div class="flex gap-3">
-        <button onclick="closePageAddConfirm()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
-          취소하기
-        </button>
-        <button onclick="confirmPageAdd()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="ad_charge_click|hoxy_number|modal|confirm_page_add|">
-          <span class="text-lg">📄</span>
-          페이지 추가
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 저장된 번호 페이지 추가 확인 모달 -->
-  <div id="savedPageAddConfirmModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-6">
-        <div class="text-lg font-bold text-gray-900 mb-4"><span id="nextSavedPageNum">2</span>페이지 추가하기</div>
-        <div class="text-sm text-gray-600">다음 페이지가 추가됩니다!</div>
-      </div>
-
-      <div class="flex gap-3">
-        <button onclick="closeSavedPageAddConfirm()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
-          취소하기
-        </button>
-        <button onclick="confirmSavedPageAdd()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="ad_charge_click|hoxy_number|modal|confirm_saved_page_add|">
-          <span class="text-lg">📄</span>
-          페이지 추가
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 생성 중 로딩 모달 -->
-  <div id="generatingModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center">
-        <div class="text-lg font-bold text-gray-900 mb-6">번호 생성 중</div>
-        
-        <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
-          <div id="loadingProgressBar" class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300" style="width: 0%"></div>
-        </div>
-        
-        <div class="text-4xl font-bold text-blue-600 mb-6">
-          <span id="loadingPercent">0</span>%
-        </div>
-
-        <div class="flex justify-center mb-6">
-          <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full spinner"></div>
-        </div>
-
-        <div id="loadingMessage" class="text-sm text-gray-600">
-          완전 랜덤으로 서플 중...
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 생성 완료 모달 -->
-  <div id="generatedModal" class="modal-backdrop">
-    <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
-      <div class="text-center">
-        <div class="text-lg font-bold text-gray-900 mb-4">번호 생성 중</div>
-        
-        <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
-          <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style="width: 100%"></div>
-        </div>
-        
-        <div class="text-4xl font-bold text-blue-600 mb-8">100%</div>
-
-        <div class="flex justify-center mb-6">
-          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
-        </div>
-
-        <div class="text-base text-gray-600 mb-6">
-          당신에게 행운이 깃들길...
-        </div>
-
-        <button onclick="closeGeneratedModal()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg">
-          내 번호 확인하기
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- 생성 플로우 모달 마운트 -->
+  <div id="generatingModalMount"></div>
+  <div id="generatedModalMount"></div>
 
   <!-- 설정 모달 -->
   <div id="settingsModal" class="modal-backdrop">
@@ -887,243 +696,21 @@
     </div>
   </div>
 
-  <!-- 관리자 로그인 모달 -->
-  <div id="adminLoginModal" class="modal-backdrop" onclick="if(event.target === this) closeAdminLoginModal()">
-    <div class="bg-white rounded-2xl p-6 max-w-[360px] w-full mx-4 shadow-2xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-900">관리자 로그인</h3>
-        <button onclick="closeAdminLoginModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="space-y-4">
-        <div>
-          <label class="text-sm font-semibold text-gray-700 block mb-2">ID</label>
-          <input type="text" id="adminIdInput" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none" placeholder="아이디 입력">
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-gray-700 block mb-2">PW</label>
-          <input type="password" id="adminPwInput" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none" placeholder="비밀번호 입력" onkeypress="if(event.key === 'Enter') adminLogin()">
-        </div>
-        <div id="adminLoginError" class="text-sm text-red-500 text-center hidden">
-          아이디 또는 비밀번호가 일치하지 않습니다.
-        </div>
-        <button onclick="adminLogin()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all">
-          로그인
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- 관리자 로그인 모달 마운트 -->
+  <div id="adminLoginModalMount"></div>
 
-  <!-- 서비스 소개 모달 -->
-  <div id="aboutModal" class="modal-backdrop" onclick="if(event.target === this) closeAboutModal()">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-900">서비스 소개</h3>
-        <button onclick="closeAboutModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="text-sm text-gray-600 space-y-4">
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">HOXY NUMBER란?</h4>
-          <p>HOXY NUMBER는 무료로 로또 번호를 생성하고 당첨 여부를 확인할 수 있는 서비스입니다. 매주 새로운 행운의 번호를 추천받고, 간편하게 당첨 결과를 확인해보세요.</p>
-        </div>
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">주요 기능</h4>
-          <ul class="list-disc list-inside space-y-1">
-            <li>로또 번호 자동 생성 (1~45 중 6개)</li>
-            <li>오늘의 럭키 넘버 제공</li>
-            <li>생성 번호 저장 및 관리</li>
-            <li>실시간 당첨 확인 (동행복권 연동)</li>
-            <li>등수별 당첨금 정보 제공</li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">서비스 운영</h4>
-          <p>본 서비스는 무료로 제공되며, 광고 수익을 통해 운영됩니다.</p>
-          <p class="mt-2">문의: poilkjmnb122@gmail.com</p>
-        </div>
-        <div class="pt-2 border-t text-xs text-gray-400">
-          <p>버전: v1.7</p>
-          <p>최종 업데이트: 2026년 2월</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- 서비스 소개 모달 마운트 -->
+  <div id="aboutModalMount"></div>
 
-  <!-- 개인정보처리방침 모달 -->
-  <div id="privacyModal" class="modal-backdrop" onclick="if(event.target === this) closePrivacyModal()">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-900">개인정보처리방침</h3>
-        <button onclick="closePrivacyModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="text-sm text-gray-600 space-y-4">
-        <p class="text-xs text-gray-400">시행일: 2026년 2월 5일</p>
+  <!-- 개인정보처리방침 모달 마운트 -->
+  <div id="privacyModalMount"></div>
 
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">1. 수집하는 개인정보</h4>
-          <p>HOXY NUMBER는 서비스 제공을 위해 최소한의 정보만을 수집합니다.</p>
-          <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>자동 수집: 기기 정보, 브라우저 유형, 접속 로그</li>
-            <li>서비스 이용 기록: 생성된 번호, 저장된 번호 (로컬 저장)</li>
-          </ul>
-        </div>
+  <!-- 이용약관 모달 마운트 -->
+  <div id="termsModalMount"></div>
 
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">2. 개인정보 이용 목적</h4>
-          <ul class="list-disc list-inside space-y-1">
-            <li>서비스 제공 및 운영</li>
-            <li>서비스 개선 및 통계 분석</li>
-            <li>광고 게재 (Google AdSense)</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">3. 개인정보 보관 및 파기</h4>
-          <p>사용자가 생성한 번호는 브라우저의 LocalStorage에 저장되며, 사용자가 직접 삭제하거나 브라우저 데이터 초기화 시 파기됩니다.</p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">4. 쿠키 및 분석/광고</h4>
-          <p>본 서비스는 Google Analytics를 사용하여 서비스 이용 통계를 수집하며, Google AdSense를 통해 광고를 게재합니다. 이 과정에서 쿠키 또는 유사한 식별자가 사용될 수 있습니다.</p>
-          <p class="mt-2">Google의 데이터 처리 방식: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" class="text-blue-600 underline">Google 파트너 사이트 정책</a></p>
-          <p class="mt-2">광고 개인화 설정: <a href="https://www.google.com/settings/ads" target="_blank" class="text-blue-600 underline">Google 광고 설정</a></p>
-          <p class="mt-2">Analytics 수집 거부: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" class="text-blue-600 underline">Google Analytics Opt-out Add-on</a></p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">5. 제3자 제공</h4>
-          <p>개인정보는 제3자에게 제공되지 않습니다. 단, 법령에 따른 요청이 있는 경우 예외로 합니다.</p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">6. 문의</h4>
-          <p>개인정보 관련 문의: poilkjmnb122@gmail.com</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 이용약관 모달 -->
-  <div id="termsModal" class="modal-backdrop" onclick="if(event.target === this) closeTermsModal()">
-    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-bold text-gray-900">이용약관</h3>
-        <button onclick="closeTermsModal()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
-      </div>
-      <div class="text-sm text-gray-600 space-y-4">
-        <p class="text-xs text-gray-400">시행일: 2026년 2월 5일</p>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제1조 (목적)</h4>
-          <p>본 약관은 HOXY NUMBER(이하 "서비스")의 이용에 관한 조건 및 절차를 규정함을 목적으로 합니다.</p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제2조 (서비스 내용)</h4>
-          <p>서비스는 다음의 기능을 제공합니다.</p>
-          <ul class="list-disc list-inside mt-2 space-y-1">
-            <li>로또 번호 무작위 생성</li>
-            <li>생성 번호 저장 및 관리</li>
-            <li>당첨 번호 조회 및 결과 확인</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제3조 (면책사항)</h4>
-          <ul class="list-disc list-inside space-y-1">
-            <li>본 서비스에서 생성된 번호는 무작위 추출 결과이며, 로또 당첨을 보장하지 않습니다.</li>
-            <li>번호 선택 및 복권 구매는 사용자 본인의 책임입니다.</li>
-            <li>서비스 이용으로 인한 직접적, 간접적 손해에 대해 책임지지 않습니다.</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제4조 (서비스 이용)</h4>
-          <ul class="list-disc list-inside space-y-1">
-            <li>서비스는 무료로 제공됩니다.</li>
-            <li>일일 생성 횟수 제한이 적용될 수 있습니다.</li>
-            <li>무료 충전을 통해 추가 기능을 이용할 수 있습니다.</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제5조 (금지 행위)</h4>
-          <ul class="list-disc list-inside space-y-1">
-            <li>서비스의 정상적 운영을 방해하는 행위</li>
-            <li>타인의 권리를 침해하는 행위</li>
-            <li>서비스를 상업적 목적으로 무단 이용하는 행위</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제6조 (약관 변경)</h4>
-          <p>본 약관은 서비스 정책에 따라 변경될 수 있으며, 변경 시 서비스 내 공지합니다.</p>
-        </div>
-
-        <div>
-          <h4 class="font-bold text-gray-900 mb-2">제7조 (문의)</h4>
-          <p>서비스 관련 문의: poilkjmnb122@gmail.com</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 저장 확인 모달 (스와이프용) -->
-  <div id="saveConfirmModal" class="modal-backdrop" onclick="if(event.target === this) closeSaveConfirm()">
-    <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-4">
-        <div class="text-3xl mb-2">💾</div>
-        <div class="text-lg font-bold text-gray-900 mb-3">저장하시겠습니까?</div>
-        <div id="saveConfirmNumbers" class="flex gap-1 justify-center p-3 bg-blue-50 rounded-xl">
-          <!-- 동적으로 생성 -->
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <button onclick="closeSaveConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
-          취소
-        </button>
-        <button onclick="confirmSaveNumber()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-sm" data-analytics="cta_click|hoxy_number|modal|confirm_save_number|">
-          저장하기
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 삭제 확인 모달 (스와이프용) -->
-  <div id="deleteConfirmModal" class="modal-backdrop" onclick="if(event.target === this) closeDeleteConfirm()">
-    <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
-      <div class="text-center mb-4">
-        <div class="text-3xl mb-2">🗑️</div>
-        <div class="text-lg font-bold text-gray-900 mb-3">삭제하시겠습니까?</div>
-        <div id="deleteConfirmNumbers" class="flex gap-1 justify-center p-3 bg-red-50 rounded-xl">
-          <!-- 동적으로 생성 -->
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <button onclick="closeDeleteConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
-          취소
-        </button>
-        <button onclick="confirmDeleteNumber()" class="flex-1 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl hover:from-red-600 hover:to-red-700 transition-all text-sm" data-analytics="cta_click|hoxy_number|modal|confirm_delete_number|">
-          삭제하기
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- 액션 확인 모달 마운트 -->
+  <div id="saveConfirmModalMount"></div>
+  <div id="deleteConfirmModalMount"></div>
 
   <!-- 럭키넘버 공개 모달 -->
   <div id="luckyRevealModal" class="modal-backdrop">
@@ -1145,7 +732,7 @@
         <div class="text-6xl mb-4">✨</div>
         <div class="text-xl font-bold mb-2">럭키 넘버 준비 완료!</div>
         <div class="text-sm opacity-80 mb-6">버튼을 눌러 행운의 번호를 확인하세요</div>
-        <button onclick="confirmLuckyReveal()" class="w-full py-3 bg-white text-purple-700 font-bold rounded-xl hover:bg-gray-100 transition-all flex items-center justify-center gap-2" data-analytics="feature_use|hoxy_number|modal|confirm_lucky_reveal|">
+        <button onclick="confirmLuckyReveal()" class="hoxy-cta-btn hoxy-cta-btn-white-purple hoxy-cta-btn-sm hoxy-cta-btn-with-icon" data-analytics="feature_use|hoxy_number|modal|confirm_lucky_reveal|">
           <span>🎱</span>
           번호 확인하기
         </button>
@@ -1183,7 +770,7 @@
           <div id="congratsPrize" class="text-xl font-bold text-green-600">1,500,000원</div>
         </div>
 
-        <button onclick="closeCongratsModal()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all">
+        <button onclick="closeCongratsModal()" class="hoxy-cta-btn hoxy-cta-btn-primary-mix hoxy-cta-btn-sm">
           확인
         </button>
       </div>
