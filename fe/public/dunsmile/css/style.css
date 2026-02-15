@@ -1,3 +1,44 @@
+    /* ========== 도파민 공작소 공통 네비게이션 ========== */
+
+    /* 헤더 홈 로고 */
+    .dp-header-home { text-decoration:none; font-size:13px; font-weight:800; color:#8b5cf6; white-space:nowrap; }
+    .dp-header-home:hover { color:#7c3aed; }
+    .dp-header-sep { color:#d1d5db; margin:0 4px; font-size:13px; }
+
+    /* 우측 사이드바 오버레이 */
+    .dp-sidebar-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:55; display:none;
+    }
+    .dp-sidebar-overlay.open { display:block; }
+
+    /* 우측 사이드바 패널 */
+    .dp-sidebar {
+      position:fixed; top:0; right:0; bottom:0;
+      width:280px; max-width:80vw;
+      background:white; z-index:56;
+      transform:translateX(100%);
+      transition:transform 0.3s ease;
+      overflow-y:auto;
+      box-shadow:-4px 0 24px rgba(0,0,0,0.1);
+    }
+    .dp-sidebar.open { transform:translateX(0); }
+
+    /* 사이드바 메뉴 아이템 (홈과 동일) */
+    .dp-menu-item {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:10px;
+      color:#374151; font-size:14px; text-decoration:none;
+      transition:background 0.15s;
+    }
+    .dp-menu-item:hover { background:#f3f4f6; }
+    .dp-menu-item.active { background:#f5f3ff; color:#7c3aed; font-weight:600; }
+    .dp-section-title {
+      font-size:11px; font-weight:700; color:#9ca3af;
+      text-transform:uppercase; letter-spacing:0.05em;
+      padding:16px 12px 6px;
+    }
+    .dp-divider { border-top:1px solid #f3f4f6; margin:8px 0; }
+
     /* 전체 레이아웃 배경색 */
     html, body {
       margin: 0;

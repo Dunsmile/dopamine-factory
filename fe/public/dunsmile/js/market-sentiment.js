@@ -555,19 +555,13 @@
   function openServiceMenu() {
     const backdrop = document.getElementById("serviceMenuBackdrop");
     const sidebar = document.getElementById("serviceMenuSidebar");
-    if (backdrop && sidebar) {
-      backdrop.classList.remove("hidden");
-      sidebar.classList.remove("-translate-x-full");
-    }
+    if (backdrop && sidebar) { backdrop.classList.add("open"); sidebar.classList.add("open"); }
   }
 
   function closeServiceMenu() {
     const backdrop = document.getElementById("serviceMenuBackdrop");
     const sidebar = document.getElementById("serviceMenuSidebar");
-    if (backdrop && sidebar) {
-      backdrop.classList.add("hidden");
-      sidebar.classList.add("-translate-x-full");
-    }
+    if (backdrop && sidebar) { backdrop.classList.remove("open"); sidebar.classList.remove("open"); }
   }
 
   window.openServiceMenu = openServiceMenu;
