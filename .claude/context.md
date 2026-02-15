@@ -88,6 +88,25 @@ dopamine-factory/
 - 이모지 사용 (사용자 선호)
 - 모바일 우선 반응형 디자인
 
+### CSS 작성 규칙 (필수)
+- **Tailwind 유틸리티 클래스를 HTML에 직접 나열하지 않는다**
+- 대신 `style.css`에 **시맨틱(의미 있는) 클래스명**을 정의하고 HTML에서는 그 클래스만 사용한다
+- 기존 패턴 참고: `dp-header-home`, `dp-sidebar`, `dp-menu-item` 등
+
+```css
+/* style.css - 의미 있는 이름으로 정의 */
+.tab-btn { display:flex; align-items:center; gap:6px; padding:8px 12px; ... }
+.tab-btn.active { color:#2563eb; background:#eff6ff; }
+```
+```html
+<!-- HTML - 클래스명만으로 역할을 알 수 있게 -->
+<button class="tab-btn active">홈</button>
+```
+
+- **이유**: Tailwind 인라인은 수정 시 어떤 요소인지 파악이 어렵고, 시맨틱 클래스는 한 곳(style.css)만 수정하면 전체 반영됨
+- **네이밍**: `dp-` 접두사(공통) 또는 서비스별 접두사 사용 (예: `hoxy-`, `fortune-`)
+- **예외**: 단순 레이아웃 보조 (예: `mt-2`, `hidden`)는 인라인 Tailwind 허용
+
 ## 최근 작업 이력
 - ✅ Firebase 백엔드 통합 완료 (commit: 575f300)
 - ✅ Cloudflare Pages 배포 완료
