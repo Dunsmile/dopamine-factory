@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Daily fortune banner">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#160f2d"/>
+      <stop offset="55%" stop-color="#3f2f8a"/>
+      <stop offset="100%" stop-color="#7d6bff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <circle cx="980" cy="130" r="190" fill="#ffffff" fill-opacity="0.09"/>
+  <path d="M0 610 C 250 500, 450 760, 1200 560 L1200 800 L0 800 Z" fill="#ffffff" fill-opacity="0.08"/>
+  <text x="80" y="640" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="82" font-weight="800" fill="#f4f2ff">DAILY FORTUNE</text>
+  <text x="84" y="700" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="30" font-weight="500" fill="#dcd8ff">Today's signal</text>
+</svg>

@@ -37,7 +37,7 @@
   }
 
   function serviceBanner(service) {
-    return SERVICE_BANNERS[service.id] || '/assets/banners/banner-hoxy-number.png';
+    return SERVICE_BANNERS[service.id] || '/assets/banners/banner-hoxy-number.svg';
   }
 
   function categoryPillLabel(category) {
