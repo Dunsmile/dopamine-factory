@@ -1,0 +1,21 @@
+name = "market-sentiment-worker"
+main = "src/index.ts"
+compatibility_date = "2026-02-11"
+workers_dev = true
+
+[triggers]
+crons = ["*/15 * * * *"]
+
+[observability]
+enabled = true
+
+[vars]
+CORS_ORIGIN = "https://dopamine-factory.pages.dev"
+DCINSIDE_CRYPTO_GALL_ID = "bitcoins_new1"
+DCINSIDE_STOCK_GALL_ID = "neostock"
+FMKOREA_CRYPTO_BOARD = "https://www.fmkorea.com/coin"
+FMKOREA_STOCK_BOARD = "https://www.fmkorea.com/stock"
+FMKOREA_BASE_URL = "https://www.fmkorea.com"
+CRAWL_LIST_LIMIT = "30"
+CRAWL_DETAIL_LIMIT = "30"
+SENTIMENT_WINDOW_HOURS = "24"

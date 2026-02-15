@@ -1,5 +1,7 @@
 // ==================== 관상 테스트 로직 ====================
 
+const MARKET_SENTIMENT_ROUTE = '/dunsmile/market-sentiment/';
+
 // 상태 관리
 let selectedGender = null;
 let uploadedPhotoData = null;
@@ -530,6 +532,29 @@ function shareResult() {
   }
 }
 
+async function downloadFaceShareCard() {
+  if (!testResult) {
+    showToast('먼저 관상 분석을 완료해주세요', 2000);
+    return;
+  }
+  if (!window.DopaminShareCard) {
+    showToast('공유 카드 기능을 불러오지 못했습니다', 2000);
+    return;
+  }
+
+  await window.DopaminShareCard.download({
+    title: '부자가 될 상인가?',
+    subtitle: `${testResult.name}님의 관상 결과`,
+    highlight: `부자 기운 ${testResult.richPercent}%`,
+    tags: testResult.storyline.points || ['관상분석', '도파민공작소'],
+    footer: 'dopamine-factory.pages.dev/dunsmile/rich-face/',
+    fromColor: '#9333ea',
+    toColor: '#ec4899',
+    filePrefix: 'rich-face'
+  });
+  showToast('결과 이미지 카드가 저장되었습니다!', 2000);
+}
+
 function retakeTest() {
   // 상태 초기화
   selectedGender = null;
@@ -562,19 +587,13 @@ function retakeTest() {
 function openServiceMenu() {
   const backdrop = document.getElementById('serviceMenuBackdrop');
   const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) {
-    backdrop.classList.remove('hidden');
-    sidebar.classList.remove('-translate-x-full');
-  }
+  if (backdrop && sidebar) { backdrop.classList.add('open'); sidebar.classList.add('open'); }
 }
 
 function closeServiceMenu() {
   const backdrop = document.getElementById('serviceMenuBackdrop');
   const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) {
-    backdrop.classList.add('hidden');
-    sidebar.classList.add('-translate-x-full');
-  }
+  if (backdrop && sidebar) { backdrop.classList.remove('open'); sidebar.classList.remove('open'); }
 }
 
 // ==================== 설정 ====================
@@ -595,6 +614,7 @@ window.selectGender = selectGender;
 window.handlePhotoUpload = handlePhotoUpload;
 window.startAnalysis = startAnalysis;
 window.shareResult = shareResult;
+window.downloadFaceShareCard = downloadFaceShareCard;
 window.retakeTest = retakeTest;
 window.openServiceMenu = openServiceMenu;
 window.closeServiceMenu = closeServiceMenu;

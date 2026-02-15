@@ -1,3 +1,5 @@
+    const MARKET_SENTIMENT_ROUTE = '/dunsmile/market-sentiment/';
+
     // ==================== 데이터 관리 ====================
     
     const STORAGE_KEYS = {
@@ -39,6 +41,16 @@
     let savedUnlockedPages = 1;
 
     async function initApp() {
+      renderGenerateConfirmModal();
+      renderGenerationFlowModals();
+      renderAdminLoginModal();
+      renderAboutModal();
+      renderPrivacyModal();
+      renderTermsModal();
+      renderDisclaimerBoxes();
+      renderActionConfirmModals();
+      renderPageAddConfirmModals();
+      renderChargeModals();
       await loadWinningNumbers();
       initQuota();
       await initDrawSelect();
@@ -72,6 +84,531 @@
       setInterval(checkDateReset, 60000);
     }
 
+    function renderDisclaimerBoxes() {
+      const mounts = ['homeDisclaimerMount', 'savedDisclaimerMount', 'checkDisclaimerMount'];
+      const disclaimerItems = [
+        '생성된 번호는 참고용이며 실제 로또 당첨을 보장하지 않습니다.',
+        '본 서비스의 번호는 무작위 추출 결과와 동일한 확률을 가집니다.',
+        '개인의 책임 하에 이용 바랍니다.'
+      ];
+
+      const disclaimerHtml = `
+        <div class="font-semibold text-gray-800 mb-1.5">⚠️ 면책 조항</div>
+        <ul class="space-y-0.5 list-disc list-inside text-xs">
+          ${disclaimerItems.map((item) => `<li>${item}</li>`).join('')}
+        </ul>
+      `;
+
+      mounts.forEach((id) => {
+        const mount = document.getElementById(id);
+        if (mount) {
+          mount.innerHTML = disclaimerHtml;
+        }
+      });
+    }
+
+    function renderGenerateConfirmModal() {
+      const mount = document.getElementById('generateConfirmModalMount');
+      if (!mount) return;
+
+      mount.innerHTML = `
+        <div id="generateConfirmModal" class="modal-backdrop">
+          <div class="bg-white rounded-2xl p-5 max-w-[400px] w-full mx-4 shadow-2xl">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <div class="text-sm font-semibold text-gray-700 mb-1">하루 생성할 수 있는 번호는 최대 10회</div>
+                <div class="text-2xl font-black text-blue-600 mb-1"><span id="confirmRemaining">10</span>/<span id="confirmTotal">10</span>번 남았습니다.</div>
+                <div class="text-xs text-gray-600">번호를 생성하시겠습니까?</div>
+              </div>
+              <button onclick="closeGenerateConfirm()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+
+            <label id="option5Times" class="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl mb-3 cursor-pointer hover:bg-gray-100 transition-colors">
+              <input type="checkbox" id="generate5Times" class="w-4 h-4 text-blue-600 rounded">
+              <span class="text-sm font-medium text-gray-700">연속 5회 뽑기</span>
+            </label>
+
+            <label id="optionRemaining" class="hidden flex items-center gap-2 p-2.5 bg-purple-50 rounded-xl mb-3 cursor-pointer hover:bg-purple-100 transition-colors border-2 border-purple-200">
+              <input type="checkbox" id="generateRemaining" class="w-4 h-4 text-purple-600 rounded">
+              <span class="text-sm font-medium text-purple-700">남은 <span id="remainingDrawCount">4</span>회 모두 뽑기</span>
+            </label>
+
+            <div class="flex gap-2">
+              <button onclick="closeGenerateConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+                취소
+              </button>
+              <button onclick="confirmGenerate()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm" data-analytics="feature_use|hoxy_number|modal|confirm_generate|">
+                생성하기
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGenerationFlowModals() {
+      const generatingMount = document.getElementById('generatingModalMount');
+      if (generatingMount) {
+        generatingMount.innerHTML = `
+          <div id="generatingModal" class="modal-backdrop">
+            <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
+              <div class="text-center">
+                <div class="text-lg font-bold text-gray-900 mb-6">번호 생성 중</div>
+
+                <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
+                  <div id="loadingProgressBar" class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+
+                <div class="text-4xl font-bold text-blue-600 mb-6">
+                  <span id="loadingPercent">0</span>%
+                </div>
+
+                <div class="flex justify-center mb-6">
+                  <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full spinner"></div>
+                </div>
+
+                <div id="loadingMessage" class="text-sm text-gray-600">
+                  완전 랜덤으로 서플 중...
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      const generatedMount = document.getElementById('generatedModalMount');
+      if (generatedMount) {
+        generatedMount.innerHTML = `
+          <div id="generatedModal" class="modal-backdrop">
+            <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
+              <div class="text-center">
+                <div class="text-lg font-bold text-gray-900 mb-4">번호 생성 중</div>
+
+                <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
+                  <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style="width: 100%"></div>
+                </div>
+
+                <div class="text-4xl font-bold text-blue-600 mb-8">100%</div>
+
+                <div class="flex justify-center mb-6">
+                  <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="text-base text-gray-600 mb-6">
+                  당신에게 행운이 깃들길...
+                </div>
+
+                <button onclick="closeGeneratedModal()" class="hoxy-cta-btn hoxy-cta-btn-primary hoxy-cta-btn-sm">
+                  내 번호 확인하기
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderAdminLoginModal() {
+      const mount = document.getElementById('adminLoginModalMount');
+      if (!mount) return;
+
+      mount.innerHTML = `
+        <div id="adminLoginModal" class="modal-backdrop" onclick="if(event.target === this) closeAdminLoginModal()">
+          <div class="bg-white rounded-2xl p-6 max-w-[360px] w-full mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-900">관리자 로그인</h3>
+              <button onclick="closeAdminLoginModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="text-sm font-semibold text-gray-700 block mb-2">ID</label>
+                <input type="text" id="adminIdInput" class="hoxy-input-field" placeholder="아이디 입력">
+              </div>
+              <div>
+                <label class="text-sm font-semibold text-gray-700 block mb-2">PW</label>
+                <input type="password" id="adminPwInput" class="hoxy-input-field" placeholder="비밀번호 입력" onkeypress="if(event.key === 'Enter') adminLogin()">
+              </div>
+              <div id="adminLoginError" class="text-sm text-red-500 text-center hidden">
+                아이디 또는 비밀번호가 일치하지 않습니다.
+              </div>
+              <button onclick="adminLogin()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all">
+                로그인
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAboutModal() {
+      const mount = document.getElementById('aboutModalMount');
+      if (!mount) return;
+
+      mount.innerHTML = `
+        <div id="aboutModal" class="modal-backdrop" onclick="if(event.target === this) closeAboutModal()">
+          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-900">서비스 소개</h3>
+              <button onclick="closeAboutModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="text-sm text-gray-600 space-y-4">
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">HOXY NUMBER란?</h4>
+                <p>HOXY NUMBER는 무료로 로또 번호를 생성하고 당첨 여부를 확인할 수 있는 서비스입니다. 매주 새로운 행운의 번호를 추천받고, 간편하게 당첨 결과를 확인해보세요.</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">주요 기능</h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>로또 번호 자동 생성 (1~45 중 6개)</li>
+                  <li>오늘의 럭키 넘버 제공</li>
+                  <li>생성 번호 저장 및 관리</li>
+                  <li>실시간 당첨 확인 (동행복권 연동)</li>
+                  <li>등수별 당첨금 정보 제공</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">서비스 운영</h4>
+                <p>본 서비스는 무료로 제공되며, 광고 수익을 통해 운영됩니다.</p>
+                <p class="mt-2">문의: poilkjmnb122@gmail.com</p>
+              </div>
+              <div class="pt-2 border-t text-xs text-gray-400">
+                <p>버전: v1.7</p>
+                <p>최종 업데이트: 2026년 2월</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPrivacyModal() {
+      const mount = document.getElementById('privacyModalMount');
+      if (!mount) return;
+
+      mount.innerHTML = `
+        <div id="privacyModal" class="modal-backdrop" onclick="if(event.target === this) closePrivacyModal()">
+          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-900">개인정보처리방침</h3>
+              <button onclick="closePrivacyModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="text-sm text-gray-600 space-y-4">
+              <p class="text-xs text-gray-400">시행일: 2026년 2월 5일</p>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">1. 수집하는 개인정보</h4>
+                <p>HOXY NUMBER는 서비스 제공을 위해 최소한의 정보만을 수집합니다.</p>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                  <li>자동 수집: 기기 정보, 브라우저 유형, 접속 로그</li>
+                  <li>서비스 이용 기록: 생성된 번호, 저장된 번호 (로컬 저장)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">2. 개인정보 이용 목적</h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>서비스 제공 및 운영</li>
+                  <li>서비스 개선 및 통계 분석</li>
+                  <li>광고 게재 (Google AdSense)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">3. 개인정보 보관 및 파기</h4>
+                <p>사용자가 생성한 번호는 브라우저의 LocalStorage에 저장되며, 사용자가 직접 삭제하거나 브라우저 데이터 초기화 시 파기됩니다.</p>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">4. 쿠키 및 분석/광고</h4>
+                <p>본 서비스는 Google Analytics를 사용하여 서비스 이용 통계를 수집하며, Google AdSense를 통해 광고를 게재합니다. 이 과정에서 쿠키 또는 유사한 식별자가 사용될 수 있습니다.</p>
+                <p class="mt-2">Google의 데이터 처리 방식: <a href="https://policies.google.com/technologies/partner-sites" target="_blank" class="text-blue-600 underline">Google 파트너 사이트 정책</a></p>
+                <p class="mt-2">광고 개인화 설정: <a href="https://www.google.com/settings/ads" target="_blank" class="text-blue-600 underline">Google 광고 설정</a></p>
+                <p class="mt-2">Analytics 수집 거부: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" class="text-blue-600 underline">Google Analytics Opt-out Add-on</a></p>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">5. 제3자 제공</h4>
+                <p>개인정보는 제3자에게 제공되지 않습니다. 단, 법령에 따른 요청이 있는 경우 예외로 합니다.</p>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">6. 문의</h4>
+                <p>개인정보 관련 문의: poilkjmnb122@gmail.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTermsModal() {
+      const mount = document.getElementById('termsModalMount');
+      if (!mount) return;
+
+      mount.innerHTML = `
+        <div id="termsModal" class="modal-backdrop" onclick="if(event.target === this) closeTermsModal()">
+          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-gray-900">이용약관</h3>
+              <button onclick="closeTermsModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="text-sm text-gray-600 space-y-4">
+              <p class="text-xs text-gray-400">시행일: 2026년 2월 5일</p>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제1조 (목적)</h4>
+                <p>본 약관은 HOXY NUMBER(이하 "서비스")의 이용에 관한 조건 및 절차를 규정함을 목적으로 합니다.</p>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제2조 (서비스 내용)</h4>
+                <p>서비스는 다음의 기능을 제공합니다.</p>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                  <li>로또 번호 무작위 생성</li>
+                  <li>생성 번호 저장 및 관리</li>
+                  <li>당첨 번호 조회 및 결과 확인</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제3조 (면책사항)</h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>본 서비스에서 생성된 번호는 무작위 추출 결과이며, 로또 당첨을 보장하지 않습니다.</li>
+                  <li>번호 선택 및 복권 구매는 사용자 본인의 책임입니다.</li>
+                  <li>서비스 이용으로 인한 직접적, 간접적 손해에 대해 책임지지 않습니다.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제4조 (서비스 이용)</h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>서비스는 무료로 제공됩니다.</li>
+                  <li>일일 생성 횟수 제한이 적용될 수 있습니다.</li>
+                  <li>무료 충전을 통해 추가 기능을 이용할 수 있습니다.</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제5조 (금지 행위)</h4>
+                <ul class="list-disc list-inside space-y-1">
+                  <li>서비스의 정상적 운영을 방해하는 행위</li>
+                  <li>타인의 권리를 침해하는 행위</li>
+                  <li>서비스를 상업적 목적으로 무단 이용하는 행위</li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제6조 (약관 변경)</h4>
+                <p>본 약관은 서비스 정책에 따라 변경될 수 있으며, 변경 시 서비스 내 공지합니다.</p>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-gray-900 mb-2">제7조 (문의)</h4>
+                <p>서비스 관련 문의: poilkjmnb122@gmail.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderActionConfirmModals() {
+      const configs = [
+        {
+          mountId: 'saveConfirmModalMount',
+          modalId: 'saveConfirmModal',
+          closeHandler: 'closeSaveConfirm',
+          confirmHandler: 'confirmSaveNumber',
+          numbersId: 'saveConfirmNumbers',
+          icon: '💾',
+          title: '저장하시겠습니까?',
+          numbersBgClass: 'bg-blue-50',
+          confirmBtnClass: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-sm',
+          confirmLabel: '저장하기',
+          analytics: 'cta_click|hoxy_number|modal|confirm_save_number|'
+        },
+        {
+          mountId: 'deleteConfirmModalMount',
+          modalId: 'deleteConfirmModal',
+          closeHandler: 'closeDeleteConfirm',
+          confirmHandler: 'confirmDeleteNumber',
+          numbersId: 'deleteConfirmNumbers',
+          icon: '🗑️',
+          title: '삭제하시겠습니까?',
+          numbersBgClass: 'bg-red-50',
+          confirmBtnClass: 'bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl hover:from-red-600 hover:to-red-700 transition-all text-sm',
+          confirmLabel: '삭제하기',
+          analytics: 'cta_click|hoxy_number|modal|confirm_delete_number|'
+        }
+      ];
+
+      configs.forEach((config) => {
+        const mount = document.getElementById(config.mountId);
+        if (!mount) return;
+
+        mount.innerHTML = `
+          <div id="${config.modalId}" class="modal-backdrop" onclick="if(event.target === this) ${config.closeHandler}()">
+            <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
+              <div class="text-center mb-4">
+                <div class="text-3xl mb-2">${config.icon}</div>
+                <div class="hoxy-modal-confirm-title">${config.title}</div>
+                <div id="${config.numbersId}" class="flex gap-1 justify-center p-3 ${config.numbersBgClass} rounded-xl"></div>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="${config.closeHandler}()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+                  취소
+                </button>
+                <button onclick="${config.confirmHandler}()" class="flex-1 py-2.5 ${config.confirmBtnClass}" data-analytics="${config.analytics}">
+                  ${config.confirmLabel}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderPageAddConfirmModals() {
+      const configs = [
+        {
+          mountId: 'pageAddConfirmModalMount',
+          modalId: 'pageAddConfirmModal',
+          closeHandler: 'closePageAddConfirm',
+          confirmHandler: 'confirmPageAdd',
+          pageLabelId: 'nextPageNum',
+          analytics: 'ad_charge_click|hoxy_number|modal|confirm_page_add|'
+        },
+        {
+          mountId: 'savedPageAddConfirmModalMount',
+          modalId: 'savedPageAddConfirmModal',
+          closeHandler: 'closeSavedPageAddConfirm',
+          confirmHandler: 'confirmSavedPageAdd',
+          pageLabelId: 'nextSavedPageNum',
+          analytics: 'ad_charge_click|hoxy_number|modal|confirm_saved_page_add|'
+        }
+      ];
+
+      configs.forEach((config) => {
+        const mount = document.getElementById(config.mountId);
+        if (!mount) return;
+
+        mount.innerHTML = `
+          <div id="${config.modalId}" class="modal-backdrop">
+            <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+              <div class="text-center mb-6">
+                <div class="text-lg font-bold text-gray-900 mb-4"><span id="${config.pageLabelId}">2</span>페이지 추가하기</div>
+                <div class="text-sm text-gray-600">다음 페이지가 추가됩니다!</div>
+              </div>
+
+              <div class="flex gap-3">
+                <button onclick="${config.closeHandler}()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                  취소하기
+                </button>
+                <button onclick="${config.confirmHandler}()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="${config.analytics}">
+                  <span class="text-lg">📄</span>
+                  페이지 추가
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderChargeModals() {
+      const configs = [
+        {
+          mountId: 'adForQuotaModalMount',
+          modalId: 'adForQuotaModal',
+          closeHandler: 'closeAdForQuotaModal',
+          confirmHandler: 'confirmAdForQuota',
+          analytics: 'ad_charge_click|hoxy_number|modal|confirm_free_charge|',
+          contentHtml: `
+            <div class="text-center mb-6">
+              <div class="text-3xl mb-3">🎁</div>
+              <div class="text-2xl font-bold text-gray-900 mb-4">무료 횟수 +5회 충전</div>
+              <div class="text-sm text-gray-600 mb-2">생성 횟수 5회가 무료로 추가됩니다!</div>
+              <div class="text-xs text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full inline-block">
+                남은 충전 횟수: <span id="adQuotaRemaining" class="font-bold">3</span>/3회 (12시간 주기)
+              </div>
+            </div>
+          `,
+          confirmBtnClass: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg',
+          confirmIcon: '🎁',
+          confirmLabel: '무료 충전',
+          cancelLabel: '취소하기'
+        },
+        {
+          mountId: 'expandSlotsModalMount',
+          modalId: 'expandSlotsModal',
+          closeHandler: 'closeExpandSlotsModal',
+          confirmHandler: 'confirmExpandSlots',
+          analytics: 'ad_charge_click|hoxy_number|modal|confirm_expand_slots|',
+          contentHtml: `
+            <div class="text-center mb-6">
+              <div class="text-3xl mb-4">📦</div>
+              <div class="text-lg font-bold text-gray-900 mb-2">슬롯 +5개 추가</div>
+              <div class="text-sm text-gray-600 mb-4">최근 생성 번호 슬롯이 5개 추가됩니다!</div>
+              <div class="bg-purple-50 rounded-xl p-3 text-sm">
+                <div class="text-gray-700">현재 슬롯: <span class="font-bold text-purple-700"><span id="currentSlotsDisplay">5</span>개</span></div>
+                <div class="text-gray-700">추가 후: <span class="font-bold text-purple-700"><span id="afterSlotsDisplay">10</span>개</span></div>
+              </div>
+            </div>
+          `,
+          confirmBtnClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg',
+          confirmIcon: '📦',
+          confirmLabel: '슬롯 추가',
+          cancelLabel: '취소'
+        }
+      ];
+
+      configs.forEach((config) => {
+        const mount = document.getElementById(config.mountId);
+        if (!mount) return;
+
+        mount.innerHTML = `
+          <div id="${config.modalId}" class="modal-backdrop">
+            <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+              ${config.contentHtml}
+              <div class="flex gap-3">
+                <button onclick="${config.closeHandler}()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                  ${config.cancelLabel}
+                </button>
+                <button onclick="${config.confirmHandler}()" class="flex-1 py-3 ${config.confirmBtnClass} flex items-center justify-center gap-2" data-analytics="${config.analytics}">
+                  <span class="text-lg">${config.confirmIcon}</span>
+                  ${config.confirmLabel}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
     // ==================== 토스트 메시지 ====================
     
     function showToast(message, duration = 2000) {
@@ -81,12 +618,10 @@
       if (!toast || !toastMessage) return;
       
       toastMessage.textContent = message;
-      toast.classList.add('show');
+      setClassActive(toast, 'show', true);
       
       setTimeout(() => {
-        if (toast && toast.classList) {
-          toast.classList.remove('show');
-        }
+        setClassActive(toast, 'show', false);
       }, duration);
     }
 
@@ -115,7 +650,6 @@
 
       const confirmRemainingEl = document.getElementById('confirmRemaining');
       const confirmTotalEl = document.getElementById('confirmTotal');
-      const modalEl = document.getElementById('generateConfirmModal');
       const option5TimesEl = document.getElementById('option5Times');
       const optionRemainingEl = document.getElementById('optionRemaining');
       const remainingCountEl = document.getElementById('remainingDrawCount');
@@ -126,24 +660,23 @@
       // 할당량에 따라 옵션 표시 변경
       if (quota.remaining >= 5) {
         // 5회 이상: 5회 연속 뽑기 옵션
-        if (option5TimesEl) option5TimesEl.classList.remove('hidden');
-        if (optionRemainingEl) optionRemainingEl.classList.add('hidden');
+        setHidden(option5TimesEl, false);
+        setHidden(optionRemainingEl, true);
       } else {
         // 4회 이하: 남은 횟수 모두 뽑기 옵션
-        if (option5TimesEl) option5TimesEl.classList.add('hidden');
-        if (optionRemainingEl) optionRemainingEl.classList.remove('hidden');
+        setHidden(option5TimesEl, true);
+        setHidden(optionRemainingEl, false);
         if (remainingCountEl) remainingCountEl.textContent = quota.remaining;
       }
 
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('generateConfirmModal', true);
     }
 
     function closeGenerateConfirm() {
-      const modalEl = document.getElementById('generateConfirmModal');
       const checkboxEl = document.getElementById('generate5Times');
       const checkboxRemainingEl = document.getElementById('generateRemaining');
 
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('generateConfirmModal', false);
       if (checkboxEl) checkboxEl.checked = false;
       if (checkboxRemainingEl) checkboxRemainingEl.checked = false;
     }
@@ -188,13 +721,11 @@
         remainingEl.textContent = getRemainingAdQuota();
       }
 
-      const modalEl = document.getElementById('adForQuotaModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('adForQuotaModal', true);
     }
 
     function closeAdForQuotaModal() {
-      const modalEl = document.getElementById('adForQuotaModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('adForQuotaModal', false);
     }
 
     function confirmAdForQuota() {
@@ -227,16 +758,13 @@
       
       const currentEl = document.getElementById('currentSlotsDisplay');
       const afterEl = document.getElementById('afterSlotsDisplay');
-      const modalEl = document.getElementById('expandSlotsModal');
-      
       if (currentEl) currentEl.textContent = recentSlots;
       if (afterEl) afterEl.textContent = Math.min(recentSlots + 5, 50);
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('expandSlotsModal', true);
     }
 
     function closeExpandSlotsModal() {
-      const modalEl = document.getElementById('expandSlotsModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('expandSlotsModal', false);
     }
 
     function confirmExpandSlots() {
@@ -399,15 +927,12 @@
 
     function showPageAddConfirm(pageNum) {
       const pageNumEl = document.getElementById('nextPageNum');
-      const modalEl = document.getElementById('pageAddConfirmModal');
-      
       if (pageNumEl) pageNumEl.textContent = pageNum;
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('pageAddConfirmModal', true);
     }
 
     function closePageAddConfirm() {
-      const modalEl = document.getElementById('pageAddConfirmModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('pageAddConfirmModal', false);
     }
 
     function confirmPageAdd() {
@@ -432,7 +957,7 @@
       const modalEl = document.getElementById('generatingModal');
       if (!modalEl) return;
       
-      modalEl.classList.add('active');
+      setModalActive('generatingModal', true);
       
       let progress = 0;
       const interval = setInterval(() => {
@@ -443,32 +968,39 @@
           clearInterval(interval);
           
           setTimeout(() => {
-            modalEl.classList.remove('active');
+            setModalActive('generatingModal', false);
             showGeneratedComplete(count);
           }, 500);
         }
         
-        const percentEl = document.getElementById('loadingPercent');
-        const barEl = document.getElementById('loadingProgressBar');
-        const messageEl = document.getElementById('loadingMessage');
-        
-        if (percentEl) percentEl.textContent = Math.round(progress);
-        if (barEl) barEl.style.width = progress + '%';
-        
-        if (messageEl) {
-          if (progress < 20) {
-            messageEl.textContent = '랜덤 번호 생성 중...';
-          } else if (progress < 40) {
-            messageEl.textContent = '행운의 조합 찾는 중...';
-          } else if (progress < 60) {
-            messageEl.textContent = '당첨 확률 계산 중...';
-          } else if (progress < 80) {
-            messageEl.textContent = '마지막 검증 중...';
-          } else {
-            messageEl.textContent = '완료!';
-          }
-        }
+        updateGeneratingProgressUI(progress);
       }, 250);
+    }
+
+    function updateGeneratingProgressUI(progress) {
+      const percentEl = document.getElementById('loadingPercent');
+      const barEl = document.getElementById('loadingProgressBar');
+      const messageEl = document.getElementById('loadingMessage');
+
+      if (percentEl) percentEl.textContent = Math.round(progress);
+      if (barEl) barEl.style.width = progress + '%';
+      if (messageEl) messageEl.textContent = getLoadingMessage(progress);
+    }
+
+    function getLoadingMessage(progress) {
+      if (progress < 20) {
+        return '랜덤 번호 생성 중...';
+      }
+      if (progress < 40) {
+        return '행운의 조합 찾는 중...';
+      }
+      if (progress < 60) {
+        return '당첨 확률 계산 중...';
+      }
+      if (progress < 80) {
+        return '마지막 검증 중...';
+      }
+      return '완료!';
     }
 
     function showGeneratedComplete(count) {
@@ -482,8 +1014,7 @@
       useQuota(count);
       updateUI();
 
-      const modalEl = document.getElementById('generatedModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('generatedModal', true);
     }
 
     // 다음 추첨 회차 계산
@@ -511,8 +1042,7 @@
     }
 
     function closeGeneratedModal() {
-      const modalEl = document.getElementById('generatedModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('generatedModal', false);
       
       setTimeout(() => {
         currentPageIndex = 0;
@@ -720,7 +1250,7 @@
         swipeState.content.style.transform = 'translateX(0)';
       }
       if (swipeState.item) {
-        swipeState.item.classList.remove('swiping');
+        setClassActive(swipeState.item, 'swiping', false);
       }
       swipeState = {
         item: null,
@@ -754,7 +1284,7 @@
         swipeState.currentX = swipeState.startX;
         swipeState.isSwiping = true;
 
-        item.classList.add('swiping');
+        setClassActive(item, 'swiping', true);
       }, { passive: true });
 
       // 터치 이동
@@ -820,24 +1350,18 @@
       currentActionNumbers = JSON.parse(item.dataset.numbers);
       currentActionTargetDraw = parseInt(item.dataset.targetDraw) || getNextDrawNumber();
 
-      const modal = document.getElementById('saveConfirmModal');
       const numbersEl = document.getElementById('saveConfirmNumbers');
 
       if (numbersEl && currentActionNumbers) {
         numbersEl.innerHTML = renderNumberBalls(currentActionNumbers);
       }
 
-      if (modal) {
-        modal.classList.add('active');
-      }
+      setModalActive('saveConfirmModal', true);
     }
 
     // 저장 확인 모달 닫기
     function closeSaveConfirm() {
-      const modal = document.getElementById('saveConfirmModal');
-      if (modal) {
-        modal.classList.remove('active');
-      }
+      setModalActive('saveConfirmModal', false);
       currentActionIndex = null;
       currentActionNumbers = null;
       currentActionTargetDraw = null;
@@ -856,24 +1380,18 @@
       currentActionIndex = parseInt(item.dataset.index);
       currentActionNumbers = JSON.parse(item.dataset.numbers);
 
-      const modal = document.getElementById('deleteConfirmModal');
       const numbersEl = document.getElementById('deleteConfirmNumbers');
 
       if (numbersEl && currentActionNumbers) {
         numbersEl.innerHTML = renderNumberBalls(currentActionNumbers);
       }
 
-      if (modal) {
-        modal.classList.add('active');
-      }
+      setModalActive('deleteConfirmModal', true);
     }
 
     // 삭제 확인 모달 닫기
     function closeDeleteConfirm() {
-      const modal = document.getElementById('deleteConfirmModal');
-      if (modal) {
-        modal.classList.remove('active');
-      }
+      setModalActive('deleteConfirmModal', false);
       currentActionIndex = null;
       currentActionNumbers = null;
     }
@@ -1036,7 +1554,7 @@
 
       const currentValue = currentInput.value;
       if (!currentValue) {
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
         return;
       }
 
@@ -1059,11 +1577,10 @@
       if (hasDuplicate) {
         hintEl.textContent = '⚠️ 중복된 번호입니다. 다시 입력해주세요.';
         hintEl.className = 'text-xs text-center text-red-500 font-medium mb-3';
-        currentInput.classList.add('border-red-500');
-        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+        setInputErrorState(currentInput, true);
       } else {
         resetManualHint();
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
       }
     }
 
@@ -1077,14 +1594,14 @@
       if (!currentValue) {
         // 입력값이 없으면 기본 힌트로 복원
         resetManualHint();
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
         return;
       }
 
       // 1자리 입력 중이면 아직 체크하지 않음 (10-19 등 입력 중일 수 있음)
       // 2자리 완성 시에만 중복 체크
       if (currentValue.length < 2) {
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
         resetManualHint();
         return;
       }
@@ -1109,12 +1626,11 @@
         // 중복 경고 표시
         hintEl.textContent = '⚠️ 중복된 번호입니다. 다시 입력해주세요.';
         hintEl.className = 'text-xs text-center text-red-500 font-medium mb-3';
-        currentInput.classList.add('border-red-500');
-        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+        setInputErrorState(currentInput, true);
       } else {
         // 정상 상태로 복원
         resetManualHint();
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
       }
     }
 
@@ -1202,8 +1718,7 @@
         const input = document.getElementById(`manualNum${i}`);
         if (input) {
           input.value = '';
-          input.classList.remove('border-red-500');
-          input.classList.add('border-gray-300');
+          setInputErrorState(input, false, true);
         }
       }
       resetManualHint();
@@ -1358,6 +1873,43 @@
       if (el) el.textContent = value;
     }
 
+    function setElementDisplay(element, displayValue) {
+      if (!element || !element.style) return;
+      element.style.display = displayValue;
+    }
+
+    function setHidden(element, shouldHide) {
+      if (!element || !element.classList) return;
+      element.classList.toggle('hidden', shouldHide);
+    }
+
+    function setClassActive(element, className, isActive) {
+      if (!element || !element.classList) return;
+      element.classList.toggle(className, isActive);
+    }
+
+    function setElementClasses(element, classesToAdd = [], classesToRemove = []) {
+      if (!element || !element.classList) return;
+      if (classesToRemove.length > 0) {
+        element.classList.remove(...classesToRemove);
+      }
+      if (classesToAdd.length > 0) {
+        element.classList.add(...classesToAdd);
+      }
+    }
+
+    function setInputErrorState(inputEl, hasError, includeDefaultBorder = false) {
+      if (!inputEl || !inputEl.classList) return;
+      if (hasError) {
+        setElementClasses(inputEl, ['border-red-500'], ['border-gray-300', 'border-blue-500']);
+        return;
+      }
+      setClassActive(inputEl, 'border-red-500', false);
+      if (includeDefaultBorder) {
+        setClassActive(inputEl, 'border-gray-300', true);
+      }
+    }
+
     // 일치하는 번호 개수 계산
     function countMatches(numbers, winningNumbers) {
       return numbers.filter(n => winningNumbers.includes(n)).length;
@@ -1379,7 +1931,7 @@
 
       if (hiddenDate === today) {
         const banner = document.getElementById('mobileStatsBanner');
-        if (banner) banner.style.display = 'none';
+        setElementDisplay(banner, 'none');
       }
     }
 
@@ -1393,7 +1945,7 @@
         banner.style.opacity = '0';
         banner.style.transform = 'scale(0.95)';
         setTimeout(() => {
-          banner.style.display = 'none';
+          setElementDisplay(banner, 'none');
         }, 200);
       }
 
@@ -1746,9 +2298,9 @@
       }
 
       if (input.value) {
-        input.classList.add('filled');
+        setClassActive(input, 'filled', true);
       } else {
-        input.classList.remove('filled');
+        setClassActive(input, 'filled', false);
       }
     }
 
@@ -1780,14 +2332,13 @@
     function checkLineDuplicate(currentInput, lineNum, currentFieldNum) {
       const currentValue = currentInput.value;
       if (!currentValue) {
-        currentInput.classList.remove('border-red-500');
-        currentInput.classList.add('border-gray-300');
+        setInputErrorState(currentInput, false, true);
         return;
       }
 
       // 2자리 입력 완료 시에만 중복 체크
       if (currentValue.length < 2) {
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
         return;
       }
 
@@ -1808,11 +2359,10 @@
       }
 
       if (hasDuplicate) {
-        currentInput.classList.add('border-red-500');
-        currentInput.classList.remove('border-gray-300', 'border-blue-500');
+        setInputErrorState(currentInput, true);
         showToast('⚠️ 중복된 번호입니다', 1500);
       } else {
-        currentInput.classList.remove('border-red-500');
+        setInputErrorState(currentInput, false);
       }
     }
 
@@ -1822,8 +2372,7 @@
     function onCheckManualBlur(input, lineNum, fieldNum) {
       const currentValue = input.value;
       if (!currentValue) {
-        input.classList.remove('border-red-500');
-        input.classList.add('border-gray-300');
+        setInputErrorState(input, false, true);
         return;
       }
 
@@ -1844,11 +2393,10 @@
       }
 
       if (hasDuplicate) {
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'border-blue-500');
+        setInputErrorState(input, true);
         showToast('⚠️ 중복된 번호입니다', 1500);
       } else {
-        input.classList.remove('border-red-500');
+        setInputErrorState(input, false);
       }
     }
 
@@ -1879,8 +2427,7 @@
             inputs.forEach(input => {
               const num = parseInt(input.value);
               if (seen.has(num)) {
-                input.classList.add('border-red-500');
-                input.classList.remove('border-gray-300');
+                setInputErrorState(input, true);
               } else {
                 seen.add(num);
               }
@@ -1935,8 +2482,8 @@
         if (input) {
           input.value = '';
           if (input.classList) {
-            input.classList.remove('filled', 'border-red-500');
-            input.classList.add('border-gray-300');
+            setClassActive(input, 'filled', false);
+            setInputErrorState(input, false, true);
           }
         }
       });
@@ -2084,33 +2631,31 @@
     }
 
     function revealLuckyNumber() {
-      const modal = document.getElementById('luckyRevealModal');
       const loadingEl = document.getElementById('luckyModalLoading');
       const readyEl = document.getElementById('luckyModalReady');
 
-      if (!modal || !loadingEl || !readyEl) return;
+      if (!loadingEl || !readyEl) return;
 
       // 모달 열기 (로딩 상태)
-      loadingEl.classList.remove('hidden');
-      readyEl.classList.add('hidden');
-      modal.classList.add('active');
+      setHidden(loadingEl, false);
+      setHidden(readyEl, true);
+      setModalActive('luckyRevealModal', true);
 
       // 3초 후 준비 완료 상태로 전환
       setTimeout(() => {
-        loadingEl.classList.add('hidden');
-        readyEl.classList.remove('hidden');
+        setHidden(loadingEl, true);
+        setHidden(readyEl, false);
       }, 3000);
     }
 
     function confirmLuckyReveal() {
-      const modal = document.getElementById('luckyRevealModal');
       const revealEl = document.getElementById('luckyNumberReveal');
       const blurredEl = document.getElementById('luckyNumberBlurred');
       const actionsEl = document.getElementById('luckyNumberActions');
       const cardEl = document.getElementById('luckyNumberCard');
 
       // 모달 닫기
-      if (modal) modal.classList.remove('active');
+      setModalActive('luckyRevealModal', false);
 
       // 럭키넘버 데이터 저장
       const lucky = getLuckyNumber();
@@ -2121,22 +2666,22 @@
       if (blurredEl) {
         blurredEl.style.filter = 'none';
         blurredEl.innerHTML = renderNumberBalls(lucky.numbers);
-        blurredEl.classList.add('lucky-reveal-animation');
+        setClassActive(blurredEl, 'lucky-reveal-animation', true);
       }
 
       if (revealEl) {
-        revealEl.style.display = 'none';
+        setElementDisplay(revealEl, 'none');
       }
 
       // 저장 버튼 표시
       if (actionsEl) {
-        actionsEl.classList.remove('hidden');
-        actionsEl.classList.add('lucky-actions-show');
+        setHidden(actionsEl, false);
+        setClassActive(actionsEl, 'lucky-actions-show', true);
       }
 
       // 카드 강조 효과
       if (cardEl) {
-        cardEl.classList.add('lucky-reveal-animation');
+        setClassActive(cardEl, 'lucky-reveal-animation', true);
       }
 
       showToast('오늘의 럭키 넘버가 공개되었습니다! 🍀', 2000);
@@ -2201,17 +2746,17 @@
 
     function showWinningCard() {
       const cardEl = document.getElementById('winningCard');
-      if (cardEl) cardEl.style.display = 'block';
+      setElementDisplay(cardEl, 'block');
     }
 
     function closeWinningCard() {
       const cardEl = document.getElementById('winningCard');
-      if (cardEl) cardEl.style.display = 'none';
+      setElementDisplay(cardEl, 'none');
     }
 
     function closeStatsCard() {
       const cardEl = document.getElementById('statsCard');
-      if (cardEl) cardEl.style.display = 'none';
+      setElementDisplay(cardEl, 'none');
     }
 
     // ==================== UI 업데이트 ====================
@@ -2254,10 +2799,10 @@
       if (generateBtnEl && depletedMsgEl) {
         if (quota.remaining <= 0) {
           generateBtnEl.innerHTML = '🎁 무료 횟수 +5회 충전하기';
-          depletedMsgEl.style.display = 'block';
+          setElementDisplay(depletedMsgEl, 'block');
         } else {
           generateBtnEl.textContent = '로또 번호 생성하기';
-          depletedMsgEl.style.display = 'none';
+          setElementDisplay(depletedMsgEl, 'none');
         }
       }
 
@@ -2265,9 +2810,9 @@
       const shareBannerEl = document.getElementById('shareBanner');
       if (shareBannerEl) {
         if (quota.remaining <= 0) {
-          shareBannerEl.classList.remove('hidden');
+          setHidden(shareBannerEl, false);
         } else {
-          shareBannerEl.classList.add('hidden');
+          setHidden(shareBannerEl, true);
         }
       }
     }
@@ -2459,15 +3004,12 @@
 
     function showSavedPageAddConfirm(pageNum) {
       const pageNumEl = document.getElementById('nextSavedPageNum');
-      const modalEl = document.getElementById('savedPageAddConfirmModal');
-      
       if (pageNumEl) pageNumEl.textContent = pageNum;
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('savedPageAddConfirmModal', true);
     }
 
     function closeSavedPageAddConfirm() {
-      const modalEl = document.getElementById('savedPageAddConfirmModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('savedPageAddConfirmModal', false);
     }
 
     function confirmSavedPageAdd() {
@@ -2534,13 +3076,13 @@
       if (!container || !noSaved) return;
 
       if (visibleSaved.length === 0) {
-        container.style.display = 'none';
-        noSaved.style.display = 'block';
+        setElementDisplay(container, 'none');
+        setElementDisplay(noSaved, 'block');
         return;
       }
 
-      container.style.display = 'block';
-      noSaved.style.display = 'none';
+      setElementDisplay(container, 'block');
+      setElementDisplay(noSaved, 'none');
 
       container.innerHTML = visibleSaved.map((item, index) => {
         const match = checkMatch(item.numbers, winning.numbers, winning.bonus);
@@ -2621,10 +3163,10 @@
           blurredEl.innerHTML = renderNumberBalls(lucky.numbers);
         }
         if (revealEl) {
-          revealEl.style.display = 'none';
+          setElementDisplay(revealEl, 'none');
         }
         if (actionsEl) {
-          actionsEl.classList.remove('hidden');
+          setHidden(actionsEl, false);
         }
       } else {
         // 미공개 상태: 블러 적용, 버튼 표시, 저장 버튼 숨김
@@ -2640,7 +3182,7 @@
           `;
         }
         if (revealEl) {
-          revealEl.style.display = 'flex';
+          setElementDisplay(revealEl, 'flex');
           revealEl.innerHTML = `
             <button onclick="revealLuckyNumber()" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all flex items-center gap-1.5">
               <span>🍀</span>
@@ -2649,7 +3191,7 @@
           `;
         }
         if (actionsEl) {
-          actionsEl.classList.add('hidden');
+          setHidden(actionsEl, true);
         }
       }
     }
@@ -2767,12 +3309,11 @@
         confettiEl.innerHTML = '';
       }
 
-      if (modal) modal.classList.add('active');
+      setModalActive('congratsModal', true);
     }
 
     function closeCongratsModal() {
-      const modal = document.getElementById('congratsModal');
-      if (modal) modal.classList.remove('active');
+      setModalActive('congratsModal', false);
     }
 
     window.showCongratsModal = showCongratsModal;
@@ -2783,19 +3324,16 @@
     function switchTab(tabId) {
       // 모든 탭 비활성화
       document.querySelectorAll('.tab-content').forEach(tab => {
-        if (tab && tab.classList) {
-          tab.classList.remove('active');
-        }
+        setClassActive(tab, 'active', false);
       });
 
       // 모바일 네비게이션 버튼 초기화
       ['btnHome', 'btnSaved', 'btnCheck'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
-          btn.classList.remove('text-blue-600');
-          btn.classList.add('text-gray-400');
+          setElementClasses(btn, ['text-gray-400'], ['text-blue-600']);
           const span = btn.querySelector('span');
-          if (span) span.classList.remove('font-bold');
+          setClassActive(span, 'font-bold', false);
         }
       });
 
@@ -2803,16 +3341,13 @@
       ['btnHomeDesktop', 'btnSavedDesktop', 'btnCheckDesktop'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) {
-          btn.classList.remove('text-blue-600', 'bg-blue-50');
-          btn.classList.add('text-gray-500');
+          setElementClasses(btn, ['text-gray-500'], ['text-blue-600', 'bg-blue-50']);
         }
       });
 
       // 선택된 탭 활성화
       const tabEl = document.getElementById(tabId);
-      if (tabEl && tabEl.classList) {
-        tabEl.classList.add('active');
-      }
+      setClassActive(tabEl, 'active', true);
 
       // 선택된 버튼 활성화 (모바일)
       const btnId = tabId.replace('Tab', '');
@@ -2820,10 +3355,9 @@
       const btn = document.getElementById(btnMap[btnId]);
 
       if (btn) {
-        btn.classList.remove('text-gray-400');
-        btn.classList.add('text-blue-600');
+        setElementClasses(btn, ['text-blue-600'], ['text-gray-400']);
         const span = btn.querySelector('span');
-        if (span) span.classList.add('font-bold');
+        setClassActive(span, 'font-bold', true);
       }
 
       // 선택된 버튼 활성화 (데스크톱)
@@ -2831,8 +3365,7 @@
       const btnDesktop = document.getElementById(btnMapDesktop[btnId]);
 
       if (btnDesktop) {
-        btnDesktop.classList.remove('text-gray-500');
-        btnDesktop.classList.add('text-blue-600', 'bg-blue-50');
+        setElementClasses(btnDesktop, ['text-blue-600', 'bg-blue-50'], ['text-gray-500']);
       }
 
       if (tabId === 'checkTab') {
@@ -2841,47 +3374,46 @@
     }
 
     // ==================== 설정 ====================
+
+    function setModalActive(modalId, isActive) {
+      const modalEl = document.getElementById(modalId);
+      if (!modalEl || !modalEl.classList) return null;
+      modalEl.classList.toggle('active', isActive);
+      return modalEl;
+    }
     
     function openSettings() {
-      const modalEl = document.getElementById('settingsModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('settingsModal', true);
     }
 
     function closeSettings() {
-      const modalEl = document.getElementById('settingsModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('settingsModal', false);
     }
 
     // ==================== 기타 정보 모달 ====================
 
     function openAboutModal() {
-      const modalEl = document.getElementById('aboutModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('aboutModal', true);
     }
 
     function closeAboutModal() {
-      const modalEl = document.getElementById('aboutModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('aboutModal', false);
     }
 
     function openPrivacyModal() {
-      const modalEl = document.getElementById('privacyModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('privacyModal', true);
     }
 
     function closePrivacyModal() {
-      const modalEl = document.getElementById('privacyModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('privacyModal', false);
     }
 
     function openTermsModal() {
-      const modalEl = document.getElementById('termsModal');
-      if (modalEl) modalEl.classList.add('active');
+      setModalActive('termsModal', true);
     }
 
     function closeTermsModal() {
-      const modalEl = document.getElementById('termsModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('termsModal', false);
     }
 
     // ==================== 관리자 로그인 ====================
@@ -2894,18 +3426,17 @@
     let isAdminLoggedIn = false;
 
     function openAdminLoginModal() {
-      const modalEl = document.getElementById('adminLoginModal');
+      const modalEl = setModalActive('adminLoginModal', true);
       if (modalEl) {
-        modalEl.classList.add('active');
+        const adminLoginErrorEl = document.getElementById('adminLoginError');
         document.getElementById('adminIdInput').value = '';
         document.getElementById('adminPwInput').value = '';
-        document.getElementById('adminLoginError').classList.add('hidden');
+        setHidden(adminLoginErrorEl, true);
       }
     }
 
     function closeAdminLoginModal() {
-      const modalEl = document.getElementById('adminLoginModal');
-      if (modalEl) modalEl.classList.remove('active');
+      setModalActive('adminLoginModal', false);
     }
 
     function adminLogin() {
@@ -2919,7 +3450,7 @@
         updateAdminUI();
         showToast('관리자 로그인 성공', 1500);
       } else {
-        errorEl.classList.remove('hidden');
+        setHidden(errorEl, false);
       }
     }
 
@@ -2935,13 +3466,13 @@
       const logoutBtn = document.getElementById('adminLogoutBtn');
 
       if (isAdminLoggedIn) {
-        adminSection.classList.remove('hidden');
-        loginBtn.classList.add('hidden');
-        logoutBtn.classList.remove('hidden');
+        setHidden(adminSection, false);
+        setHidden(loginBtn, true);
+        setHidden(logoutBtn, false);
       } else {
-        adminSection.classList.add('hidden');
-        loginBtn.classList.remove('hidden');
-        logoutBtn.classList.add('hidden');
+        setHidden(adminSection, true);
+        setHidden(loginBtn, false);
+        setHidden(logoutBtn, true);
       }
     }
 
@@ -3037,14 +3568,40 @@
       }
     }
 
+    async function downloadHoxyShareCard() {
+      if (!window.DopaminShareCard) {
+        showToast('공유 카드 기능을 불러오지 못했습니다', 2000);
+        return;
+      }
+
+      const recent = getRecent();
+      const latest = recent.length > 0 ? recent[0] : null;
+      const lucky = getLuckyNumber();
+      const numbers = latest ? latest.numbers : lucky.numbers;
+      const targetDraw = latest && latest.targetDraw ? latest.targetDraw : getNextDrawNumber();
+
+      await window.DopaminShareCard.download({
+        title: 'HOXY NUMBER',
+        subtitle: '오늘의 행운 번호',
+        highlight: `${targetDraw}회차 도전`,
+        numbers: numbers,
+        tags: ['행운번호', '로또추천', '도파민공작소'],
+        footer: 'dopamine-factory.pages.dev/dunsmile/hoxy-number/',
+        fromColor: '#2563eb',
+        toColor: '#7c3aed',
+        filePrefix: 'hoxy-number'
+      });
+      showToast('결과 이미지 카드가 저장되었습니다!', 2000);
+    }
+
     // ==================== 서비스 메뉴 ====================
 
     function openServiceMenu() {
       const backdrop = document.getElementById('serviceMenuBackdrop');
       const sidebar = document.getElementById('serviceMenuSidebar');
       if (backdrop && sidebar) {
-        backdrop.classList.remove('hidden');
-        sidebar.classList.remove('-translate-x-full');
+        setClassActive(backdrop, 'open', true);
+        setClassActive(sidebar, 'open', true);
       }
     }
 
@@ -3052,8 +3609,8 @@
       const backdrop = document.getElementById('serviceMenuBackdrop');
       const sidebar = document.getElementById('serviceMenuSidebar');
       if (backdrop && sidebar) {
-        backdrop.classList.add('hidden');
-        sidebar.classList.add('-translate-x-full');
+        setClassActive(backdrop, 'open', false);
+        setClassActive(sidebar, 'open', false);
       }
     }
 
@@ -3081,6 +3638,7 @@
     window.closeAdForQuotaModal = closeAdForQuotaModal;
     window.confirmAdForQuota = confirmAdForQuota;
     window.shareApp = shareApp;
+    window.downloadHoxyShareCard = downloadHoxyShareCard;
     window.switchTab = switchTab;
     window.revealLuckyNumber = revealLuckyNumber;
     window.prevPage = prevPage;

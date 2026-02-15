@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘의 밸런스 게임 | 도파민 공작소</title>
+  <meta name="description" content="오늘의 밸런스 게임! 두 가지 선택 중 하나를 고르고, 선택 통계를 확인해보세요.">
+  <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/balance-game/">
+  <meta name="theme-color" content="#f97316">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="도파민 공작소">
+  <meta property="og:title" content="오늘의 밸런스 게임 | 도파민 공작소">
+  <meta property="og:description" content="두 가지 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요.">
+  <meta property="og:url" content="https://dopamine-factory.pages.dev/dunsmile/balance-game/">
+  <meta property="og:image" content="https://dopamine-factory.pages.dev/dunsmile/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="오늘의 밸런스 게임 | 도파민 공작소">
+  <meta name="twitter:description" content="두 가지 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요.">
+  <meta name="twitter:image" content="https://dopamine-factory.pages.dev/dunsmile/og-image.png">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/dunsmile/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/dunsmile/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-white md:bg-gray-50">
+  <div id="toast" class="toast">
+    <span id="toastMessage"></span>
+  </div>
+
+  <div class="main-container">
+    <div class="content-area">
+      <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white relative">
+        <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
+          <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center gap-2">
+              <a href="/" class="dp-header-home">도파민 공작소</a><span class="dp-header-sep">›</span>
+              <h1 class="text-lg font-bold bg-gradient-to-r from-orange-500 to-rose-500 bg-clip-text text-transparent whitespace-nowrap">밸런스 게임</h1>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="openSettings()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </button>
+              <button onclick="openServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 pb-8 space-y-4">
+          <div class="bg-gradient-to-br from-orange-500 to-rose-500 rounded-2xl p-5 text-white shadow-lg">
+            <div class="text-xs opacity-80 mb-1">오늘의 선택</div>
+            <div class="text-2xl font-black leading-tight" id="questionText">질문 불러오는 중...</div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button id="optionAButton" onclick="chooseOption('A')" class="text-left rounded-2xl p-4 border-2 border-orange-200 bg-orange-50 hover:bg-orange-100 transition-all">
+              <div class="text-xs font-bold text-orange-700 mb-1">선택 A</div>
+              <div class="text-base font-bold text-gray-900" id="optionAText">-</div>
+            </button>
+            <button id="optionBButton" onclick="chooseOption('B')" class="text-left rounded-2xl p-4 border-2 border-rose-200 bg-rose-50 hover:bg-rose-100 transition-all">
+              <div class="text-xs font-bold text-rose-700 mb-1">선택 B</div>
+              <div class="text-base font-bold text-gray-900" id="optionBText">-</div>
+            </button>
+          </div>
+
+          <div id="resultCard" class="hidden bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-sm font-bold text-gray-900">실시간 선택 통계</div>
+              <div id="selectedBadge" class="text-xs font-bold px-2 py-1 rounded-full bg-orange-100 text-orange-700">내 선택</div>
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <div class="flex items-center justify-between text-xs text-gray-700 mb-1">
+                  <span id="resultALabel">A</span>
+                  <span id="resultAPercent">50%</span>
+                </div>
+                <div class="w-full h-3 rounded-full bg-gray-100 overflow-hidden">
+                  <div id="resultABar" class="h-full bg-gradient-to-r from-orange-400 to-orange-500 rounded-full" style="width: 50%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between text-xs text-gray-700 mb-1">
+                  <span id="resultBLabel">B</span>
+                  <span id="resultBPercent">50%</span>
+                </div>
+                <div class="w-full h-3 rounded-full bg-gray-100 overflow-hidden">
+                  <div id="resultBBar" class="h-full bg-gradient-to-r from-rose-400 to-rose-500 rounded-full" style="width: 50%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <button onclick="nextQuestion()" class="w-full py-3 bg-gradient-to-r from-orange-500 to-rose-500 text-white font-bold rounded-xl shadow-lg hover:opacity-90 transition-all">
+              다음 밸런스 게임
+            </button>
+            <button onclick="shareResult()" class="w-full py-3 bg-white border-2 border-orange-200 text-orange-700 font-bold rounded-xl hover:bg-orange-50 transition-all">
+              친구에게 공유하기
+            </button>
+            <button onclick="downloadBalanceShareCard()" class="w-full py-3 bg-white border-2 border-rose-200 text-rose-700 font-bold rounded-xl hover:bg-rose-50 transition-all">
+              결과 이미지 카드 저장
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 서비스 메뉴 사이드바 (홈과 동일 스타일) -->
+  <div id="serviceMenuBackdrop" class="dp-sidebar-overlay" onclick="closeServiceMenu()"></div>
+  <aside id="serviceMenuSidebar" class="dp-sidebar">
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
+        <button onclick="closeServiceMenu()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+      <nav>
+        <a href="/" class="dp-menu-item font-bold"><span>🏠</span><span>홈</span></a>
+        <div class="dp-divider"></div>
+        <div class="dp-section-title">서비스</div>
+        <a href="/dunsmile/hoxy-number/" class="dp-menu-item"><span>🎱</span><span>HOXY NUMBER</span></a>
+        <a href="/dunsmile/rich-face/" class="dp-menu-item"><span>👤</span><span>부자가 될 상인가?</span></a>
+        <a href="/dunsmile/daily-fortune/" class="dp-menu-item"><span>🔮</span><span>오늘의 운세</span></a>
+        <a href="/dunsmile/balance-game/" class="dp-menu-item active"><span>⚖️</span><span>오늘의 밸런스 게임</span></a>
+        <a href="/dunsmile/name-compatibility/" class="dp-menu-item"><span>💞</span><span>이름 궁합 테스트</span></a>
+        <a href="/dunsmile/market-sentiment/" class="dp-menu-item"><span>📈</span><span>시장 감성 레이더</span></a>
+        <a href="/dunsmile/tarot-reading/" class="dp-menu-item"><span>🃏</span><span>ONE DAY MY CARD</span></a>
+        <div class="dp-divider"></div>
+        <a href="/dunsmile/about/" class="dp-menu-item"><span>📋</span><span>서비스 소개</span></a>
+        <a href="/dunsmile/privacy/" class="dp-menu-item"><span>🔒</span><span>개인정보처리방침</span></a>
+        <a href="/dunsmile/terms/" class="dp-menu-item"><span>📜</span><span>이용약관</span></a>
+      </nav>
+    </div>
+  </aside>
+
+  <div id="settingsModal" class="modal-backdrop" onclick="if(event.target === this) closeSettings()">
+    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-gray-900">설정</h3>
+        <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="space-y-2">
+        <a href="/dunsmile/about/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">서비스 소개</a>
+        <a href="/dunsmile/privacy/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">개인정보처리방침</a>
+        <a href="/dunsmile/terms/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">이용약관</a>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="../js/share-card.js"></script>
+  <script src="../js/balance-game.js"></script>
+
+</body>
+</html>
