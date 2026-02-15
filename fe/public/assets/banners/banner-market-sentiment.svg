@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Market sentiment banner">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#061b1a"/>
+      <stop offset="55%" stop-color="#0e5f5a"/>
+      <stop offset="100%" stop-color="#33c3a5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <polyline points="80,610 230,560 360,590 520,520 650,545 770,470 920,500 1120,430" fill="none" stroke="#d4fff2" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="850" y="80" width="260" height="180" rx="22" fill="#fff" fill-opacity="0.08"/>
+  <text x="80" y="690" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="70" font-weight="800" fill="#ecfff9">MARKET SENTIMENT</text>
+</svg>

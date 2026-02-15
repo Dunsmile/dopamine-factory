@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Rich face banner">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1022"/>
+      <stop offset="55%" stop-color="#6a2f85"/>
+      <stop offset="100%" stop-color="#d478f4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <ellipse cx="930" cy="210" rx="260" ry="200" fill="#ffffff" fill-opacity="0.08"/>
+  <ellipse cx="250" cy="610" rx="280" ry="180" fill="#ffffff" fill-opacity="0.05"/>
+  <text x="80" y="640" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="82" font-weight="800" fill="#fff3ff">RICH FACE</text>
+  <text x="84" y="698" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="30" font-weight="500" fill="#f7dfff">AI face insight</text>
+</svg>
