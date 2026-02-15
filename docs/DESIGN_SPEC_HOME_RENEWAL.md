@@ -1,6 +1,10 @@
 
 # 🏗️ 도파민 공작소 홈 리뉴얼 개발 의뢰서
 
+> 구현 우선순위 안내: 본 문서는 디자인 기획/시안 기준입니다.  
+> 실제 코드 작성 규칙은 `docs/FRONTEND_COLLAB_RULES.md`와 `CONTRIBUTING.md`를 우선 적용합니다.  
+> 문서 간 충돌 시 `FRONTEND_COLLAB_RULES.md` 기준(긴 Tailwind 유틸 체인 지양, 시맨틱 클래스 우선)을 따릅니다.
+
 ## 1. 개요 (Overview)
 *   **목표**: 기존 배너 슬라이더를 제거하고, 'Shopify Editions' 스타일의 **고급스러운 책장(Shelf) UI**로 전면 교체
 *   **컨셉**: 디지털 매거진 / 프리미엄 편집샵 느낌의 3D 오브제 진열
