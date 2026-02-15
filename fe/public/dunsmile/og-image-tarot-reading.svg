@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed"/>
+      <stop offset="100%" style="stop-color:#4338ca"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 배경 -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- 별 장식 -->
+  <text x="100" y="100" font-size="40" fill="white" opacity="0.3">✨</text>
+  <text x="300" y="80" font-size="30" fill="white" opacity="0.2">⭐</text>
+  <text x="900" y="120" font-size="35" fill="white" opacity="0.25">🌙</text>
+  <text x="1050" y="90" font-size="28" fill="white" opacity="0.2">✨</text>
+  <text x="150" y="550" font-size="32" fill="white" opacity="0.2">⭐</text>
+  <text x="1000" y="520" font-size="38" fill="white" opacity="0.25">✨</text>
+
+  <!-- 카드 3장 (과거-현재-미래) -->
+  <!-- 왼쪽 카드 -->
+  <rect x="280" y="160" width="140" height="210" rx="12" fill="url(#card)" opacity="0.7" transform="rotate(-10, 350, 265)"/>
+  <rect x="286" y="166" width="128" height="198" rx="8" fill="none" stroke="white" stroke-width="1.5" opacity="0.4" transform="rotate(-10, 350, 265)"/>
+
+  <!-- 중앙 카드 (메인) -->
+  <rect x="460" y="140" width="160" height="240" rx="14" fill="url(#card)"/>
+  <rect x="468" y="148" width="144" height="224" rx="10" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
+  <text x="540" y="260" font-size="60" text-anchor="middle" fill="white">🔮</text>
+  <text x="540" y="310" font-size="14" text-anchor="middle" fill="white" font-weight="bold" font-family="sans-serif">The Card</text>
+
+  <!-- 오른쪽 카드 -->
+  <rect x="680" y="160" width="140" height="210" rx="12" fill="url(#card)" opacity="0.7" transform="rotate(10, 750, 265)"/>
+  <rect x="686" y="166" width="128" height="198" rx="8" fill="none" stroke="white" stroke-width="1.5" opacity="0.4" transform="rotate(10, 750, 265)"/>
+
+  <!-- 타이틀 -->
+  <text x="600" y="460" font-size="52" text-anchor="middle" fill="white" font-weight="900" font-family="sans-serif">ONE DAY MY CARD</text>
+  <text x="600" y="500" font-size="22" text-anchor="middle" fill="white" opacity="0.8" font-family="sans-serif">오늘의 타로 카드 리딩</text>
+
+  <!-- 하단 -->
+  <text x="600" y="570" font-size="16" text-anchor="middle" fill="white" opacity="0.5" font-family="sans-serif">dopamine-factory.pages.dev</text>
+</svg>

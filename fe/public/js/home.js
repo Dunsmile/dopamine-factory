@@ -14,8 +14,8 @@ const SERVICES = [
 // 운세 관련 서비스 (운세 탭에 표시할 것)
 const FORTUNE_SERVICES = SERVICES.filter(s => s.category === 'fortune');
 
-// 그리드 총 15칸 (5x3)
-const GRID_TOTAL = 15;
+// 서비스 카드 그리드 (잠금 슬롯 포함 시 최소 8칸)
+const GRID_TOTAL = 8;
 
 // ===== 초기화 =====
 document.addEventListener('DOMContentLoaded', initHome);
@@ -29,6 +29,43 @@ function initHome() {
   initBottomNav();
   initSidebarToggle();
   initGameTab();
+  handleViewParam();
+}
+
+// ===== URL 파라미터 뷰 전환 (?view=fortune 등) =====
+function handleViewParam() {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get('view');
+  if (!view) return;
+
+  const navItems = document.querySelectorAll('#bottomNav .nav-item');
+
+  switch (view) {
+    case 'fortune':
+      switchView('viewFortune');
+      showFortuneList();
+      navItems.forEach(n => n.classList.remove('active'));
+      document.querySelector('#bottomNav .nav-item[data-nav="fortune"]')?.classList.add('active');
+      break;
+    case 'my':
+      switchView('viewFavorites');
+      showFavorites();
+      navItems.forEach(n => n.classList.remove('active'));
+      document.querySelector('#bottomNav .nav-item[data-nav="my"]')?.classList.add('active');
+      break;
+    case 'search':
+      window.openSearch();
+      break;
+    case 'profile':
+      switchView('viewProfile');
+      showProfile();
+      navItems.forEach(n => n.classList.remove('active'));
+      document.querySelector('#bottomNav .nav-item[data-nav="profile"]')?.classList.add('active');
+      break;
+  }
+
+  // URL에서 파라미터 제거 (뒤로가기 깔끔하게)
+  window.history.replaceState({}, '', '/');
 }
 
 // ===== 사이드바 렌더링 =====
@@ -94,7 +131,7 @@ window.closeSidebar = function() {
   document.getElementById('mobileSidebar').classList.remove('open');
 };
 
-// ===== 아이콘 그리드 =====
+// ===== 서비스 카드 그리드 =====
 function renderIconGrid() {
   const grid = document.getElementById('iconGrid');
   const favs = getFavorites();
@@ -103,22 +140,22 @@ function renderIconGrid() {
   SERVICES.forEach(s => {
     const isFav = favs.includes(s.id);
     html += `
-      <div class="icon-item" data-id="${s.id}" onclick="location.href='${s.url}'">
-        <div class="icon-circle" style="background:${s.bg}">
-          ${s.emoji}
-          <span class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite('${s.id}')">
-            ${isFav ? '❤️' : '🤍'}
-          </span>
-        </div>
-        <span class="icon-label">${s.name}</span>
-      </div>`;
+      <a href="${s.url}" class="service-card" data-id="${s.id}">
+        <span class="fav-btn ${isFav ? 'active' : ''}" onclick="event.preventDefault();event.stopPropagation();toggleFavorite('${s.id}')">
+          ${isFav ? '❤️' : '🤍'}
+        </span>
+        <div class="service-card-icon" style="background:${s.bg}">${s.emoji}</div>
+        <span class="service-card-name">${s.fullName}</span>
+        <span class="service-card-desc">${s.desc}</span>
+      </a>`;
   });
 
   for (let i = SERVICES.length; i < GRID_TOTAL; i++) {
     html += `
-      <div class="icon-item" onclick="showToast('곧 새로운 서비스가 찾아옵니다!')">
-        <div class="icon-circle" style="background:#f3f4f6">🔒</div>
-        <span class="icon-label" style="color:#9ca3af">준비중</span>
+      <div class="service-card" style="opacity:0.5;cursor:default;" onclick="showToast('곧 새로운 서비스가 찾아옵니다!')">
+        <div class="service-card-icon" style="background:#f3f4f6">🔒</div>
+        <span class="service-card-name" style="color:#9ca3af">준비중</span>
+        <span class="service-card-desc">곧 새로운 서비스가 찾아옵니다!</span>
       </div>`;
   }
 
