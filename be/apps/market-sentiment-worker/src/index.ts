@@ -2,6 +2,16 @@ import { FirestoreClient } from "./firebase/firestore-rest";
 import { getTrackingAssets } from "./matcher/assets";
 import { runPipeline } from "./pipeline";
 import type { WorkerEnv } from "./types";
+import { isKoreanDominantText } from "./utils/content-filter";
+
+function getCacheTtlSeconds(pathname: string): number {
+  if (pathname === "/api/market/assets") return 300;
+  if (pathname === "/api/market/sentiment/current") return 20;
+  if (pathname === "/api/market/sentiment/history") return 45;
+  if (pathname === "/api/market/posts") return 30;
+  if (pathname === "/api/market/health") return 15;
+  return 0;
+}
 
 function json(data: unknown, init: ResponseInit = {}): Response {
   return new Response(JSON.stringify(data), {
@@ -83,24 +93,56 @@ async function handleHistory(url: URL, env: WorkerEnv): Promise<Response> {
   const symbol = (url.searchParams.get("asset") || "BTC").toUpperCase();
   const hours = parsePeriodHours(url.searchParams.get("period"));
   const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+  const targetPoints = Math.min(500, Math.max(24, hours * 6));
+  const queryLimit = Math.min(600, targetPoints + 48);
 
   const client = new FirestoreClient(env);
-  const rows = await client.runQuery({
-    from: [{ collectionId: "market_sentiment_logs" }],
-    where: {
-      fieldFilter: {
-        field: { fieldPath: "assetSymbol" },
-        op: "EQUAL",
-        value: { stringValue: symbol },
+  let rows: Array<Record<string, unknown>> = [];
+
+  try {
+    rows = (await client.runQuery({
+      from: [{ collectionId: "market_sentiment_logs" }],
+      where: {
+        compositeFilter: {
+          op: "AND",
+          filters: [
+            {
+              fieldFilter: {
+                field: { fieldPath: "assetSymbol" },
+                op: "EQUAL",
+                value: { stringValue: symbol },
+              },
+            },
+            {
+              fieldFilter: {
+                field: { fieldPath: "recordedAt" },
+                op: "GREATER_THAN_OR_EQUAL",
+                value: { stringValue: since },
+              },
+            },
+          ],
+        },
       },
-    },
-    limit: 800,
-  });
+      limit: queryLimit,
+    })) as Array<Record<string, unknown>>;
+  } catch {
+    rows = (await client.runQuery({
+      from: [{ collectionId: "market_sentiment_logs" }],
+      where: {
+        fieldFilter: {
+          field: { fieldPath: "assetSymbol" },
+          op: "EQUAL",
+          value: { stringValue: symbol },
+        },
+      },
+      limit: Math.max(queryLimit, 180),
+    })) as Array<Record<string, unknown>>;
+  }
 
   const points = rows
     .filter((row) => typeof row.recordedAt === "string" && row.recordedAt >= since)
     .sort((a, b) => String(a.recordedAt).localeCompare(String(b.recordedAt)))
-    .slice(-Math.min(500, Math.max(24, hours * 6)))
+    .slice(-targetPoints)
     .map((row) => ({
       time: row.recordedAt,
       score: row.score,
@@ -113,23 +155,58 @@ async function handleHistory(url: URL, env: WorkerEnv): Promise<Response> {
 async function handlePosts(url: URL, env: WorkerEnv): Promise<Response> {
   const symbol = (url.searchParams.get("asset") || "BTC").toUpperCase();
   const limit = Math.max(1, Math.min(100, Number.parseInt(url.searchParams.get("limit") || "30", 10) || 30));
+  const lookbackHours = Math.max(1, Math.min(7 * 24, Number.parseInt(url.searchParams.get("lookbackHours") || "72", 10) || 72));
+  const since = new Date(Date.now() - lookbackHours * 60 * 60 * 1000).toISOString();
+  const queryLimit = Math.min(300, Math.max(60, limit * 4));
 
   const client = new FirestoreClient(env);
-  const rows = await client.runQuery({
-    from: [{ collectionId: "market_posts" }],
-    where: {
-      fieldFilter: {
-        field: { fieldPath: "matchedAssets" },
-        op: "ARRAY_CONTAINS",
-        value: { stringValue: symbol },
+  let rows: Array<Record<string, unknown>> = [];
+
+  try {
+    rows = (await client.runQuery({
+      from: [{ collectionId: "market_posts" }],
+      where: {
+        compositeFilter: {
+          op: "AND",
+          filters: [
+            {
+              fieldFilter: {
+                field: { fieldPath: "matchedAssets" },
+                op: "ARRAY_CONTAINS",
+                value: { stringValue: symbol },
+              },
+            },
+            {
+              fieldFilter: {
+                field: { fieldPath: "collectedAt" },
+                op: "GREATER_THAN_OR_EQUAL",
+                value: { stringValue: since },
+              },
+            },
+          ],
+        },
       },
-    },
-    limit: 200,
-  });
+      limit: queryLimit,
+    })) as Array<Record<string, unknown>>;
+  } catch {
+    rows = (await client.runQuery({
+      from: [{ collectionId: "market_posts" }],
+      where: {
+        fieldFilter: {
+          field: { fieldPath: "matchedAssets" },
+          op: "ARRAY_CONTAINS",
+          value: { stringValue: symbol },
+        },
+      },
+      limit: queryLimit,
+    })) as Array<Record<string, unknown>>;
+  }
 
   return json({
     asset: symbol,
     posts: rows
+      .filter((row) => typeof row.collectedAt !== "string" || row.collectedAt >= since)
+      .filter((row) => isKoreanDominantText(`${String(row.title || "")} ${String(row.body || "")}`, env))
       .sort((a, b) => String(b.collectedAt || "").localeCompare(String(a.collectedAt || "")))
       .slice(0, limit)
       .map((row) => ({
@@ -210,9 +287,28 @@ async function route(request: Request, env: WorkerEnv): Promise<Response> {
 }
 
 export default {
-  async fetch(request: Request, env: WorkerEnv): Promise<Response> {
+  async fetch(request: Request, env: WorkerEnv, ctx: ExecutionContext): Promise<Response> {
+    const url = new URL(request.url);
+    const cacheTtl = request.method === "GET" ? getCacheTtlSeconds(url.pathname) : 0;
+    const cacheKey = cacheTtl > 0 ? new Request(url.toString(), request) : null;
+
     try {
+      if (cacheKey) {
+        const cached = await caches.default.match(cacheKey);
+        if (cached) {
+          return withCors(cached, env);
+        }
+      }
+
       const response = await route(request, env);
+
+      if (cacheKey && cacheTtl > 0 && response.ok) {
+        const cacheable = new Response(response.body, response);
+        cacheable.headers.set("Cache-Control", `public, max-age=${cacheTtl}, s-maxage=${cacheTtl}`);
+        ctx.waitUntil(caches.default.put(cacheKey, cacheable.clone()));
+        return withCors(cacheable, env);
+      }
+
       return withCors(response, env);
     } catch (error) {
       const response = json(
