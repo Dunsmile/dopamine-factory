@@ -3,14 +3,14 @@
 ## 프로젝트 개요
 도파민 공작소는 운세/행운 관련 서비스를 제공하는 팀 협업 플랫폼입니다.
 운세 서비스(오늘의 운세, 관상 테스트)를 통해 매일 접속을 유도하고, 로또·타로 등 다양한 콘텐츠로 체류 시간을 확보하는 구조입니다.
-레포 구조가 팀원별 폴더로 재편되었습니다 (v3.0, 2026-02-10).
+레포가 fe/be 모노레포 구조 + Git Flow 워크플로우로 재편되었습니다 (v3.1, 2026-02-11).
 
 ## 서비스 목록
 
 ### ✅ 운영 중
-1. **HOXY NUMBER** - 로또 번호 생성기 (dunsmile/hoxy-number/)
-2. **부자가 될 상인가?** - AI 관상 테스트 (dunsmile/rich-face/)
-3. **오늘의 운세 풀이** - 별자리·띠·사주 운세, 매일 새 결과로 재방문 유도 (dunsmile/daily-fortune/)
+1. **HOXY NUMBER** - 로또 번호 생성기 (fe/public/dunsmile/hoxy-number/)
+2. **부자가 될 상인가?** - AI 관상 테스트 (fe/public/dunsmile/rich-face/)
+3. **오늘의 운세 풀이** - 별자리·띠·사주 운세, 매일 새 결과로 재방문 유도 (fe/public/dunsmile/daily-fortune/)
 
 ### 📋 개발 예정
 4. **ONE DAY MY CARD** - 타로 카드 오늘의 운세 (1순위)
@@ -21,41 +21,54 @@
 - **Frontend**: HTML, CSS (Tailwind CDN), Vanilla JavaScript
 - **Storage**: LocalStorage + Firebase Firestore
 - **Backend**: Firebase (Firestore Database)
-- **Hosting**: Cloudflare Pages
+- **Hosting**: Cloudflare Pages (배포 루트: `fe/public`)
   - Repository: https://github.com/Dunsmile/dopamine-factory.git
   - Live URL: https://dopamine-factory.pages.dev
+- **CI/CD**: GitHub Actions (`.github/workflows/ci.yml`)
+- **Git Workflow**: Git Flow (docs/GIT_WORKFLOW.md 참고)
 
 ## 폴더 구조
 ```
 dopamine-factory/
-├── index.html              (포털 랜딩 페이지)
-├── robots.txt, sitemap.xml, ads.txt, _headers
-├── dunsmile/                (Dunsmile 서비스)
-│   ├── hoxy-number/         (HOXY NUMBER)
-│   │   ├── index.html
-│   │   └── guide/index.html
-│   ├── rich-face/           (관상 테스트)
-│   │   ├── index.html
-│   │   └── guide/index.html
-│   ├── daily-fortune/       (오늘의 운세)
-│   │   ├── index.html
-│   │   └── guide/index.html
-│   ├── css/, js/            (공유 스타일/스크립트)
-│   ├── about.html, privacy.html, terms.html
-│   └── favicons, og-images
-├── teammate/                (팀원 서비스 - 준비 중)
-└── assets/                  (공용 리소스)
+├── fe/                          (프론트엔드)
+│   ├── README.md
+│   └── public/                  (Cloudflare Pages 배포 루트)
+│       ├── index.html           (포털 랜딩 페이지)
+│       ├── robots.txt, sitemap.xml, ads.txt, _headers
+│       ├── dunsmile/            (Dunsmile 서비스)
+│       │   ├── hoxy-number/     (HOXY NUMBER)
+│       │   │   ├── index.html
+│       │   │   └── guide/index.html
+│       │   ├── rich-face/       (관상 테스트)
+│       │   │   ├── index.html
+│       │   │   └── guide/index.html
+│       │   ├── daily-fortune/   (오늘의 운세)
+│       │   │   ├── index.html
+│       │   │   └── guide/index.html
+│       │   ├── css/, js/        (공유 스타일/스크립트)
+│       │   ├── about.html, privacy.html, terms.html
+│       │   └── favicons, og-images
+│       ├── teammate/            (팀원 서비스 - 준비 중)
+│       └── assets/              (공용 리소스)
+├── be/                          (백엔드 - 준비 중)
+│   └── README.md
+├── docs/
+│   └── GIT_WORKFLOW.md          (브랜치 전략 문서)
+├── tests/
+│   └── structure.test.sh        (폴더 구조 검증)
+└── .github/workflows/ci.yml    (CI 파이프라인)
 ```
 
 ## 주요 파일
-- `index.html` - 도파민 공작소 포털 랜딩
-- `dunsmile/hoxy-number/index.html` - HOXY NUMBER (로또 번호 생성기)
-- `dunsmile/rich-face/index.html` - 관상 테스트 페이지
-- `dunsmile/daily-fortune/index.html` - 오늘의 운세 풀이 페이지
-- `dunsmile/js/app.js` - 로또 앱 로직
-- `dunsmile/js/face-test.js` - 관상 테스트 로직
-- `dunsmile/js/daily-fortune.js` - 오늘의 운세 풀이 로직
-- `dunsmile/css/style.css` - 공통 스타일
+- `fe/public/index.html` - 도파민 공작소 포털 랜딩
+- `fe/public/dunsmile/hoxy-number/index.html` - HOXY NUMBER (로또 번호 생성기)
+- `fe/public/dunsmile/rich-face/index.html` - 관상 테스트 페이지
+- `fe/public/dunsmile/daily-fortune/index.html` - 오늘의 운세 풀이 페이지
+- `fe/public/dunsmile/js/app.js` - 로또 앱 로직
+- `fe/public/dunsmile/js/face-test.js` - 관상 테스트 로직
+- `fe/public/dunsmile/js/daily-fortune.js` - 오늘의 운세 풀이 로직
+- `fe/public/dunsmile/css/style.css` - 공통 스타일
+- `docs/GIT_WORKFLOW.md` - Git Flow 브랜치 전략
 
 ## 핵심 기능
 1. **로또 번호 생성** - 1~45 중 6개 랜덤 생성
@@ -124,6 +137,14 @@ dopamine-factory/
   - Cloudflare Pages 새 프로젝트 생성 (dopamine-factory.pages.dev)
   - Google Search Console 새 도메인 등록 + 사이트맵 제출
   - AdSense 새 도메인 등록
+- ✅ v3.1 fe/be 모노레포 + Git Flow 도입 (2026-02-11)
+  - 팀원이 레포 구조 재편: 서비스 파일 → fe/public/ 하위로 이동
+  - be/ 백엔드 폴더 생성 (준비 중)
+  - docs/GIT_WORKFLOW.md 브랜치 전략 문서 추가
+  - .github/workflows/ci.yml CI 파이프라인 추가
+  - tests/structure.test.sh 폴더 구조 검증 테스트 추가
+  - Git Flow: main(배포) / develop(개발) / feature·fix·hotfix 브랜치 전략
+  - Cloudflare Pages 배포 루트: fe/public
 
 ## Firebase 설정
 - **Project ID**: hoxy-number
@@ -166,7 +187,7 @@ let savedItemsPerPage = 10;      // 페이지당 항목 수
 - PC/모바일 반응형 레이아웃
 
 ## 프로젝트 정보
-- **버전**: v3.0 (2026-02-10) - 도파민 공작소 팀 구조 재편
+- **버전**: v3.1 (2026-02-11) - fe/be 모노레포 + Git Flow 도입
 - **이전 버전**: v2.03, v2.0, v1.9, v1.8.1, v1.8, v1.7, v1.6, v1.5, v1.4, v1.3, v1.2, v1.1, v1.0
 - **개발자**: 스티브 (UX/UI Designer & Developer)
 - **연락처**: poilkjmnb122@gmail.com
@@ -174,32 +195,40 @@ let savedItemsPerPage = 10;      // 페이지당 항목 수
 
 ## 🏭 도파민 공작소 플랫폼 구조
 
-### 서비스 구조
-```
-도파민 공작소 (dopamine-factory.pages.dev)
-├── 포털 랜딩 (/)
-├── Dunsmile 서비스 (/dunsmile/)
-│   ├── HOXY NUMBER (/dunsmile/hoxy-number/)
-│   ├── 부자가 될 상인가? (/dunsmile/rich-face/)
-│   ├── 오늘의 운세 풀이 (/dunsmile/daily-fortune/)
-│   ├── ONE DAY MY CARD (예정)
-│   └── ...
-├── 팀원 서비스 (/teammate/) - 준비 중
-└── 공용 리소스 (/assets/)
-```
+### 서비스 URL (운영)
+| 서비스 | URL | 로컬 파일 |
+|--------|-----|-----------|
+| 포털 랜딩 | `/` | `fe/public/index.html` |
+| HOXY NUMBER | `/dunsmile/hoxy-number/` | `fe/public/dunsmile/hoxy-number/index.html` |
+| 관상 테스트 | `/dunsmile/rich-face/` | `fe/public/dunsmile/rich-face/index.html` |
+| 오늘의 운세 | `/dunsmile/daily-fortune/` | `fe/public/dunsmile/daily-fortune/index.html` |
+
+### Git Flow 작업 방식
+- **main**: 최종 배포 버전만 (직접 push 금지)
+- **develop**: 통합 개발 브랜치 (PR 타겟)
+- **feature/fe-xxx**: 프론트엔드 기능 개발
+- **feature/be-xxx**: 백엔드 기능 개발
+- **fix/fe-xxx, fix/be-xxx**: 버그 수정
+- **hotfix/xxx**: 운영 긴급 수정 (main에서 분기)
+
+### 작업 흐름
+1. develop에서 feature 브랜치 생성
+2. 기능 개발 후 PR 생성 (target: develop)
+3. CI 통과 + 리뷰 후 머지
+4. 배포 시점에 release 브랜치 → main 머지
 
 ### 협업 구조
 | 영역 | 담당자 | 권한 |
 |------|--------|------|
-| dunsmile/ | Dunsmile | 전용 |
-| 포털 (index.html) | 공동 | 협업 |
-| teammate/ | 팀원 | 본인 서비스 전용 |
+| fe/public/dunsmile/ | Dunsmile (Steve) | 전용 |
+| fe/public/ (포털) | 공동 | 협업 |
+| fe/public/teammate/ | 팀원 | 본인 서비스 전용 |
+| be/ | 공동 | 협업 |
 
-### 새 서비스 추가 방법
-1. 본인 이름으로 폴더 생성 (예: `jane/`)
-2. 서비스 파일 구성 (index.html, css/, js/)
-3. 루트 index.html 포털에 서비스 카드 추가
-4. sitemap.xml에 URL 추가
+### 로컬 실행
+```bash
+python3 -m http.server 8080 --directory fe/public
+```
 
 ## 🎯 비즈니스 모델 & 수익화 전략
 
@@ -481,7 +510,7 @@ function updateCheckUI() {
 - 캐러셀 카드 UI (관상 테스트 / 로또 번호 교차 퍼널)
 - 하단 콘텐츠: FAQ, 서비스 설명 (AdSense 보강)
 
-#### 가이드 페이지 (dunsmile/daily-fortune/guide/)
+#### 가이드 페이지 (fe/public/dunsmile/daily-fortune/guide/)
 - 12별자리 상세 해설 (원소, 수호성, 성격)
 - 12띠 상세 해설 (오행, 지지, 성격)
 - 사주팔자 기초 (천간 10개, 지지 12개)
@@ -537,10 +566,10 @@ function updateCheckUI() {
 **Phase 1~2: 완료** ✅
 
 **Phase 3: 콘텐츠 보강 (완료)** ✅
-7. ✅ HOXY NUMBER 가이드 페이지 (dunsmile/hoxy-number/guide/)
-8. ✅ 관상 테스트 가이드 페이지 (dunsmile/rich-face/guide/)
-9. ✅ 오늘의 운세 풀이 가이드 페이지 (dunsmile/daily-fortune/guide/)
-10. ✅ 정책 페이지 (dunsmile/about.html, privacy.html, terms.html)
+7. ✅ HOXY NUMBER 가이드 페이지 (fe/public/dunsmile/hoxy-number/guide/)
+8. ✅ 관상 테스트 가이드 페이지 (fe/public/dunsmile/rich-face/guide/)
+9. ✅ 오늘의 운세 풀이 가이드 페이지 (fe/public/dunsmile/daily-fortune/guide/)
+10. ✅ 정책 페이지 (fe/public/dunsmile/about.html, privacy.html, terms.html)
 
 **Phase 4: 서비스 확장**
 11. ✅ **오늘의 운세 풀이** (dunsmile/daily-fortune/) - 별자리·띠·사주·오행 종합 운세
