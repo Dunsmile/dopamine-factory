@@ -78,6 +78,10 @@ function enhanceHomeFeedMedia(root) {
 function renderCompactHome() {
   const root = document.getElementById('homeFeedRoot');
   if (!root) return;
+  if (!Array.isArray(SERVICES) || SERVICES.length === 0) {
+    root.innerHTML = '<section class="nx-home-shell"><div class="nx-home-wrap"><p class="nx-tab-empty">서비스 데이터가 비어 있습니다.</p></div></section>';
+    return;
+  }
   const favorites = getFavorites();
 
   if (heroAutoplayTimer) {
@@ -458,7 +462,8 @@ function handleViewParam() {
   // view 파라미터만 제거하고 나머지는 유지
   params.delete('view');
   const query = params.toString();
-  window.history.replaceState({}, '', query ? `/?${query}` : '/');
+  const basePath = window.location.pathname || '/';
+  window.history.replaceState({}, '', query ? `${basePath}?${query}` : basePath);
 }
 
 // ===== 사이드바 렌더링 =====
