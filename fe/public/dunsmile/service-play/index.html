@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>테스트 플레이 | 도파민 공작소</title>
+  <meta name="description" content="도파민 공작소 신규 테스트 플레이 페이지입니다.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/service-play/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/dunsmile/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/dunsmile/apple-touch-icon.png">
+  <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white">
+    <div class="sticky top-0 bg-white border-b border-gray-200 z-10">
+      <div class="flex items-center justify-between px-4 h-14">
+        <button onclick="history.length > 1 ? history.back() : window.location.href='/'" class="text-sm font-semibold text-gray-700">← 홈으로</button>
+        <h1 id="aboutTitle" class="text-base font-bold text-gray-900">테스트 플레이</h1>
+        <span class="w-12"></span>
+      </div>
+    </div>
+    <div id="serviceApp" class="p-4 space-y-4"></div>
+    <div id="aboutDefaultContent" class="p-4 text-sm text-gray-600 hidden">서비스를 불러오는 중입니다.</div>
+  </div>
+  <script src="../js/service-lab.runners.js"></script>
+  <script src="../js/service-lab.js"></script>
+</body>
+</html>

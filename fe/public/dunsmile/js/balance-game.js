@@ -1,11 +1,102 @@
-const BALANCE_QUESTIONS = [
-  { id: "q1", question: "평생 야식 먹기 vs 평생 디저트 먹기", optionA: "평생 야식", optionB: "평생 디저트" },
-  { id: "q2", question: "연봉 2배 vs 휴가 2배", optionA: "연봉 2배", optionB: "휴가 2배" },
-  { id: "q3", question: "평생 여름 vs 평생 겨울", optionA: "평생 여름", optionB: "평생 겨울" },
-  { id: "q4", question: "카페인 무제한 vs 당분 무제한", optionA: "카페인 무제한", optionB: "당분 무제한" },
-  { id: "q5", question: "주 4일 근무 vs 매일 6시간 근무", optionA: "주 4일 근무", optionB: "매일 6시간 근무" },
-  { id: "q6", question: "SNS 1년 금지 vs 배달음식 1년 금지", optionA: "SNS 1년 금지", optionB: "배달음식 1년 금지" }
-];
+const BALANCE_QUESTIONS = buildBalanceQuestions();
+
+function buildBalanceQuestions() {
+  const fixed = [
+    pair("평생 야식 먹기", "평생 디저트 먹기"),
+    pair("연봉 2배", "휴가 2배"),
+    pair("평생 여름", "평생 겨울"),
+    pair("카페인 무제한", "당분 무제한"),
+    pair("주 4일 근무", "매일 6시간 근무"),
+    pair("SNS 1년 금지", "배달음식 1년 금지"),
+    pair("주식 단타", "장기 적립식"),
+    pair("집순이/집돌이", "밖순이/밖돌이"),
+    pair("메신저 장문", "통화 10분"),
+    pair("아침 운동", "저녁 운동"),
+  ];
+
+  const scenarioPairs = [
+    pair("퇴근 후 약속", "퇴근 후 혼자 충전"),
+    pair("주말은 외출", "주말은 집콕"),
+    pair("여행은 즉흥", "여행은 계획형"),
+    pair("회의는 짧고 자주", "회의는 길고 집중"),
+    pair("SNS로 소통", "직접 만나 소통"),
+    pair("한 번에 몰입", "짧게 자주 분할"),
+    pair("완성도 우선", "속도 우선"),
+    pair("혼자 결정", "주변 의견 반영"),
+    pair("도전형 투자", "안정형 저축"),
+    pair("아침형 루틴", "야행형 루틴"),
+    pair("운동 먼저", "식단 먼저"),
+    pair("메모로 정리", "대화로 정리"),
+    pair("큰 목표 1개", "작은 목표 여러 개"),
+    pair("새로운 사람 만나기", "기존 관계 깊게"),
+    pair("영상으로 학습", "문서로 학습"),
+  ];
+  const deepScenarioPairs = [
+    pair("목표를 공개 선언", "조용히 실행"),
+    pair("아이디어 먼저 공유", "초안 완성 후 공유"),
+    pair("한 분야 깊게", "여러 분야 넓게"),
+    pair("즉시 피드백 요청", "스스로 점검 후 요청"),
+    pair("도시 여행", "자연 여행"),
+    pair("취미를 수집", "취미를 집중"),
+    pair("아침 뉴스 확인", "저녁 요약 확인"),
+    pair("할 일 앱 관리", "노트 수기 관리"),
+    pair("선택은 직감", "선택은 데이터"),
+    pair("주도적으로 리드", "보조로 완성"),
+    pair("대형 프로젝트 선호", "단기 프로젝트 선호"),
+    pair("상세 계획부터", "일단 실행부터"),
+    pair("문제는 즉시 해결", "원인 분석 후 해결"),
+    pair("경험에 투자", "자산에 투자"),
+    pair("혼밥 선호", "함께 식사 선호"),
+    pair("새 앱 바로 설치", "검증 후 설치"),
+    pair("콘텐츠 소비", "콘텐츠 제작"),
+    pair("운동은 강도 중심", "운동은 꾸준함 중심"),
+    pair("기록은 숫자 중심", "기록은 감정 중심"),
+    pair("성공 사례 참고", "실패 사례 참고"),
+    pair("협업 먼저", "개인 작업 먼저"),
+    pair("새로운 툴 빠르게 도입", "기존 툴 최적화"),
+    pair("의견 충돌을 환영", "의견 조율을 우선"),
+    pair("오늘 할 일 3개", "이번 주 목표 1개"),
+    pair("작게 자주 휴식", "길게 한 번 휴식"),
+  ];
+  const topicPairs = buildTopicPairs();
+  const all = [...fixed, ...topicPairs, ...scenarioPairs, ...deepScenarioPairs].slice(0, 100);
+  return all.map((item, index) => ({ id: `q${index + 1}`, ...item }));
+}
+
+function pair(optionA, optionB) {
+  return {
+    question: `${optionA} vs ${optionB}`,
+    optionA,
+    optionB,
+  };
+}
+
+function pairByContext(question, optionA, optionB) {
+  return {
+    question,
+    optionA,
+    optionB,
+  };
+}
+
+function buildTopicPairs() {
+  const topics = ["커피", "영화", "게임", "여행", "식단", "운동", "연애", "직장", "쇼핑", "공부"];
+  const choices = [
+    { suffix: "시작 방식은?", a: "바로 시작하기", b: "미리 계획 세우기" },
+    { suffix: "진행 스타일은?", a: "혼자 깊게 즐기기", b: "함께 즐기기" },
+    { suffix: "시간 배분은?", a: "짧게 자주 하기", b: "길게 몰아서 하기" },
+    { suffix: "기록 습관은?", a: "기록 남기기", b: "기억에 맡기기" },
+    { suffix: "선호 루틴은?", a: "새로운 방식 시도", b: "익숙한 방식 유지" },
+  ];
+
+  const pairs = [];
+  topics.forEach((topic) => {
+    choices.forEach((choice) => {
+      pairs.push(pairByContext(`${topic} ${choice.suffix}`, choice.a, choice.b));
+    });
+  });
+  return pairs;
+}
 
 const MARKET_SENTIMENT_ROUTE = "/dunsmile/market-sentiment/";
 const BALANCE_STORAGE_KEY = "hoxy_balance_votes";

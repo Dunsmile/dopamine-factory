@@ -1,18 +1,6 @@
-/* 도파민 공작소 홈 - shared data and pure helpers */
+/* 도파민 공작소 홈 데이터 - 조립 및 헬퍼 */
 (function initHomeData(global) {
-  const SERVICES = [
-    { id: 'hoxy-number', name: 'HOXY', emoji: '🎱', url: '/dunsmile/hoxy-number/', desc: '무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지', fullName: 'HOXY NUMBER', category: 'luck' },
-    { id: 'rich-face', name: '부자상?', emoji: '👤', url: '/dunsmile/rich-face/', desc: 'AI 관상 분석으로 알아보는 나의 부자 확률', fullName: '부자가 될 상인가?', category: 'fortune' },
-    { id: 'daily-fortune', name: '운세', emoji: '🔮', url: '/dunsmile/daily-fortune/', desc: '별자리, 띠, 사주로 보는 오늘의 종합 운세', fullName: '오늘의 운세', category: 'fortune' },
-    { id: 'balance-game', name: '밸런스', emoji: '⚖️', url: '/dunsmile/balance-game/', desc: '두 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요', fullName: '오늘의 밸런스 게임', category: 'fun' },
-    { id: 'name-compatibility', name: '이름궁합', emoji: '💞', url: '/dunsmile/name-compatibility/', desc: '두 이름을 입력하면 케미 점수와 궁합 키워드를 확인할 수 있어요', fullName: '이름 궁합 테스트', category: 'fortune' },
-    { id: 'market-sentiment', name: '시장감성', emoji: '📈', url: '/dunsmile/market-sentiment/', desc: '펨코·디씨 게시글 기반 주식/코인 커뮤니티 감성 분석', fullName: '시장 감성 레이더', category: 'finance' },
-    { id: 'tarot-reading', name: '타로', emoji: '🃏', url: '/dunsmile/tarot-reading/', desc: '78장 타로 카드가 전하는 오늘의 메시지, 무료 타로 리딩', fullName: 'ONE DAY MY CARD', category: 'fortune' },
-    { id: 'dopamine-lab', name: '실험실', emoji: '🧪', url: '/dunsmile/about/', desc: '신규 실험형 서비스를 가장 먼저 만나보는 프리뷰 라운지', fullName: '도파민 랩 프리뷰', category: 'fun' },
-  ];
-
-  const FORTUNE_SERVICES = SERVICES.filter((s) => s.category === 'fortune');
-
+  const parts = global.__HOME_DATA_PARTS || {};
   const SERVICE_BANNERS = {
     'hoxy-number': '/assets/banners/banner-hoxy-number.svg',
     'rich-face': '/assets/banners/banner-rich-face.svg',
@@ -22,6 +10,53 @@
     'market-sentiment': '/assets/banners/banner-market-sentiment.svg',
     'tarot-reading': '/assets/banners/banner-tarot-reading.svg',
     'dopamine-lab': '/assets/banners/banner-dopamine-lab.svg',
+  };
+
+  const SERVICE_START_META = {
+    'hoxy-number': { author: '도파민 공작소', plays: '4.1만', duration: '약 1분', tags: ['유틸', '랜덤번호'] },
+    'rich-face': { author: '도파민 공작소', plays: '3.6만', duration: '약 2분', tags: ['운세', 'AI관상'] },
+    'daily-fortune': { author: '도파민 공작소', plays: '5.4만', duration: '약 1분', tags: ['운세', '오늘운세'] },
+    'balance-game': { author: '도파민 공작소', plays: '2.8만', duration: '약 1분', tags: ['플레이', '밸런스'] },
+    'name-compatibility': { author: '도파민 공작소', plays: '3.2만', duration: '약 2분', tags: ['운세', '이름궁합'] },
+    'market-sentiment': { author: '도파민 공작소', plays: '1.2만', duration: '약 2분', tags: ['데이터', '시장감성'] },
+    'tarot-reading': { author: '도파민 공작소', plays: '2.4만', duration: '약 2분', tags: ['운세', '타로'] },
+    'dopamine-lab': { author: '도파민 랩', plays: '베타', duration: '약 1분', tags: ['플레이', '프리뷰'] },
+    'mbti-wealth-dna': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['심리', 'MBTI'] },
+    'past-life-mbti': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['심리', '전생'] },
+    'love-chat-style': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['연애', '대화톤'] },
+    'breakup-recovery': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['연애', '회복력'] },
+    'weekly-opportunity': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['운세', '주간'] },
+    'monthly-money-fortune': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['운세', '재물'] },
+    'balance-game-love': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['플레이', '연애편'] },
+    'balance-game-work': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['플레이', '직장편'] },
+    'habit-starter': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['유틸', '습관'] },
+    'procrastination-type': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['유틸', '생산성'] },
+    'spending-impulse': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['데이터', '소비'] },
+    'side-hustle-fit': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['데이터', '부업'] },
+  };
+
+  const DEFAULT_FAQ = [
+    { q: '결과는 정확한 진단인가요?', a: '이 테스트는 재미와 자기 점검을 위한 콘텐츠이며, 참고용으로 활용해 주세요.' },
+    { q: '데이터는 저장되나요?', a: '서비스 개선 목적의 비식별 사용 로그만 활용하며, 민감한 개인정보는 저장하지 않습니다.' },
+  ];
+
+  const SERVICE_CONTENT_GUIDES = {
+    'hoxy-number': {
+      policy: '로또 번호 생성 로직과 사용 흐름을 명확히 안내하고, 결과 화면에 추가 설명을 제공합니다.',
+      updatedAt: '2026-02-18',
+      faq: [
+        { q: '생성된 번호는 당첨을 보장하나요?', a: '아니요. 무작위 추천 도구이며, 당첨 확률을 보장하지 않습니다.' },
+        { q: '번호는 다시 생성할 수 있나요?', a: '네. 언제든지 재생성 가능하며 생성 이력도 확인할 수 있습니다.' },
+      ],
+    },
+    'balance-game': {
+      policy: '질문 문구를 점진적으로 확장하고, 중복/자극 문구를 주기적으로 정리합니다.',
+      updatedAt: '2026-02-18',
+      faq: [
+        { q: '선택 비율은 어떻게 계산되나요?', a: '로컬 저장된 익명 투표 합산값을 기반으로 비율을 보여줍니다.' },
+        { q: '질문 수는 몇 개인가요?', a: '현재 100문항이 반영되어 있으며, 품질 점검 후 추가 확장합니다.' },
+      ],
+    },
   };
 
   function makeDummyArt(title, tone = 'blue') {
@@ -41,14 +76,12 @@
   }
 
   function categoryPillLabel(category) {
-    if (category === 'fortune') return '운세';
-    if (category === 'finance') return '데이터';
-    if (category === 'luck') return '유틸';
-    return '플레이';
+    const map = { fortune: '운세', personality: '심리', money: '데이터', utility: '유틸', love: '연애', lab: '랩', play: '플레이' };
+    return map[category] || '플레이';
   }
 
   function latestServiceTags(service) {
-    const tagMap = {
+    const tags = {
       'hoxy-number': ['유틸', '랜덤번호'],
       'rich-face': ['운세', 'AI관상'],
       'daily-fortune': ['운세', '오늘운세'],
@@ -58,16 +91,35 @@
       'tarot-reading': ['운세', '타로'],
       'dopamine-lab': ['플레이', '프리뷰'],
     };
+    return tags[service.id] || [categoryPillLabel(service.category)];
+  }
 
-    return tagMap[service.id] || [categoryPillLabel(service.category)];
+  function serviceStartMeta(service) {
+    const meta = SERVICE_START_META[service.id] || {};
+    return {
+      author: meta.author || '도파민 공작소',
+      plays: meta.plays || '신규',
+      duration: meta.duration || '약 1분',
+      tags: Array.isArray(meta.tags) && meta.tags.length ? meta.tags : latestServiceTags(service),
+    };
+  }
+
+  function serviceContentGuide(service) {
+    const guide = SERVICE_CONTENT_GUIDES[service.id] || {};
+    return {
+      policy: guide.policy || '각 서비스는 고유 설명, 결과 해설, 업데이트 이력을 포함하도록 운영합니다.',
+      updatedAt: guide.updatedAt || '2026-02-18',
+      faq: Array.isArray(guide.faq) && guide.faq.length ? guide.faq : DEFAULT_FAQ,
+    };
   }
 
   global.HomeData = {
-    SERVICES,
-    FORTUNE_SERVICES,
+    ...parts,
     SERVICE_BANNERS,
     makeDummyArt,
     serviceBanner,
+    serviceStartMeta,
+    serviceContentGuide,
     categoryPillLabel,
     latestServiceTags,
   };

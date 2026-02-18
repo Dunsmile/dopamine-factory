@@ -259,6 +259,156 @@
     .hoxy-cta-btn-with-icon {
       gap: 6px;
     }
+
+    /* ========== 서비스 공통 테스트 템플릿 ========== */
+    .hoxy-lab-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 16px;
+      display: grid;
+      gap: 16px;
+    }
+    .hoxy-lab-copy {
+      display: grid;
+      gap: 8px;
+    }
+    .hoxy-lab-kicker {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: #4f46e5;
+      letter-spacing: 0.04em;
+    }
+    .hoxy-lab-title {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #111827;
+    }
+    .hoxy-lab-subtitle {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.55;
+      color: #4b5563;
+    }
+    .hoxy-lab-meta,
+    .hoxy-lab-progress {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+    }
+    .hoxy-lab-question-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.3;
+      color: #111827;
+    }
+    .hoxy-lab-answer-list {
+      display: grid;
+      gap: 8px;
+    }
+    .hoxy-lab-answer {
+      width: 100%;
+      text-align: left;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f2937;
+      cursor: pointer;
+    }
+    .hoxy-lab-answer:hover {
+      background: #f9fafb;
+    }
+    .hoxy-lab-guide {
+      border-radius: 12px;
+      background: #f9fafb;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .hoxy-lab-related {
+      border-radius: 12px;
+      background: #eef2ff;
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+    }
+    .hoxy-lab-block-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .hoxy-lab-guide-list {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 4px;
+      font-size: 14px;
+      color: #374151;
+    }
+    .hoxy-lab-related-text {
+      margin: 0;
+      font-size: 14px;
+      color: #374151;
+    }
+    .hoxy-lab-related-link {
+      color: #4f46e5;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .hoxy-lab-related-link:hover {
+      text-decoration: underline;
+    }
+    .hoxy-lab-cta-list {
+      display: grid;
+      gap: 8px;
+    }
+    .hoxy-lab-cta {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .hoxy-lab-cta-primary {
+      background: #4f46e5;
+      color: #ffffff;
+    }
+    .hoxy-lab-cta-primary:hover {
+      background: #4338ca;
+    }
+    .hoxy-lab-cta-outline {
+      background: #ffffff;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+    .hoxy-lab-cta-outline:hover {
+      background: #f9fafb;
+    }
+    @media (max-width: 767px) {
+      .hoxy-lab-title {
+        font-size: 28px;
+      }
+      .hoxy-lab-question-title {
+        font-size: 22px;
+      }
+    }
     .hoxy-cta-btn-primary-mix {
       background: linear-gradient(to right, #3b82f6, #8b5cf6);
       color: #ffffff;
