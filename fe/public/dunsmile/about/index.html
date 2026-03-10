@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>서비스 소개 | HOXY NUMBER</title>
-  <meta name="description" content="HOXY NUMBER 서비스 소개와 운영 원칙을 안내합니다. 로또 번호 생성, 관상 테스트 등 주요 기능을 확인하세요.">
+  <title>서비스 소개 | 도파민 공작소</title>
+  <meta name="description" content="도파민 공작소 서비스 소개와 운영 원칙을 안내합니다. 신규 테스트 서비스도 이 페이지에서 확인할 수 있습니다.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/about/">
   <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/favicon-32x32.png">
@@ -39,13 +39,15 @@
   <div class="max-w-md md:max-w-xl mx-auto min-h-screen bg-white">
     <div class="sticky top-0 bg-white border-b border-gray-200 z-10">
       <div class="flex items-center justify-between px-4 h-14">
-        <button onclick="history.length > 1 ? history.back() : window.location.href='/dunsmile/hoxy-number/'" class="text-sm font-semibold text-gray-700">← 홈으로</button>
-        <h1 class="text-base font-bold text-gray-900">서비스 소개</h1>
+        <button onclick="history.length > 1 ? history.back() : window.location.href='/'" class="text-sm font-semibold text-gray-700">← 홈으로</button>
+        <h1 id="aboutTitle" class="text-base font-bold text-gray-900">서비스 소개</h1>
         <span class="w-12"></span>
       </div>
     </div>
 
-    <div class="p-4 space-y-4 text-sm text-gray-700">
+    <div id="serviceApp" class="hidden p-4 space-y-4"></div>
+
+    <div id="aboutDefaultContent" class="p-4 space-y-4 text-sm text-gray-700">
       <p class="text-xs text-gray-400">시행일: 2026년 2월 7일</p>
 
       <section class="space-y-2">
@@ -69,5 +71,7 @@
       </section>
     </div>
   </div>
+  <script src="../js/service-lab.runners.js"></script>
+  <script src="../js/service-lab.js"></script>
 </body>
 </html>
