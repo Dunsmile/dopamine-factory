@@ -2,11 +2,12 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+. "${ROOT_DIR}/tests/_search.sh"
 
 assert_not_contains() {
   local path="$1"
   local pattern="$2"
-  if rg -n -- "${pattern}" "${ROOT_DIR}/${path}" >/dev/null; then
+  if search_contains "${pattern}" "${ROOT_DIR}/${path}"; then
     echo "[FAIL] '${pattern}' should not exist in ${path}"
     exit 1
   fi
@@ -16,7 +17,7 @@ assert_not_contains() {
 assert_contains() {
   local path="$1"
   local pattern="$2"
-  if ! rg -n -- "${pattern}" "${ROOT_DIR}/${path}" >/dev/null; then
+  if ! search_contains "${pattern}" "${ROOT_DIR}/${path}"; then
     echo "[FAIL] '${pattern}' not found in ${path}"
     exit 1
   fi
