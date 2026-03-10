@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>운세/사주 | 도파민 공작소</title>
+  <meta name="description" content="운세, 타로, 궁합 서비스를 한 곳에서 모아보세요.">
+  <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="/assets/css/category.css">
+</head>
+<body class="nflx-page category-page" data-category="fortune">
+  <nav class="fixed top-0 z-50 w-full bg-gradient-to-b from-black/80 to-transparent px-[4vw] py-4 transition-colors duration-300" id="nflx-nav">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <h1 class="nflx-brand-mark text-2xl font-bold tracking-tighter"><a href="/" class="text-current">도파민 공작소</a></h1>
+        <ul class="hidden gap-5 text-sm font-medium text-gray-300 md:flex">
+          <li><a href="/" class="cursor-pointer transition hover:text-gray-400">홈</a></li>
+          <li><a href="/category/fortune/" data-category-link="fortune" class="cursor-pointer transition hover:text-gray-400">운세/사주</a></li>
+          <li><a href="/category/fun/" data-category-link="fun" class="cursor-pointer transition hover:text-gray-400">재미/밸런스</a></li>
+          <li><a href="/category/luck/" data-category-link="luck" class="cursor-pointer transition hover:text-gray-400">행운/번호</a></li>
+          <li><a href="/category/finance/" data-category-link="finance" class="cursor-pointer transition hover:text-gray-400">시장/데이터</a></li>
+          <li><a href="/category/experimental/" data-category-link="experimental" class="cursor-pointer transition hover:text-gray-400">실험실</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header class="relative min-h-[500px] w-full overflow-hidden bg-[#141414] max-h-[85vh] h-[56.25vw]" id="nflx-hero">
+    <div class="nflx-hero-backdrop absolute inset-0">
+      <div class="nflx-hero-backdrop__core absolute inset-0"></div>
+      <div class="nflx-hero-backdrop__glow nflx-hero-backdrop__glow--left absolute inset-y-0 left-[-10%] w-[45%]"></div>
+      <div class="nflx-hero-backdrop__glow nflx-hero-backdrop__glow--right absolute right-[-8%] top-[10%] h-[60%] w-[40%]"></div>
+    </div>
+    <div class="absolute top-0 h-[100px] w-full bg-gradient-to-b from-black/80 to-transparent"></div>
+    <div class="absolute bottom-0 z-10 h-[150px] w-full bg-gradient-to-t from-[#141414] to-transparent"></div>
+    <div class="absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-[#141414] to-transparent"></div>
+    <div class="absolute inset-0 z-10 mt-12 flex w-full flex-col justify-center px-[4vw] md:w-[56%] lg:w-[46%]">
+      <div class="category-hero-copy">
+        <div class="category-badge mb-4"><span>Category</span><span id="categoryHeroCount"></span></div>
+        <h1 class="nflx-hero-title mb-4 text-5xl font-black leading-tight text-white md:text-6xl" id="categoryHeroTitle">운세/사주</h1>
+        <p class="nflx-copy-glow category-summary-text mb-6 text-lg font-medium leading-snug text-white md:text-xl" id="categoryHeroSummary"></p>
+        <div class="category-count-text" id="categoryRailLabel"></div>
+      </div>
+    </div>
+  </header>
+  <main class="nflx-rail-container" id="categoryRails"></main>
+  <footer class="nflx-footer">
+    <div class="nflx-footer__inner">
+      <div class="nflx-footer__grid">
+        <section class="nflx-footer__column">
+          <h2 class="nflx-footer__heading">서비스</h2>
+          <a href="/category/fortune/" class="nflx-footer__link">운세/사주</a>
+          <a href="/category/fun/" class="nflx-footer__link">재미/밸런스</a>
+          <a href="/category/luck/" class="nflx-footer__link">행운/번호</a>
+          <a href="/category/finance/" class="nflx-footer__link">시장/데이터</a>
+          <a href="/category/experimental/" class="nflx-footer__link">실험실</a>
+        </section>
+        <section class="nflx-footer__column">
+          <h2 class="nflx-footer__heading">이용안내</h2>
+          <a href="/dunsmile/about/" class="nflx-footer__link">서비스 소개</a>
+          <a href="/dunsmile/terms/" class="nflx-footer__link">이용약관</a>
+          <a href="/dunsmile/privacy/" class="nflx-footer__link">개인정보처리방침</a>
+          <a href="/dunsmile/about/" class="nflx-footer__link">문의 및 제안</a>
+        </section>
+        <section class="nflx-footer__column">
+          <h2 class="nflx-footer__heading">브랜드</h2>
+          <p class="nflx-footer__copy">도파민 공작소는 운세, 심리테스트,<br class="nflx-footer__mobile-break">게임형 콘텐츠를 가볍고 빠르게<br class="nflx-footer__mobile-break">탐색하는 실험실입니다.</p>
+        </section>
+      </div>
+      <div class="nflx-footer__bottom"><span>도파민 공작소</span><span>© 2026 도파민 공작소</span></div>
+    </div>
+  </footer>
+  <script src="/js/home.data.js"></script>
+  <script src="/js/netflix-shell.js"></script>
+  <script src="/js/category-ui.js"></script>
+</body>
+</html>
