@@ -18,6 +18,7 @@ node_modules/
 
 # Local captures
 screenshots/
+.worktrees/
 
 # Build
 dist/
