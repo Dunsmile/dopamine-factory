@@ -271,48 +271,63 @@ function renderRelatedCarousel(serviceId) {
   const fallbackConfig = buildFallbackCarouselConfig(serviceId);
   const baseConfig = customConfig || fallbackConfig;
   if (!baseConfig) return '';
-  const config = {
-    title: baseConfig.title,
-    cards: Array.isArray(baseConfig.cards) ? [...baseConfig.cards] : [],
-  };
+  const sectionCount = Math.max(1, Number(baseConfig.sectionCount || 1));
+  const sections = Array.isArray(baseConfig.sections) && baseConfig.sections.length > 0
+    ? baseConfig.sections.map((section) => ({
+        title: section && section.title ? section.title : baseConfig.title,
+        cards: Array.isArray(section && section.cards) ? [...section.cards] : Array.isArray(baseConfig.cards) ? [...baseConfig.cards] : [],
+      }))
+    : Array.from({ length: sectionCount }, () => ({
+        title: baseConfig.title,
+        cards: Array.isArray(baseConfig.cards) ? [...baseConfig.cards] : [],
+      }));
 
-  if (customConfig && fallbackConfig) {
-    const serviceKey = toAnalyticsKey(serviceId) || 'service';
-    const used = new Set(config.cards.map((card) => {
-      const href = String(card.href || '');
-      const matched = href.match(/\/dunsmile\/([^/]+)\//);
-      return matched ? matched[1] : href;
-    }));
-    const candidates = getRelatedServiceCandidates(serviceId);
+  const renderedSections = sections.map((section) => {
+    const config = {
+      title: section.title,
+      cards: section.cards,
+    };
 
-    const fillCards = [];
-    // Ensure the latest added service is visible in carousel at least once.
-    const latestService = [...candidates].sort((a, b) => b.featuredRank - a.featuredRank)[0];
-    if (latestService && !used.has(latestService.id) && config.cards.length < RELATED_CAROUSEL_TARGET_COUNT) {
-      fillCards.push(buildFallbackCard(latestService, serviceKey));
-      used.add(latestService.id);
+    if (customConfig && fallbackConfig) {
+      const serviceKey = toAnalyticsKey(serviceId) || 'service';
+      const used = new Set(config.cards.map((card) => {
+        const href = String(card.href || '');
+        const matched = href.match(/\/dunsmile\/([^/]+)\//);
+        return matched ? matched[1] : href;
+      }));
+      const candidates = getRelatedServiceCandidates(serviceId);
+
+      const fillCards = [];
+      // Ensure the latest added service is visible in carousel at least once.
+      const latestService = [...candidates].sort((a, b) => b.featuredRank - a.featuredRank)[0];
+      if (latestService && !used.has(latestService.id) && config.cards.length < RELATED_CAROUSEL_TARGET_COUNT) {
+        fillCards.push(buildFallbackCard(latestService, serviceKey));
+        used.add(latestService.id);
+      }
+
+      for (const service of candidates) {
+        if (used.has(service.id)) continue;
+        fillCards.push(buildFallbackCard(service, serviceKey));
+        if ((config.cards.length + fillCards.length) >= RELATED_CAROUSEL_TARGET_COUNT) break;
+      }
+
+      config.cards = [...config.cards, ...fillCards];
     }
 
-    for (const service of candidates) {
-      if (used.has(service.id)) continue;
-      fillCards.push(buildFallbackCard(service, serviceKey));
-      if ((config.cards.length + fillCards.length) >= RELATED_CAROUSEL_TARGET_COUNT) break;
-    }
+    const cards = config.cards.map((card) => renderRelatedCard(card)).join('\n');
+    const indicators = config.cards.map((_, index) => (
+      `<button type="button" class="svc-carousel-dot${index === 0 ? ' is-active' : ''}" data-carousel-dot="${index}" aria-label="캐러셀 ${index + 1}번 카드로 이동"></button>`
+    )).join('\n');
 
-    config.cards = [...config.cards, ...fillCards];
-  }
-
-  const cards = config.cards.map((card) => renderRelatedCard(card)).join('\n');
-  const indicators = config.cards.map((_, index) => (
-    `<button type="button" class="svc-carousel-dot${index === 0 ? ' is-active' : ''}" data-carousel-dot="${index}" aria-label="캐러셀 ${index + 1}번 카드로 이동"></button>`
-  )).join('\n');
-
-  return fillTemplate(RELATED_CAROUSEL_PARTIAL, {
-    serviceId: esc(serviceId),
-    title: esc(config.title),
-    cards,
-    indicators,
+    return fillTemplate(RELATED_CAROUSEL_PARTIAL, {
+      serviceId: esc(serviceId),
+      title: esc(config.title),
+      cards,
+      indicators,
+    });
   });
+
+  return renderedSections.join('\n');
 }
 
 function renderShell(opts) {
