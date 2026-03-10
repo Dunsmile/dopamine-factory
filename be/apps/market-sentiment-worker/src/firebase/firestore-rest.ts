@@ -5,6 +5,7 @@ interface FirestoreEnv {
 }
 
 type JsonObject = Record<string, unknown>;
+type BatchUpsertItem = { collection: string; docId: string; data: JsonObject };
 
 let tokenCache: { token: string; expiresAt: number } | null = null;
 
@@ -148,6 +149,14 @@ function toFirestoreValue(value: unknown): JsonObject {
   }
 }
 
+function toFirestoreFields(data: JsonObject): Record<string, JsonObject> {
+  const fields: Record<string, JsonObject> = {};
+  for (const [key, value] of Object.entries(data)) {
+    fields[key] = toFirestoreValue(value);
+  }
+  return fields;
+}
+
 function fromFirestoreValue(value: JsonObject | undefined): unknown {
   if (!value) return null;
   if ("stringValue" in value) return value.stringValue;
@@ -224,10 +233,7 @@ export class FirestoreClient {
   }
 
   async upsertDoc(collection: string, docId: string, data: JsonObject): Promise<void> {
-    const fields: Record<string, JsonObject> = {};
-    for (const [key, value] of Object.entries(data)) {
-      fields[key] = toFirestoreValue(value);
-    }
+    const fields = toFirestoreFields(data);
 
     const resp = await this.authedFetch(`/${collection}/${encodeURIComponent(docId)}`, {
       method: "PATCH",
@@ -237,6 +243,33 @@ export class FirestoreClient {
     if (!resp.ok) {
       const text = await resp.text();
       throw new Error(`upsertDoc failed: ${resp.status} ${text}`);
+    }
+  }
+
+  async batchUpsertDocs(items: BatchUpsertItem[]): Promise<void> {
+    if (items.length === 0) {
+      return;
+    }
+
+    const chunkSize = 200;
+    for (let i = 0; i < items.length; i += chunkSize) {
+      const chunk = items.slice(i, i + chunkSize);
+      const writes = chunk.map((item) => ({
+        update: {
+          name: `projects/${this.env.FIREBASE_PROJECT_ID}/databases/(default)/documents/${item.collection}/${item.docId}`,
+          fields: toFirestoreFields(item.data),
+        },
+      }));
+
+      const resp = await this.authedFetch(":batchWrite", {
+        method: "POST",
+        body: JSON.stringify({ writes }),
+      });
+
+      if (!resp.ok) {
+        const text = await resp.text();
+        throw new Error(`batchUpsertDocs failed: ${resp.status} ${text}`);
+      }
     }
   }
 

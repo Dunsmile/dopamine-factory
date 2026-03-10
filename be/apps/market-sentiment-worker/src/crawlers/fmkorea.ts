@@ -32,6 +32,45 @@ function parseDate(raw: string | null): string | null {
 
 export function parseFmkoreaListHtml(html: string, boardType: AssetType, baseUrl: string = DEFAULT_BASE_URL): FmkoreaListPost[] {
   const posts: FmkoreaListPost[] = [];
+  const seenUrls = new Set<string>();
+
+  const rowMatches = html.matchAll(/<tr\b([^>]*)>([\s\S]*?)<\/tr>/gi);
+  for (const [, rowAttrs = "", rowHtml = ""] of rowMatches) {
+    const rowClassMatch = rowAttrs.match(/class="([^"]*)"/i);
+    const rowClass = rowClassMatch?.[1] || "";
+    if (rowClass.includes("notice")) {
+      continue;
+    }
+
+    const titleCell = rowHtml.match(/<td[^>]*class="[^"]*\btitle\b[^"]*"[^>]*>([\s\S]*?)<\/td>/i)?.[1] || "";
+    if (!titleCell) {
+      continue;
+    }
+
+    const anchors = titleCell.matchAll(/<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi);
+    for (const [, href = "", rawTitle = ""] of anchors) {
+      const title = rawTitle.replace(/<[^>]+>/g, "").trim();
+      const isPostPath = /^\/\d{5,}(?:[/?#]|$)/.test(href);
+      if (!href || !title || !isPostPath) {
+        continue;
+      }
+
+      const url = href.startsWith("http") ? href : `${baseUrl}${href.startsWith("/") ? "" : "/"}${href}`;
+      if (seenUrls.has(url)) {
+        continue;
+      }
+      seenUrls.add(url);
+
+      posts.push({
+        source: "fmkorea",
+        boardType,
+        title,
+        url,
+      });
+      break;
+    }
+  }
+
   const linkMatches = html.matchAll(/<a[^>]*class="[^"]*hx[^"]*"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi);
 
   for (const [, href = "", rawTitle = ""] of linkMatches) {
@@ -41,6 +80,11 @@ export function parseFmkoreaListHtml(html: string, boardType: AssetType, baseUrl
     }
 
     const url = href.startsWith("http") ? href : `${baseUrl}${href.startsWith("/") ? "" : "/"}${href}`;
+    if (seenUrls.has(url)) {
+      continue;
+    }
+    seenUrls.add(url);
+
     posts.push({
       source: "fmkorea",
       boardType,
@@ -55,7 +99,7 @@ export function parseFmkoreaListHtml(html: string, boardType: AssetType, baseUrl
 export function parseFmkoreaDetailHtml(html: string): FmkoreaDetail {
   const titleMatch = html.match(/<h1[^>]*(?:class="np_18px"|class="rd_tit"|class="title")[^>]*>([\s\S]*?)<\/h1>/i);
   const bodyMatch = html.match(/<div[^>]*class="rd_body"[^>]*>([\s\S]*?)<\/div>/i);
-  const dateMatch = html.match(/<span[^>]*(?:class="date"|class="rd_date")[^>]*>([\s\S]*?)<\/span>/i);
+  const dateMatch = html.match(/<span[^>]*class="[^"]*(?:\bdate\b|\brd_date\b)[^"]*"[^>]*>([\s\S]*?)<\/span>/i);
 
   const title = (titleMatch?.[1] || "").replace(/<[^>]+>/g, "").trim();
   const body = (bodyMatch?.[1] || "")

@@ -15,7 +15,7 @@ export interface TrackedAsset {
 }
 
 export interface CrawledPost {
-  source: "dcinside" | "fmkorea";
+  source: "dcinside" | "fmkorea" | "youtube" | "reddit";
   boardType: AssetType;
   title: string;
   body: string;
@@ -61,6 +61,19 @@ export interface WorkerEnv {
   FMKOREA_CRYPTO_BOARD?: string;
   FMKOREA_STOCK_BOARD?: string;
   FMKOREA_BASE_URL?: string;
+  YOUTUBE_API_KEY?: string;
+  YOUTUBE_SEARCH_QUERIES?: string;
+  YOUTUBE_MAX_QUERIES?: string;
+  YOUTUBE_MAX_VIDEOS_PER_QUERY?: string;
+  YOUTUBE_MAX_COMMENTS_PER_VIDEO?: string;
+  REDDIT_CLIENT_ID?: string;
+  REDDIT_CLIENT_SECRET?: string;
+  REDDIT_USER_AGENT?: string;
+  REDDIT_SUBREDDITS?: string;
+  REDDIT_COMMENTS_PER_SUBREDDIT?: string;
+  PREFER_KOREAN_CONTENT?: string;
+  KOREAN_CONTENT_MIN_HANGUL_RATIO?: string;
+  KOREAN_CONTENT_MIN_HANGUL_CHARS?: string;
 
   CRAWL_LIST_LIMIT?: string;
   CRAWL_DETAIL_LIMIT?: string;
