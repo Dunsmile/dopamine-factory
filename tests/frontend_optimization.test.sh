@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+. "${ROOT_DIR}/tests/_search.sh"
 
 assert_file() {
   local path="$1"
@@ -24,7 +25,7 @@ assert_contains() {
 
 assert_not_contains_project() {
   local pattern="$1"
-  if rg -n "${pattern}" "${ROOT_DIR}/fe/public" -S >/dev/null; then
+  if search_project_contains "${pattern}" "${ROOT_DIR}/fe/public"; then
     echo "[FAIL] Pattern still exists in fe/public: ${pattern}"
     exit 1
   fi

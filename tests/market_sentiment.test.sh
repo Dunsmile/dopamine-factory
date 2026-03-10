@@ -67,7 +67,7 @@ assert_contains "fe/public/dunsmile/name-compatibility/index.html" "/dunsmile/ma
 
 # Run worker unit tests
 if [[ -f "${ROOT_DIR}/be/apps/market-sentiment-worker/package.json" ]]; then
-  if [[ ! -d "${ROOT_DIR}/be/apps/market-sentiment-worker/node_modules" ]]; then
+  if [[ ! -x "${ROOT_DIR}/be/apps/market-sentiment-worker/node_modules/.bin/vitest" ]]; then
     (cd "${ROOT_DIR}/be/apps/market-sentiment-worker" && npm install --silent)
   fi
   (cd "${ROOT_DIR}/be/apps/market-sentiment-worker" && npm test -- --run)
