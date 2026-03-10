@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-02-21T15:40:52.108Z",
+  "status": {
+    "readiness": "READY",
+    "checklistCompletion": 100,
+    "checklistPending": 0,
+    "inputHealth": "PASS",
+    "trendDelta": 0
+  },
+  "topActions": [],
+  "blockers": []
+}

@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-02-21T15:40:49.370Z",
+  "rule": "new_service done count in last 7 days should be 1~2",
+  "countLast7Days": 1,
+  "status": "PASS",
+  "recentEntries": [
+    {
+      "date": "2026-02-21",
+      "serviceId": "dopamine-lab",
+      "type": "new_service",
+      "status": "done",
+      "note": "phase-d weekly release"
+    }
+  ],
+  "recommendation": "Cadence is healthy."
+}

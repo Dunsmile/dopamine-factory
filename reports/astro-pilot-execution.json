@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-02-21T09:29:46.867Z",
+  "executed": true,
+  "serviceId": "astro-pilot-sample",
+  "routePath": "/astro-pilot/sample",
+  "deployedAt": "2026-02-21T00:00:00Z",
+  "notes": "go-pilot executed"
+}

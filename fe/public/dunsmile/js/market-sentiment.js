@@ -39,11 +39,11 @@
   };
 
   const statusClassMap = {
-    EXTREME_FEAR: "bg-red-100 text-red-700",
-    FEAR: "bg-orange-100 text-orange-700",
-    NEUTRAL: "bg-gray-100 text-gray-700",
-    GREED: "bg-emerald-100 text-emerald-700",
-    EXTREME_GREED: "bg-teal-100 text-teal-700",
+    EXTREME_FEAR: "ms-status-extreme-fear",
+    FEAR: "ms-status-fear",
+    NEUTRAL: "ms-status-neutral",
+    GREED: "ms-status-greed",
+    EXTREME_GREED: "ms-status-extreme-greed",
   };
 
   const sourceLabelMap = {
@@ -54,10 +54,10 @@
   };
 
   const sourceBadgeMap = {
-    dcinside: "bg-indigo-50 border-indigo-200 text-indigo-700",
-    fmkorea: "bg-sky-50 border-sky-200 text-sky-700",
-    reddit: "bg-orange-50 border-orange-200 text-orange-700",
-    youtube: "bg-rose-50 border-rose-200 text-rose-700",
+    dcinside: "ms-source-dcinside",
+    fmkorea: "ms-source-fmkorea",
+    reddit: "ms-source-reddit",
+    youtube: "ms-source-youtube",
   };
 
   async function fetchJson(path, signal) {
@@ -170,8 +170,8 @@
     el.updatedAt.textContent = `업데이트: ${formatKoreanDate(current.updatedAt)}`;
     el.heartbeatMeta.textContent = `${status} · ${buildSourceSummary(current.sourceBreakdown)}`;
 
-    el.statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold";
-    el.statusBadge.classList.add(...(statusClassMap[status] || statusClassMap.NEUTRAL).split(" "));
+    el.statusBadge.className = "ms-status-badge";
+    el.statusBadge.classList.add(statusClassMap[status] || statusClassMap.NEUTRAL);
     el.statusBadge.textContent = status;
 
     const keywords = Array.isArray(current.topKeywords) ? current.topKeywords : [];
@@ -179,17 +179,17 @@
       ? keywords
           .map(
             (keyword) =>
-              `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">#${escapeHtml(keyword)}</span>`
+              `<span class="ms-keyword-tag">#${escapeHtml(keyword)}</span>`
           )
           .join("")
-      : '<span class="text-sm text-gray-400">키워드 데이터가 아직 없습니다.</span>';
+      : '<span class="ms-empty-text">키워드 데이터가 아직 없습니다.</span>';
   }
 
   function renderMomentum(history) {
     const points = Array.isArray(history.points) ? history.points : [];
     if (points.length < 2) {
       el.momentumValue.textContent = "--";
-      el.momentumValue.className = "text-4xl font-black text-gray-900";
+      el.momentumValue.className = "ms-momentum-value ms-momentum-neutral";
       el.momentumLabel.textContent = "비교 데이터 부족";
       el.momentumVolume.textContent = "언급량 변화: -";
       return { delta: null, volumeDelta: null, latestVolume: 0 };
@@ -223,8 +223,8 @@
     const volumeDelta = Number(latest.volume || 0) - Number(baseline.volume || 0);
 
     el.momentumValue.textContent = `${formatSign(delta)}p`;
-    el.momentumValue.className = `text-4xl font-black ${
-      delta >= 4 ? "text-red-600" : delta <= -4 ? "text-blue-600" : "text-gray-900"
+    el.momentumValue.className = `ms-momentum-value ${
+      delta >= 4 ? "ms-momentum-up" : delta <= -4 ? "ms-momentum-down" : "ms-momentum-neutral"
     }`;
 
     if (delta >= 4) {
@@ -247,7 +247,7 @@
     el.historyLabels.innerHTML = "";
 
     if (!points.length) {
-      el.historyLabels.innerHTML = '<span class="text-xs text-gray-400">데이터가 없습니다.</span>';
+      el.historyLabels.innerHTML = '<span class="ms-empty-caption">데이터가 없습니다.</span>';
       return;
     }
 
@@ -273,7 +273,7 @@
 
     coords.forEach((point) => {
       const dot = document.createElement("div");
-      dot.className = "line-dot";
+      dot.className = "ms-line-dot";
       dot.style.left = `${(point.x / width) * 100}%`;
       dot.style.top = `${(point.y / height) * 100}%`;
       dot.title = `${point.time} · ${point.score}`;
@@ -325,25 +325,30 @@
 
   function renderKeywordWar(data) {
     if (!data) {
-      el.keywordWar.innerHTML = '<div class="text-sm text-gray-400">키워드 데이터가 아직 없습니다.</div>';
+      el.keywordWar.innerHTML = '<div class="ms-empty-text">키워드 데이터가 아직 없습니다.</div>';
       return;
     }
 
     el.keywordWar.innerHTML = `
-      <div class="flex items-center justify-between text-sm font-bold text-gray-800">
+      <div class="ms-war-head">
         <span>#${escapeHtml(data.left.keyword)}</span>
-        <span class="text-xs text-gray-500">VS</span>
+        <span class="ms-war-vs">VS</span>
         <span>#${escapeHtml(data.right.keyword)}</span>
       </div>
-      <div class="h-3 rounded-full bg-gray-100 overflow-hidden flex">
-        <div class="h-full bg-gradient-to-r from-rose-500 to-orange-500 transition-all duration-500" style="width:${data.leftPct}%"></div>
-        <div class="h-full bg-gradient-to-r from-sky-500 to-indigo-500 transition-all duration-500" style="width:${data.rightPct}%"></div>
+      <div class="ms-war-track">
+        <div class="ms-war-bar ms-war-bar-left" data-war-width="${data.leftPct}"></div>
+        <div class="ms-war-bar ms-war-bar-right" data-war-width="${data.rightPct}"></div>
       </div>
-      <div class="flex items-center justify-between text-xs text-gray-500">
+      <div class="ms-war-foot">
         <span>${data.left.score} vote</span>
         <span>${data.right.score} vote</span>
       </div>
     `;
+
+    el.keywordWar.querySelectorAll("[data-war-width]").forEach((item) => {
+      const width = Number(item.getAttribute("data-war-width") || "0");
+      item.style.width = `${clamp(width, 0, 100)}%`;
+    });
   }
 
   function buildPumpAlertData(current, momentum, history) {
@@ -361,7 +366,7 @@
     if (delta >= 8 && mention >= 4 && volumeJump >= 1.3) {
       return {
         active: true,
-        className: "bg-rose-50 border-rose-200 text-rose-700",
+        className: "ms-pump-alert-pump",
         title: "펌프 감지",
         message: `15분 +${delta.toFixed(1)}p · 언급량 급증(${mention})`,
       };
@@ -370,7 +375,7 @@
     if (score >= 75 && delta >= 5 && mention >= 6) {
       return {
         active: true,
-        className: "bg-amber-50 border-amber-200 text-amber-700",
+        className: "ms-pump-alert-overheat",
         title: "과열 경보",
         message: `탐욕 구간 진입 · 변동성 확대(${mention})`,
       };
@@ -379,7 +384,7 @@
     if (delta <= -8 && mention >= 4) {
       return {
         active: true,
-        className: "bg-sky-50 border-sky-200 text-sky-700",
+        className: "ms-pump-alert-drop",
         title: "역방향 급락 경보",
         message: `15분 ${delta.toFixed(1)}p · 공포 반응 증가(${mention})`,
       };
@@ -390,12 +395,12 @@
 
   function renderPumpAlert(data) {
     if (!data || !data.active) {
-      el.pumpAlert.className = "hidden rounded-2xl border px-4 py-3 text-sm font-semibold";
+      el.pumpAlert.className = "hidden ms-pump-alert";
       el.pumpAlert.textContent = "";
       return;
     }
 
-    el.pumpAlert.className = `rounded-2xl border px-4 py-3 text-sm font-semibold ${data.className}`;
+    el.pumpAlert.className = `ms-pump-alert ${data.className}`;
     el.pumpAlert.textContent = `${data.title} · ${data.message}`;
   }
 
@@ -410,7 +415,7 @@
       : "수집 소스 준비 중";
 
     if (!posts.length) {
-      el.posts.innerHTML = '<div class="text-sm text-gray-400">아직 수집된 게시글이 없습니다.</div>';
+      el.posts.innerHTML = '<div class="ms-empty-text">아직 수집된 게시글이 없습니다.</div>';
       return;
     }
 
@@ -419,32 +424,37 @@
         const title = escapeHtml(post.title || "제목 없음");
         const body = escapeHtml((post.body || "").slice(0, 180));
         const source = sourceLabelMap[post.source] || post.source || "커뮤니티";
-        const badgeClass = sourceBadgeMap[post.source] || "bg-gray-50 border-gray-200 text-gray-700";
+        const badgeClass = sourceBadgeMap[post.source] || "ms-source-default";
         const postedAt = post.postedAt || post.collectedAt;
         const time = formatRelativeTime(postedAt);
         const link = post.url
-          ? `<a class="text-xs text-emerald-700 hover:underline" target="_blank" rel="noopener" href="${post.url}">원문 보기</a>`
+          ? `<a class="ms-post-link" target="_blank" rel="noopener" href="${post.url}">원문 보기</a>`
           : "";
-        const liveFlag = index < 2 ? '<span class="text-[10px] font-black text-rose-600">LIVE</span>' : "";
+        const liveFlag = index < 2 ? '<span class="ms-live-flag">LIVE</span>' : "";
 
         return `
-          <article class="feed-card rounded-xl border border-gray-100 p-3 bg-gray-50/70" style="animation-delay:${Math.min(index * 0.05, 0.35)}s">
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex items-center gap-2 min-w-0">
+          <article class="ms-feed-card ms-post-card" data-anim-delay="${Math.min(index * 0.05, 0.35)}">
+            <div class="ms-post-row">
+              <div class="ms-post-title-wrap">
                 ${liveFlag}
-                <strong class="text-sm text-gray-900 truncate">${title}</strong>
+                <strong class="ms-post-title">${title}</strong>
               </div>
-              <span class="text-[11px] px-2 py-0.5 rounded-full border ${badgeClass}">${source}</span>
+              <span class="ms-source-badge ${badgeClass}">${source}</span>
             </div>
-            <p class="mt-1 text-xs text-gray-600 leading-relaxed">${body || "본문 없음"}</p>
-            <div class="mt-2 flex items-center justify-between">
-              <span class="text-[11px] text-gray-500">${time}</span>
+            <p class="ms-post-body">${body || "본문 없음"}</p>
+            <div class="ms-post-footer">
+              <span class="ms-post-time">${time}</span>
               ${link}
             </div>
           </article>
         `;
       })
       .join("");
+
+    el.posts.querySelectorAll(".ms-feed-card").forEach((card) => {
+      const delay = Number(card.getAttribute("data-anim-delay") || "0");
+      card.style.animationDelay = `${delay}s`;
+    });
   }
 
   function renderFromCache(symbol) {
@@ -487,7 +497,7 @@
     const hasCache = renderFromCache(symbol);
     if (!hasCache) {
       el.heartbeatMeta.textContent = "데이터 불러오는 중...";
-      el.posts.innerHTML = '<div class="text-sm text-gray-400">실시간 반응 피드를 불러오는 중입니다.</div>';
+      el.posts.innerHTML = '<div class="ms-empty-text">실시간 반응 피드를 불러오는 중입니다.</div>';
     }
 
     try {
@@ -539,7 +549,7 @@
       }
       state.timer = setInterval(loadAll, 60 * 1000);
     } catch (error) {
-      el.posts.innerHTML = `<div class="text-sm text-red-500">데이터를 불러오지 못했습니다: ${String(error)}</div>`;
+      el.posts.innerHTML = `<div class="ms-error-text">데이터를 불러오지 못했습니다: ${String(error)}</div>`;
       renderPumpAlert({ active: false });
     }
   }
@@ -552,10 +562,84 @@
 
   el.refreshBtn.addEventListener("click", loadAll);
 
+  function bindSidebarSearch() {
+    const input = document.getElementById("serviceMenuSearch");
+    const groupsRoot = document.getElementById("serviceMenuGroups");
+    if (!input || !groupsRoot || input.dataset.bound === "1") return;
+
+    const emptyState = document.getElementById("serviceMenuSearchEmpty");
+    const items = Array.from(groupsRoot.querySelectorAll('[data-service-item="1"]'));
+    const groups = Array.from(groupsRoot.querySelectorAll(".dp-side-group"));
+    const baseOrder = new Map(items.map((item, index) => [item, index]));
+
+    function rankItem(item, keyword) {
+      const text = String(item.getAttribute("data-service-search") || "");
+      const exact = text === keyword ? 0 : 1;
+      const starts = text.startsWith(keyword) ? 0 : 1;
+      const matchIndex = text.indexOf(keyword);
+      const indexScore = matchIndex === -1 ? Number.MAX_SAFE_INTEGER : matchIndex;
+      return {
+        exact,
+        starts,
+        indexScore,
+        length: text.length,
+        base: baseOrder.get(item) || 0,
+      };
+    }
+
+    function applyFilter() {
+      const keyword = String(input.value || "").trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const text = item.getAttribute("data-service-search") || "";
+        const isVisible = keyword === "" || text.includes(keyword);
+        item.classList.toggle("dp-side-hidden", !isVisible);
+        if (isVisible) visibleCount += 1;
+      });
+
+      groups.forEach((group) => {
+        const visibleItems = Array.from(group.querySelectorAll('[data-service-item="1"]:not(.dp-side-hidden)'));
+        const hasVisible = visibleItems.length > 0;
+        group.classList.toggle("dp-side-hidden", !hasVisible);
+        if (!hasVisible) return;
+
+        if (keyword !== "") {
+          group.open = true;
+          visibleItems
+            .sort((a, b) => {
+              const ra = rankItem(a, keyword);
+              const rb = rankItem(b, keyword);
+              if (ra.exact !== rb.exact) return ra.exact - rb.exact;
+              if (ra.starts !== rb.starts) return ra.starts - rb.starts;
+              if (ra.indexScore !== rb.indexScore) return ra.indexScore - rb.indexScore;
+              if (ra.length !== rb.length) return ra.length - rb.length;
+              return ra.base - rb.base;
+            })
+            .forEach((item) => item.parentNode.appendChild(item));
+        } else {
+          visibleItems
+            .sort((a, b) => (baseOrder.get(a) || 0) - (baseOrder.get(b) || 0))
+            .forEach((item) => item.parentNode.appendChild(item));
+        }
+      });
+
+      if (emptyState) emptyState.classList.toggle("show", visibleCount === 0);
+    }
+
+    input.addEventListener("input", applyFilter);
+    input.dataset.bound = "1";
+    applyFilter();
+  }
+
   function openServiceMenu() {
     const backdrop = document.getElementById("serviceMenuBackdrop");
     const sidebar = document.getElementById("serviceMenuSidebar");
-    if (backdrop && sidebar) { backdrop.classList.add("open"); sidebar.classList.add("open"); }
+    if (backdrop && sidebar) {
+      backdrop.classList.add("open");
+      sidebar.classList.add("open");
+      bindSidebarSearch();
+    }
   }
 
   function closeServiceMenu() {

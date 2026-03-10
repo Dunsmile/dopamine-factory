@@ -1,0 +1,51 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --font-family-base: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --font-size-10: 0.625rem;
+  --font-size-11: 0.6875rem;
+  --font-size-12: 0.75rem;
+  --font-size-13: 0.8125rem;
+  --font-size-14: 0.875rem;
+  --font-size-15: 0.9375rem;
+  --font-size-16: 1rem;
+  --font-size-17: 1.0625rem;
+  --font-size-18: 1.125rem;
+  --font-size-20: 1.25rem;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+  --color-surface: #ffffff;
+  --color-surface-subtle: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-brand-strong: #7c3aed;
+
+  --layout-max-width: 640px;
+  --layout-pad-mobile: 12px;
+  --layout-pad-desktop: 16px;
+  --layout-header-height: 56px;
+  --layout-bottom-nav-safe: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+html,
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+}

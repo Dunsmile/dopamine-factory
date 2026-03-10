@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-02-21T09:19:40.471Z",
+  "notes": "Fill with weekly/monthly operational metrics before running npm run report:phase-d-ops",
+  "weekly": {
+    "leadTimeMinutesP50": 15,
+    "buildDeployFailureRatePercent": 0
+  },
+  "monthly": {
+    "releaseCount": 8
+  }
+}

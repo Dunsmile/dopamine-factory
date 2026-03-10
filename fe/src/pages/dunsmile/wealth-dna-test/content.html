@@ -1,0 +1,37 @@
+<section class="svc-card">
+  <p class="svc-result-title">진행 상황</p>
+  <p class="svc-result-summary">총 8문항</p>
+  <div class="svc-result-progress mt-3">
+    <div id="wealthProgressBar" class="svc-result-progress-bar svc-result-progress-bar-a is-width-zero"></div>
+  </div>
+  <p id="wealthProgressText" class="svc-option-label mt-2">1 / 8</p>
+</section>
+
+<section class="svc-card" id="wealthQuestionCard">
+  <p id="wealthQuestionText" class="svc-result-title svc-balance-question">질문</p>
+  <div class="svc-option-grid">
+    <button id="wealthOptionA" type="button" class="svc-option" onclick="chooseWealthOption('A')" data-analytics-event="start">
+      <p class="svc-option-label">선택 A</p>
+      <p id="wealthOptionAText" class="svc-option-text">-</p>
+    </button>
+    <button id="wealthOptionB" type="button" class="svc-option" onclick="chooseWealthOption('B')" data-analytics-event="start">
+      <p class="svc-option-label">선택 B</p>
+      <p id="wealthOptionBText" class="svc-option-text">-</p>
+    </button>
+  </div>
+</section>
+
+<section id="wealthResultCard" class="svc-card svc-hidden">
+  <div class="svc-result-head">
+    <p class="svc-result-title">나의 부자 DNA 결과</p>
+    <p id="wealthTypeBadge" class="svc-tag">TYPE</p>
+  </div>
+
+  <div class="svc-name-result">
+    <p id="wealthResultTitle" class="svc-option-text">결과 타입</p>
+    <p id="wealthResultDesc" class="svc-result-summary">설명</p>
+    <p id="wealthPotentialScore" class="svc-result-score">0<span class="svc-result-score-unit">점</span></p>
+    <div id="wealthTraits" class="svc-tags svc-tags-center"></div>
+  </div>
+  {{RELATED_CAROUSEL}}
+</section>

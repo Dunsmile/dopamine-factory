@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-02-21T09:30:47.320Z",
+  "notes": "Fill baseline/current from GA4 or GTM export before running npm run report:phaseb-kpi",
+  "services": [
+    {
+      "serviceId": "daily-fortune",
+      "baseline": {
+        "cardClick": 1000,
+        "start": 700,
+        "complete": 315
+      },
+      "current": {
+        "cardClick": 1200,
+        "start": 820,
+        "complete": 430
+      }
+    },
+    {
+      "serviceId": "tarot-reading",
+      "baseline": {
+        "cardClick": 900,
+        "start": 620,
+        "complete": 279
+      },
+      "current": {
+        "cardClick": 1050,
+        "start": 710,
+        "complete": 362
+      }
+    },
+    {
+      "serviceId": "balance-game",
+      "baseline": {
+        "cardClick": 1100,
+        "start": 760,
+        "complete": 334
+      },
+      "current": {
+        "cardClick": 1250,
+        "start": 860,
+        "complete": 439
+      }
+    }
+  ]
+}

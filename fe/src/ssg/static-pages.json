@@ -1,0 +1,109 @@
+{
+  "pages": [
+    {
+      "id": "daily-fortune",
+      "template": "fe/src/pages/dunsmile/daily-fortune/template.html",
+      "body": "fe/src/pages/dunsmile/daily-fortune/body.html",
+      "output": "fe/public/dunsmile/daily-fortune/index.html"
+    },
+    {
+      "id": "rich-face",
+      "template": "fe/src/pages/dunsmile/rich-face/template.html",
+      "body": "fe/src/pages/dunsmile/rich-face/body.html",
+      "output": "fe/public/dunsmile/rich-face/index.html"
+    },
+    {
+      "id": "balance-game",
+      "template": "fe/src/pages/dunsmile/balance-game/template.html",
+      "shell": {
+        "activeServiceId": "balance-game",
+        "themeClass": "svc-theme-balance",
+        "pageTitle": "밸런스 게임",
+        "heroEyebrow": "오늘의 선택",
+        "heroTitle": "두 가지 중 하나를 고르고\\n전체 선택 비율을 확인해보세요",
+        "heroSummary": "가볍게 선택하고 실시간 비율을 확인한 뒤, 결과에서 다른 테스트로 이어서 이동할 수 있어요.",
+        "content": "fe/src/pages/dunsmile/balance-game/content.html",
+        "actions": "fe/src/pages/dunsmile/balance-game/actions.html",
+        "adSlots": {
+          "top": {
+            "enabled": true,
+            "slotId": "BALANCE_TOP"
+          },
+          "bottom": {
+            "enabled": true,
+            "slotId": "BALANCE_BOTTOM"
+          }
+        }
+      },
+      "output": "fe/public/dunsmile/balance-game/index.html"
+    },
+    {
+      "id": "name-compatibility",
+      "template": "fe/src/pages/dunsmile/name-compatibility/template.html",
+      "shell": {
+        "activeServiceId": "name-compatibility",
+        "themeClass": "svc-theme-compat",
+        "pageTitle": "이름 궁합",
+        "heroEyebrow": "케미 지수 분석",
+        "heroTitle": "두 이름으로 보는 오늘의 궁합",
+        "heroSummary": "이름 두 개만 입력하면 케미 점수와 관계 키워드를 바로 확인할 수 있어요.",
+        "content": "fe/src/pages/dunsmile/name-compatibility/content.html",
+        "actions": "fe/src/pages/dunsmile/name-compatibility/actions.html",
+        "adSlots": {
+          "top": {
+            "enabled": true,
+            "slotId": "COMPAT_TOP"
+          },
+          "bottom": {
+            "enabled": true,
+            "slotId": "COMPAT_BOTTOM"
+          }
+        }
+      },
+      "output": "fe/public/dunsmile/name-compatibility/index.html"
+    },
+    {
+      "id": "hoxy-number",
+      "template": "fe/src/pages/dunsmile/hoxy-number/template.html",
+      "body": "fe/src/pages/dunsmile/hoxy-number/body.html",
+      "output": "fe/public/dunsmile/hoxy-number/index.html"
+    },
+    {
+      "id": "tarot-reading",
+      "template": "fe/src/pages/dunsmile/tarot-reading/template.html",
+      "body": "fe/src/pages/dunsmile/tarot-reading/body.html",
+      "output": "fe/public/dunsmile/tarot-reading/index.html"
+    },
+    {
+      "id": "market-sentiment",
+      "template": "fe/src/pages/dunsmile/market-sentiment/template.html",
+      "body": "fe/src/pages/dunsmile/market-sentiment/body.html",
+      "output": "fe/public/dunsmile/market-sentiment/index.html"
+    },
+    {
+      "id": "wealth-dna-test",
+      "template": "fe/src/pages/dunsmile/wealth-dna-test/template.html",
+      "shell": {
+        "activeServiceId": "wealth-dna-test",
+        "themeClass": "svc-theme-wealth",
+        "pageTitle": "부자 DNA 테스트",
+        "heroEyebrow": "3분 자산 성향 테스트",
+        "heroTitle": "3분 만에 내 부자 DNA를 확인하고 자산 성장 잠재력을 점검해보세요",
+        "heroSummary": "8개 질문으로 투자 성향을 진단하고, 결과 화면에서 공유와 다음 테스트까지 바로 이어집니다.",
+        "content": "fe/src/pages/dunsmile/wealth-dna-test/content.html",
+        "actions": "fe/src/pages/dunsmile/wealth-dna-test/actions.html",
+        "adSlots": {
+          "top": {
+            "enabled": true,
+            "slotId": "WEALTH_DNA_TOP"
+          },
+          "bottom": {
+            "enabled": true,
+            "slotId": "WEALTH_DNA_BOTTOM"
+          }
+        }
+      },
+      "output": "fe/public/dunsmile/wealth-dna-test/index.html"
+    }
+  ]
+}

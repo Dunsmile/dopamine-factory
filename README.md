@@ -4,6 +4,8 @@
 
 **Live**: https://dopamine-factory.pages.dev
 
+문서 인덱스: `docs/README.md`
+
 ## 구조 원칙
 
 - 서비스별 최상위 폴더가 아니라 `be/`(백엔드), `fe/`(프론트엔드)로 분리
@@ -39,6 +41,12 @@ dopamin/
 | HOXY NUMBER | `/dunsmile/hoxy-number/` | 무료 로또 번호 생성기 |
 | 부자가 될 상인가? | `/dunsmile/rich-face/` | AI 관상 분석 부자 확률 테스트 |
 | 오늘의 운세 | `/dunsmile/daily-fortune/` | 별자리, 띠, 사주 종합 운세 |
+| 타로 카드 | `/dunsmile/tarot-reading/` | 오늘의 타로 운세 |
+| 밸런스 게임 | `/dunsmile/balance-game/` | 실시간 선택 비율 밸런스 게임 |
+| 이름 궁합 | `/dunsmile/name-compatibility/` | 이름 기반 케미 지수 분석 |
+| 시장 감성 | `/dunsmile/market-sentiment/` | 실시간 국내 시장 감성 분석 |
+| 부자 DNA 테스트 | `/dunsmile/wealth-dna-test/` | 3분 자산 성향 테스트 |
+| 도파민 랩 | `/dunsmile/about/` | 신규 실험형 서비스 프리뷰 라운지 |
 
 ## 로컬 실행
 

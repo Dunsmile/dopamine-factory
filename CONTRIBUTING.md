@@ -36,20 +36,10 @@ git checkout -b feature/fe-home-redesign
 작업 후:
 
 ```bash
-bash tests/run_hoxy_refactor_checks.sh
-# 또는
-npm run test:hoxy
-```
-
-세부 점검만 필요한 경우:
-
-```bash
-bash tests/run_hoxy_style_checks.sh
-bash tests/run_hoxy_structure_checks.sh
-bash tests/run_hoxy_logic_checks.sh
-bash tests/structure.test.sh
-bash tests/dopamine_features.test.sh
-bash tests/frontend_optimization.test.sh
+npm run build:pages
+bash tests/code_authoring_rules.test.sh
+bash tests/static_generation.test.sh
+bash tests/legacy_cleanup_guard.test.sh
 ```
 
 백엔드 변경 시:
@@ -75,11 +65,14 @@ bash tests/market_sentiment.test.sh
 ## 프론트 협업 규칙
 
 - 상세 기준: `docs/FRONTEND_COLLAB_RULES.md`
+- 코드 작성/토큰/템플릿 규칙: `docs/FE_CODE_STANDARDS.md`
+- PR 체크리스트: `.github/pull_request_template.md`
 - 리팩토링은 `Style -> Structure -> Logic` 순서로 진행
 - 각 단계는 별도 PR로 분리
 
 ## 스타일 규칙 (FE, 요약)
 
-- 가능하면 시맨틱 클래스 중심 작성 (`dp-*`, 서비스 접두사)
-- 공통 스타일은 `fe/public/dunsmile/css/style.css`에 반영
-- Tailwind 변경 시 `npm run build:tailwind` 실행
+- 시맨틱 클래스 중심 작성 (`dp-*`, `svc-*`, 서비스 접두사)
+- 공통 스타일은 `tokens.css` / `components.css` / `module-templates.css` 우선 재사용
+- 인라인 `style` 및 페이지 내 `<style>` 금지
+- 기존 자산으로 해결 불가능한 UI만 합의 후 신규 클래스 추가

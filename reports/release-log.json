@@ -1,0 +1,11 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-21",
+      "serviceId": "dopamine-lab",
+      "type": "new_service",
+      "status": "done",
+      "note": "phase-d weekly release"
+    }
+  ]
+}

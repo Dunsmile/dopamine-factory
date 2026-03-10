@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-02-21T08:43:00.660Z",
+  "pass": true,
+  "total": 8,
+  "passCount": 8,
+  "checks": [
+    {
+      "label": "PR template reuse section",
+      "ok": true,
+      "pattern": "## Reuse Check (Required)"
+    },
+    {
+      "label": "PR template token reuse checkbox",
+      "ok": true,
+      "pattern": "Existing style token reused first"
+    },
+    {
+      "label": "PR template rationale field",
+      "ok": true,
+      "pattern": "If new token/component added, rationale is documented below"
+    },
+    {
+      "label": "PR template adsense safety section",
+      "ok": true,
+      "pattern": "## AdSense Safety Check"
+    },
+    {
+      "label": "Design change log template",
+      "ok": true,
+      "pattern": "## Entry Template"
+    },
+    {
+      "label": "Design change log entries section",
+      "ok": true,
+      "pattern": "## Entries"
+    },
+    {
+      "label": "AdSense rollback rule section",
+      "ok": true,
+      "pattern": "## Immediate Rollback Rule"
+    },
+    {
+      "label": "AdSense rollback entries section",
+      "ok": true,
+      "pattern": "## Entries"
+    }
+  ]
+}

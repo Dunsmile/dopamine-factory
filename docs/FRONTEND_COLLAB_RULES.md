@@ -37,8 +37,15 @@
 
 - 리팩토링 전/후로 스모크 테스트를 유지한다.
 - 리팩토링 기본 묶음 검증은 아래 스크립트를 우선 사용한다.
-  - `bash tests/run_hoxy_refactor_checks.sh`
-  - 또는 `npm run test:hoxy`
+  - `npm run check:service-data`
+  - `npm run test:build`
+  - `npm run test:home-ux`
+  - `npm run test:service-template`
+  - `npm run ops:doctor:strict`
+  - `npm run check:font`
+  - `npm run check:governance`
+  - `bash tests/service_platform_scaling.test.sh`
+  - `bash tests/static_generation.test.sh`
 - 구조 검증: `tests/structure.test.sh`
 - 프론트 기본 검증: `tests/frontend_optimization.test.sh`
 - 리팩토링 범위별 테스트를 추가한다.
@@ -51,6 +58,9 @@
 2. 사용자 체감 변화 여부 (있음/없음)
 3. 테스트 실행 결과
 4. 다음 PR에서 다룰 항목
+- 광고 변경이 포함되면 `docs/ADSENSE_POLICY_GUARDRAILS.md` 검토 결과를 반드시 첨부한다.
+- 신규 토큰/컴포넌트 추가 시 `docs/DESIGN_CHANGE_LOG.md`에 기록한다.
+- 광고 리스크 롤백 수행 시 `docs/ADSENSE_INCIDENT_ROLLBACK_LOG.md`에 기록한다.
 
 ## 7) 점진적 리팩토링 순서
 
@@ -59,3 +69,10 @@
 3. Logic: 이벤트/상태/렌더 로직 분리
 
 각 단계는 별도 PR로 진행한다.
+
+## 8) 서비스 생성 운영
+
+- 신규 서비스 생성 전: `npm run create:service -- --help`
+- 리허설(무변경 검증): `npm run create:service -- <service-id> --dry-run ...`
+- 실제 생성 후: `npm run build:pages`, `npm run test:build`, `npm run check:service-data`
+- 홈/스킨/배너 운영은 `/teammate/` 생성 명령 또는 `npm run settings:update -- ...`만 사용한다.

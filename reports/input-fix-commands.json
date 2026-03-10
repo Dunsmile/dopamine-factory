@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-02-21T15:40:51.589Z",
+  "issueCount": 0,
+  "commands": [
+    "npm run ops:sync"
+  ]
+}

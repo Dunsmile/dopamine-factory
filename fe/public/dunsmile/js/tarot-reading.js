@@ -787,35 +787,36 @@ function generateReading(name, gender, birthYear, birthMonth, birthDay, spread, 
 }
 
 // ==================== UI 함수 ====================
+const TAROT_ACTIVE_CLASS = 'svc-select-active-purple';
 
 function selectGender(gender) {
   selectedGender = gender;
-  document.getElementById('genderMale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  document.getElementById('genderFemale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
+  document.getElementById('genderMale').classList.remove(TAROT_ACTIVE_CLASS);
+  document.getElementById('genderFemale').classList.remove(TAROT_ACTIVE_CLASS);
   if (gender === 'male') {
-    document.getElementById('genderMale').classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    document.getElementById('genderMale').classList.add(TAROT_ACTIVE_CLASS);
   } else {
-    document.getElementById('genderFemale').classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    document.getElementById('genderFemale').classList.add(TAROT_ACTIVE_CLASS);
   }
 }
 
 function selectSpread(spread) {
   selectedSpread = spread;
-  document.getElementById('spreadOne').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  document.getElementById('spreadThree').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
+  document.getElementById('spreadOne').classList.remove(TAROT_ACTIVE_CLASS);
+  document.getElementById('spreadThree').classList.remove(TAROT_ACTIVE_CLASS);
   if (spread === 'one') {
-    document.getElementById('spreadOne').classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    document.getElementById('spreadOne').classList.add(TAROT_ACTIVE_CLASS);
   } else {
-    document.getElementById('spreadThree').classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    document.getElementById('spreadThree').classList.add(TAROT_ACTIVE_CLASS);
   }
 }
 
 function selectCategory(cat) {
   selectedCategory = cat;
   document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    btn.classList.remove(TAROT_ACTIVE_CLASS);
   });
-  document.getElementById('cat-' + cat).classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+  document.getElementById('cat-' + cat).classList.add(TAROT_ACTIVE_CLASS);
 }
 
 function showToast(message, duration = 2000) {
@@ -940,9 +941,9 @@ function goToInputForm() {
   document.getElementById('agreeTerms').checked = false;
   selectedGender = null;
   selectedCategory = null;
-  document.getElementById('genderMale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  document.getElementById('genderFemale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700'));
+  document.getElementById('genderMale').classList.remove(TAROT_ACTIVE_CLASS);
+  document.getElementById('genderFemale').classList.remove(TAROT_ACTIVE_CLASS);
+  document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove(TAROT_ACTIVE_CLASS));
   showStep(1);
 }
 
@@ -1070,24 +1071,28 @@ function renderCardHTML(cardData, isSingle) {
   const sizeClass = isSingle ? 'tarot-card-single' : 'tarot-card-multi';
   const imgSrc = getCardImagePath(card);
   const backSrc = `${CARD_IMAGE_BASE}/back.png`;
+  const cardFrontBorder = reversed ? 'svc-card-front-red' : 'svc-card-front-purple';
+  const cardOverlay = reversed ? 'svc-card-overlay-red' : 'svc-card-overlay-purple';
+  const cardDirectionBadge = reversed ? 'svc-card-direction-badge-red' : 'svc-card-direction-badge-purple';
+  const cardImageDirection = reversed ? 'svc-card-img-reversed' : '';
 
   return `
-    <div class="flex flex-col items-center">
-      <div class="text-xs font-bold text-purple-400 mb-2 uppercase tracking-wider">${position}</div>
-      <div class="tarot-card ${sizeClass} cursor-pointer" onclick="this.classList.toggle('flipped')">
-        <div class="tarot-card-inner" style="transform-style:preserve-3d;transition:transform 0.8s ease">
+    <div class="svc-card-item-wrap">
+      <div class="svc-card-position">${position}</div>
+      <div class="tarot-card ${sizeClass} svc-card-clickable" onclick="this.classList.toggle('flipped')">
+        <div class="tarot-card-inner svc-card-inner">
           <!-- 뒷면 -->
-          <div class="tarot-card-back absolute inset-0 rounded-xl shadow-lg border-2 border-purple-300 overflow-hidden" style="backface-visibility:hidden">
-            <img src="${backSrc}" alt="카드 뒷면" class="w-full h-full object-cover rounded-xl">
+          <div class="tarot-card-back svc-card-face-base svc-card-back-face">
+            <img src="${backSrc}" alt="카드 뒷면" class="svc-card-img">
           </div>
           <!-- 앞면 -->
-          <div class="tarot-card-front absolute inset-0 rounded-xl shadow-lg border-2 ${reversed ? 'border-red-300' : 'border-purple-300'} overflow-hidden" style="backface-visibility:hidden;transform:rotateY(180deg)">
-            <img src="${imgSrc}" alt="${card.name}" class="w-full h-full object-cover rounded-xl ${reversed ? 'rotate-180' : ''}">
-            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${reversed ? 'from-red-900/80' : 'from-purple-900/80'} to-transparent p-2 pt-6">
+          <div class="tarot-card-front svc-card-face-base svc-card-front-face ${cardFrontBorder}">
+            <img src="${imgSrc}" alt="${card.name}" class="svc-card-img ${cardImageDirection}">
+            <div class="svc-card-overlay-base ${cardOverlay}">
               <div class="text-center">
                 <div class="text-xs font-bold text-white">${card.name}</div>
                 <div class="text-xs text-white/70">${card.nameEn}</div>
-                <span class="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-bold ${reversed ? 'bg-red-500/80 text-white' : 'bg-purple-500/80 text-white'}">
+                <span class="svc-card-direction-badge ${cardDirectionBadge}">
                   ${reversed ? '역방향 ↓' : '정방향 ↑'}
                 </span>
               </div>
@@ -1104,11 +1109,11 @@ function renderInterpretation(cardData, category) {
   const meaning = reversed ? card.reversedMeaning[category] : card.upMeaning[category];
   const keywords = reversed ? card.reversedKeywords : card.upKeywords;
   const dirLabel = reversed ? '역방향' : '정방향';
-  const dirColor = reversed ? 'text-red-500' : 'text-purple-600';
-  const borderColor = reversed ? 'border-red-200 bg-red-50' : 'border-purple-200 bg-purple-50';
+  const dirColor = reversed ? 'svc-dir-color-red' : 'svc-dir-color-purple';
+  const borderColor = reversed ? 'svc-tarot-interpret-red' : 'svc-tarot-interpret-purple';
 
   return `
-    <div class="border rounded-2xl p-4 ${borderColor} mb-3">
+    <div class="svc-tarot-interpret ${borderColor}">
       <div class="flex items-center gap-2 mb-2">
         <span class="text-2xl">${card.symbol}</span>
         <div>
@@ -1117,7 +1122,7 @@ function renderInterpretation(cardData, category) {
         </div>
       </div>
       <div class="flex flex-wrap gap-1 mb-3">
-        ${keywords.map(kw => `<span class="text-xs px-2 py-0.5 rounded-full bg-white/60 text-gray-600">${kw}</span>`).join('')}
+        ${keywords.map(kw => `<span class="svc-keyword-chip">${kw}</span>`).join('')}
       </div>
       <p class="text-sm text-gray-700 leading-relaxed">${meaning}</p>
     </div>
@@ -1130,6 +1135,9 @@ function showStep(stepNumber) {
   document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
   document.getElementById('step' + stepNumber).classList.add('active');
   window.scrollTo(0, 0);
+  if (stepNumber === 3 && window.DunsmileUI && typeof window.DunsmileUI.focusRelatedCarousel === 'function') {
+    window.DunsmileUI.focusRelatedCarousel({ selector: '#step3 .svc-related-section', delay: 220 });
+  }
 }
 
 // ==================== Firebase ====================
@@ -1213,19 +1221,93 @@ function retakeReading() {
     document.getElementById('birthMonth').value = '';
     document.getElementById('birthDay').value = '';
     document.getElementById('agreeTerms').checked = false;
-    document.getElementById('genderMale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-    document.getElementById('genderFemale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-    document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700'));
+    document.getElementById('genderMale').classList.remove(TAROT_ACTIVE_CLASS);
+    document.getElementById('genderFemale').classList.remove(TAROT_ACTIVE_CLASS);
+    document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove(TAROT_ACTIVE_CLASS));
     showStep(1);
   }
 }
 
 // ==================== 서비스 메뉴 / 설정 ====================
 
+function bindSidebarSearch() {
+  const input = document.getElementById('serviceMenuSearch');
+  const groupsRoot = document.getElementById('serviceMenuGroups');
+  if (!input || !groupsRoot || input.dataset.bound === '1') return;
+
+  const emptyState = document.getElementById('serviceMenuSearchEmpty');
+  const items = Array.from(groupsRoot.querySelectorAll('[data-service-item="1"]'));
+  const groups = Array.from(groupsRoot.querySelectorAll('.dp-side-group'));
+  const baseOrder = new Map(items.map((item, index) => [item, index]));
+
+  function rankItem(item, keyword) {
+    const text = String(item.getAttribute('data-service-search') || '');
+    const exact = text === keyword ? 0 : 1;
+    const starts = text.startsWith(keyword) ? 0 : 1;
+    const matchIndex = text.indexOf(keyword);
+    const indexScore = matchIndex === -1 ? Number.MAX_SAFE_INTEGER : matchIndex;
+    return {
+      exact,
+      starts,
+      indexScore,
+      length: text.length,
+      base: baseOrder.get(item) || 0,
+    };
+  }
+
+  function applyFilter() {
+    const keyword = String(input.value || '').trim().toLowerCase();
+    let visibleCount = 0;
+
+    items.forEach((item) => {
+      const text = item.getAttribute('data-service-search') || '';
+      const isVisible = keyword === '' || text.includes(keyword);
+      item.classList.toggle('dp-side-hidden', !isVisible);
+      if (isVisible) visibleCount += 1;
+    });
+
+    groups.forEach((group) => {
+      const visibleItems = Array.from(group.querySelectorAll('[data-service-item="1"]:not(.dp-side-hidden)'));
+      const hasVisible = visibleItems.length > 0;
+      group.classList.toggle('dp-side-hidden', !hasVisible);
+      if (!hasVisible) return;
+
+      if (keyword !== '') {
+        group.open = true;
+        visibleItems
+          .sort((a, b) => {
+            const ra = rankItem(a, keyword);
+            const rb = rankItem(b, keyword);
+            if (ra.exact !== rb.exact) return ra.exact - rb.exact;
+            if (ra.starts !== rb.starts) return ra.starts - rb.starts;
+            if (ra.indexScore !== rb.indexScore) return ra.indexScore - rb.indexScore;
+            if (ra.length !== rb.length) return ra.length - rb.length;
+            return ra.base - rb.base;
+          })
+          .forEach((item) => item.parentNode.appendChild(item));
+      } else {
+        visibleItems
+          .sort((a, b) => (baseOrder.get(a) || 0) - (baseOrder.get(b) || 0))
+          .forEach((item) => item.parentNode.appendChild(item));
+      }
+    });
+
+    if (emptyState) emptyState.classList.toggle('show', visibleCount === 0);
+  }
+
+  input.addEventListener('input', applyFilter);
+  input.dataset.bound = '1';
+  applyFilter();
+}
+
 function openServiceMenu() {
   const backdrop = document.getElementById('serviceMenuBackdrop');
   const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) { backdrop.classList.add('open'); sidebar.classList.add('open'); }
+  if (backdrop && sidebar) {
+    backdrop.classList.add('open');
+    sidebar.classList.add('open');
+    bindSidebarSearch();
+  }
 }
 function closeServiceMenu() {
   const backdrop = document.getElementById('serviceMenuBackdrop');

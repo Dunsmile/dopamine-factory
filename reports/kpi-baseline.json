@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2026-02-21T08:16:34.255Z",
+  "baseUrl": "http://127.0.0.1:8080",
+  "threshold": {
+    "lcp": 2500,
+    "cls": 0.1,
+    "consoleErrors": 0
+  },
+  "metrics": [
+    {
+      "id": "hoxy-number",
+      "path": "/dunsmile/hoxy-number/",
+      "lcp": 364,
+      "cls": 0,
+      "fcp": 64,
+      "domComplete": 637.2000000029802,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 2,
+      "blockingErrorMessages": [],
+      "measureMs": 1746,
+      "pass": true
+    },
+    {
+      "id": "rich-face",
+      "path": "/dunsmile/rich-face/",
+      "lcp": 48,
+      "cls": 0,
+      "fcp": 48,
+      "domComplete": 628.2000000029802,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 0,
+      "blockingErrorMessages": [],
+      "measureMs": 1766,
+      "pass": true
+    },
+    {
+      "id": "daily-fortune",
+      "path": "/dunsmile/daily-fortune/",
+      "lcp": 256,
+      "cls": 0,
+      "fcp": 48,
+      "domComplete": 669.4000000059605,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 0,
+      "blockingErrorMessages": [],
+      "measureMs": 1748,
+      "pass": true
+    },
+    {
+      "id": "balance-game",
+      "path": "/dunsmile/balance-game/",
+      "lcp": 48,
+      "cls": 0,
+      "fcp": 48,
+      "domComplete": 43.599999994039536,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 0,
+      "blockingErrorMessages": [],
+      "measureMs": 1552,
+      "pass": true
+    },
+    {
+      "id": "name-compatibility",
+      "path": "/dunsmile/name-compatibility/",
+      "lcp": 48,
+      "cls": 0,
+      "fcp": 48,
+      "domComplete": 44.400000005960464,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 0,
+      "blockingErrorMessages": [],
+      "measureMs": 1557,
+      "pass": true
+    },
+    {
+      "id": "tarot-reading",
+      "path": "/dunsmile/tarot-reading/",
+      "lcp": 260,
+      "cls": 0,
+      "fcp": 48,
+      "domComplete": 640.0999999940395,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 0,
+      "blockingErrorMessages": [],
+      "measureMs": 1765,
+      "pass": true
+    },
+    {
+      "id": "market-sentiment",
+      "path": "/dunsmile/market-sentiment/",
+      "lcp": 52,
+      "cls": 0,
+      "fcp": 52,
+      "domComplete": 44.8999999910593,
+      "consoleErrors": 0,
+      "rawConsoleErrors": 2,
+      "blockingErrorMessages": [],
+      "measureMs": 1551,
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passCount": 7,
+    "avgLcp": 153.71428571428572,
+    "avgCls": 0
+  }
+}

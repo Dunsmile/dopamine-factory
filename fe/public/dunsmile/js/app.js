@@ -113,35 +113,35 @@
 
       mount.innerHTML = `
         <div id="generateConfirmModal" class="modal-backdrop">
-          <div class="bg-white rounded-2xl p-5 max-w-[400px] w-full mx-4 shadow-2xl">
+          <div class="hoxy-modal-panel hoxy-modal-w-400 hoxy-modal-pad-5">
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1">
                 <div class="text-sm font-semibold text-gray-700 mb-1">하루 생성할 수 있는 번호는 최대 10회</div>
                 <div class="text-2xl font-black text-blue-600 mb-1"><span id="confirmRemaining">10</span>/<span id="confirmTotal">10</span>번 남았습니다.</div>
                 <div class="text-xs text-gray-600">번호를 생성하시겠습니까?</div>
               </div>
-              <button onclick="closeGenerateConfirm()" class="text-gray-400 hover:text-gray-600">
+              <button onclick="closeGenerateConfirm()" class="hoxy-modal-close-btn">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </button>
             </div>
 
-            <label id="option5Times" class="flex items-center gap-2 p-2.5 bg-gray-50 rounded-xl mb-3 cursor-pointer hover:bg-gray-100 transition-colors">
-              <input type="checkbox" id="generate5Times" class="w-4 h-4 text-blue-600 rounded">
-              <span class="text-sm font-medium text-gray-700">연속 5회 뽑기</span>
+            <label id="option5Times" class="hoxy-generate-option hoxy-generate-option-default">
+              <input type="checkbox" id="generate5Times" class="hoxy-generate-option-check hoxy-generate-option-check-blue">
+              <span class="hoxy-generate-option-text">연속 5회 뽑기</span>
             </label>
 
-            <label id="optionRemaining" class="hidden flex items-center gap-2 p-2.5 bg-purple-50 rounded-xl mb-3 cursor-pointer hover:bg-purple-100 transition-colors border-2 border-purple-200">
-              <input type="checkbox" id="generateRemaining" class="w-4 h-4 text-purple-600 rounded">
-              <span class="text-sm font-medium text-purple-700">남은 <span id="remainingDrawCount">4</span>회 모두 뽑기</span>
+            <label id="optionRemaining" class="hidden hoxy-generate-option hoxy-generate-option-remaining">
+              <input type="checkbox" id="generateRemaining" class="hoxy-generate-option-check hoxy-generate-option-check-purple">
+              <span class="hoxy-generate-option-text-remaining">남은 <span id="remainingDrawCount">4</span>회 모두 뽑기</span>
             </label>
 
             <div class="flex gap-2">
-              <button onclick="closeGenerateConfirm()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+              <button onclick="closeGenerateConfirm()" class="hoxy-modal-btn-cancel-sm">
                 취소
               </button>
-              <button onclick="confirmGenerate()" class="flex-1 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg text-sm" data-analytics="feature_use|hoxy_number|modal|confirm_generate|">
+              <button onclick="confirmGenerate()" class="hoxy-modal-btn-primary-blue-sm" data-analytics="feature_use|hoxy_number|modal|confirm_generate|">
                 생성하기
               </button>
             </div>
@@ -155,12 +155,12 @@
       if (generatingMount) {
         generatingMount.innerHTML = `
           <div id="generatingModal" class="modal-backdrop">
-            <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
+            <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-8">
               <div class="text-center">
                 <div class="text-lg font-bold text-gray-900 mb-6">번호 생성 중</div>
 
-                <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
-                  <div id="loadingProgressBar" class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+                <div class="hoxy-loading-progress-track">
+                  <div id="loadingProgressBar" class="hoxy-loading-progress-bar is-width-zero"></div>
                 </div>
 
                 <div class="text-4xl font-bold text-blue-600 mb-6">
@@ -184,18 +184,18 @@
       if (generatedMount) {
         generatedMount.innerHTML = `
           <div id="generatedModal" class="modal-backdrop">
-            <div class="bg-white rounded-2xl p-8 max-w-[480px] w-full mx-4 shadow-2xl">
+            <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-8">
               <div class="text-center">
                 <div class="text-lg font-bold text-gray-900 mb-4">번호 생성 중</div>
 
-                <div class="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden mb-4">
-                  <div class="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style="width: 100%"></div>
+                <div class="hoxy-loading-progress-track">
+                  <div class="hoxy-loading-progress-bar hoxy-progress-full"></div>
                 </div>
 
                 <div class="text-4xl font-bold text-blue-600 mb-8">100%</div>
 
                 <div class="flex justify-center mb-6">
-                  <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                  <div class="hoxy-generated-icon-wrap">
                     <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -222,10 +222,10 @@
 
       mount.innerHTML = `
         <div id="adminLoginModal" class="modal-backdrop" onclick="if(event.target === this) closeAdminLoginModal()">
-          <div class="bg-white rounded-2xl p-6 max-w-[360px] w-full mx-4 shadow-2xl">
+          <div class="hoxy-modal-panel hoxy-modal-w-360 hoxy-modal-pad-6">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-bold text-gray-900">관리자 로그인</h3>
-              <button onclick="closeAdminLoginModal()" class="text-gray-400 hover:text-gray-600">
+              <button onclick="closeAdminLoginModal()" class="hoxy-modal-close-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -243,7 +243,7 @@
               <div id="adminLoginError" class="text-sm text-red-500 text-center hidden">
                 아이디 또는 비밀번호가 일치하지 않습니다.
               </div>
-              <button onclick="adminLogin()" class="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all">
+              <button onclick="adminLogin()" class="hoxy-cta-btn hoxy-cta-btn-primary hoxy-cta-btn-sm">
                 로그인
               </button>
             </div>
@@ -258,10 +258,10 @@
 
       mount.innerHTML = `
         <div id="aboutModal" class="modal-backdrop" onclick="if(event.target === this) closeAboutModal()">
-          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+          <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-6 hoxy-modal-scroll">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-bold text-gray-900">서비스 소개</h3>
-              <button onclick="closeAboutModal()" class="text-gray-400 hover:text-gray-600">
+              <button onclick="closeAboutModal()" class="hoxy-modal-close-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -303,10 +303,10 @@
 
       mount.innerHTML = `
         <div id="privacyModal" class="modal-backdrop" onclick="if(event.target === this) closePrivacyModal()">
-          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+          <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-6 hoxy-modal-scroll">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-bold text-gray-900">개인정보처리방침</h3>
-              <button onclick="closePrivacyModal()" class="text-gray-400 hover:text-gray-600">
+              <button onclick="closePrivacyModal()" class="hoxy-modal-close-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -367,10 +367,10 @@
 
       mount.innerHTML = `
         <div id="termsModal" class="modal-backdrop" onclick="if(event.target === this) closeTermsModal()">
-          <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl max-h-[80vh] overflow-y-auto">
+          <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-6 hoxy-modal-scroll">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-bold text-gray-900">이용약관</h3>
-              <button onclick="closeTermsModal()" class="text-gray-400 hover:text-gray-600">
+              <button onclick="closeTermsModal()" class="hoxy-modal-close-btn">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -446,8 +446,8 @@
           numbersId: 'saveConfirmNumbers',
           icon: '💾',
           title: '저장하시겠습니까?',
-          numbersBgClass: 'bg-blue-50',
-          confirmBtnClass: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all text-sm',
+          numbersBgClass: 'hoxy-modal-numbers-blue',
+          confirmBtnClass: 'hoxy-modal-btn-primary-blue-sm',
           confirmLabel: '저장하기',
           analytics: 'cta_click|hoxy_number|modal|confirm_save_number|'
         },
@@ -459,8 +459,8 @@
           numbersId: 'deleteConfirmNumbers',
           icon: '🗑️',
           title: '삭제하시겠습니까?',
-          numbersBgClass: 'bg-red-50',
-          confirmBtnClass: 'bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-xl hover:from-red-600 hover:to-red-700 transition-all text-sm',
+          numbersBgClass: 'hoxy-modal-numbers-red',
+          confirmBtnClass: 'hoxy-modal-btn-primary-red-sm',
           confirmLabel: '삭제하기',
           analytics: 'cta_click|hoxy_number|modal|confirm_delete_number|'
         }
@@ -472,17 +472,17 @@
 
         mount.innerHTML = `
           <div id="${config.modalId}" class="modal-backdrop" onclick="if(event.target === this) ${config.closeHandler}()">
-            <div class="bg-white rounded-2xl p-5 max-w-[360px] w-full mx-4 shadow-2xl">
+            <div class="hoxy-modal-panel hoxy-modal-w-360 hoxy-modal-pad-5">
               <div class="text-center mb-4">
                 <div class="text-3xl mb-2">${config.icon}</div>
                 <div class="hoxy-modal-confirm-title">${config.title}</div>
                 <div id="${config.numbersId}" class="flex gap-1 justify-center p-3 ${config.numbersBgClass} rounded-xl"></div>
               </div>
               <div class="flex gap-2">
-                <button onclick="${config.closeHandler}()" class="flex-1 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors text-sm">
+                <button onclick="${config.closeHandler}()" class="hoxy-modal-btn-cancel-sm">
                   취소
                 </button>
-                <button onclick="${config.confirmHandler}()" class="flex-1 py-2.5 ${config.confirmBtnClass}" data-analytics="${config.analytics}">
+                <button onclick="${config.confirmHandler}()" class="${config.confirmBtnClass}" data-analytics="${config.analytics}">
                   ${config.confirmLabel}
                 </button>
               </div>
@@ -518,17 +518,17 @@
 
         mount.innerHTML = `
           <div id="${config.modalId}" class="modal-backdrop">
-            <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+            <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-6">
               <div class="text-center mb-6">
                 <div class="text-lg font-bold text-gray-900 mb-4"><span id="${config.pageLabelId}">2</span>페이지 추가하기</div>
                 <div class="text-sm text-gray-600">다음 페이지가 추가됩니다!</div>
               </div>
 
               <div class="flex gap-3">
-                <button onclick="${config.closeHandler}()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                <button onclick="${config.closeHandler}()" class="hoxy-modal-btn-cancel">
                   취소하기
                 </button>
-                <button onclick="${config.confirmHandler}()" class="flex-1 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg flex items-center justify-center gap-2" data-analytics="${config.analytics}">
+                <button onclick="${config.confirmHandler}()" class="hoxy-modal-btn-primary-blue flex items-center justify-center gap-2" data-analytics="${config.analytics}">
                   <span class="text-lg">📄</span>
                   페이지 추가
                 </button>
@@ -557,7 +557,7 @@
               </div>
             </div>
           `,
-          confirmBtnClass: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg',
+          confirmBtnClass: 'hoxy-modal-btn-primary-blue hoxy-modal-btn-icon',
           confirmIcon: '🎁',
           confirmLabel: '무료 충전',
           cancelLabel: '취소하기'
@@ -579,7 +579,7 @@
               </div>
             </div>
           `,
-          confirmBtnClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg',
+          confirmBtnClass: 'hoxy-modal-btn-primary-purple hoxy-modal-btn-icon',
           confirmIcon: '📦',
           confirmLabel: '슬롯 추가',
           cancelLabel: '취소'
@@ -592,13 +592,13 @@
 
         mount.innerHTML = `
           <div id="${config.modalId}" class="modal-backdrop">
-            <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+            <div class="hoxy-modal-panel hoxy-modal-w-480 hoxy-modal-pad-6">
               ${config.contentHtml}
               <div class="flex gap-3">
-                <button onclick="${config.closeHandler}()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-colors">
+                <button onclick="${config.closeHandler}()" class="hoxy-modal-btn-cancel">
                   ${config.cancelLabel}
                 </button>
-                <button onclick="${config.confirmHandler}()" class="flex-1 py-3 ${config.confirmBtnClass} flex items-center justify-center gap-2" data-analytics="${config.analytics}">
+                <button onclick="${config.confirmHandler}()" class="${config.confirmBtnClass}" data-analytics="${config.analytics}">
                   <span class="text-lg">${config.confirmIcon}</span>
                   ${config.confirmLabel}
                 </button>
@@ -849,34 +849,34 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center justify-center gap-1 p-2 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs text-gray-400 w-5 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 justify-center">
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+            <div class="hoxy-slot-empty-row hoxy-slot-empty-row-center">
+              <span class="hoxy-slot-empty-index">#${slot.index + 1}</span>
+              <div class="hoxy-slot-empty-balls hoxy-slot-empty-balls-center">
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
               </div>
             </div>
           `;
         } else {
           return `
             <div class="swipe-item relative group" data-index="${slot.index}" data-numbers='${JSON.stringify(slot.data.numbers)}' data-target-draw="${slot.data.targetDraw || getNextDrawNumber()}">
-              <div class="swipe-content flex items-center justify-between gap-1 p-2 ${slot.index === 0 ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200' : 'bg-gray-50'} rounded-xl">
-                <span class="text-xs ${slot.index === 0 ? 'text-blue-600 font-bold' : 'text-gray-500'} w-5 shrink-0">#${slot.index + 1}</span>
+              <div class="swipe-content hoxy-swipe-content ${slot.index === 0 ? 'hoxy-swipe-content-top' : 'hoxy-swipe-content-default'}">
+                <span class="hoxy-swipe-index ${slot.index === 0 ? 'hoxy-swipe-index-top' : 'hoxy-swipe-index-default'}">#${slot.index + 1}</span>
                 <div class="flex gap-1 justify-center flex-1">
                   ${renderNumberBalls(slot.data.numbers)}
                 </div>
                 <!-- PC 호버 버튼 -->
-                <div class="hidden md:flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                  <button onclick="hoverSave(${slot.index})" class="p-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" title="저장">
+                <div class="hoxy-hover-actions">
+                  <button onclick="hoverSave(${slot.index})" class="hoxy-icon-action-btn hoxy-icon-action-save" title="저장">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                     </svg>
                   </button>
-                  <button onclick="hoverDelete(${slot.index})" class="p-1.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="삭제">
+                  <button onclick="hoverDelete(${slot.index})" class="hoxy-icon-action-btn hoxy-icon-action-delete" title="삭제">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                     </svg>
@@ -1961,6 +1961,7 @@
     async function fetchLotteryData(drawNo = null) {
       return new Promise((resolve) => {
         try {
+          let settled = false;
           // JSONP를 사용하여 CORS 우회
           const callbackName = 'lottoCallback_' + Date.now();
           let apiUrl = `https://api.lotto-haru.kr/win/analysis.js?callback=${callbackName}`;
@@ -1968,6 +1969,18 @@
           // 특정 회차 지정 시
           if (drawNo) {
             apiUrl += `&chasu=${drawNo}`;
+          }
+
+          const script = document.createElement('script');
+          let timeoutId = null;
+
+          function finish(result) {
+            if (settled) return;
+            settled = true;
+            delete window[callbackName];
+            if (timeoutId) clearTimeout(timeoutId);
+            if (script.parentNode) script.parentNode.removeChild(script);
+            resolve(result);
           }
 
           // 전역 콜백 함수 등록
@@ -1978,7 +1991,7 @@
               const latestDraw = data.data ? data.data[0] : null;
 
               if (!latestDraw) {
-                console.error('데이터 파싱 실패, 구조:', data);
+                console.warn('데이터 파싱 실패, 구조:', data);
                 throw new Error('데이터 없음');
               }
 
@@ -2005,32 +2018,27 @@
                 prizes: prizes  // 모든 등수별 당첨금
               };
 
-              // 정리
-              delete window[callbackName];
-              document.body.removeChild(script);
-
-              resolve(result);
+              finish(result);
             } catch (error) {
-              console.error('데이터 파싱 오류:', error);
-              delete window[callbackName];
-              document.body.removeChild(script);
-              resolve(null);
+              console.warn('데이터 파싱 오류:', error);
+              finish(null);
             }
           };
 
           // script 태그 생성 및 추가
-          const script = document.createElement('script');
           script.src = apiUrl;
           script.onerror = function() {
-            console.error('로또 API 호출 실패');
-            delete window[callbackName];
-            document.body.removeChild(script);
-            resolve(null);
+            console.warn('로또 API 호출 실패');
+            finish(null);
           };
           document.body.appendChild(script);
+          timeoutId = setTimeout(() => {
+            console.warn('로또 API 타임아웃');
+            finish(null);
+          }, 8000);
 
         } catch (error) {
-          console.error('로또 API 호출 오류:', error);
+          console.warn('로또 API 호출 오류:', error);
           resolve(null);
         }
       });
@@ -2038,14 +2046,27 @@
 
     // 최신 회차 번호 계산
     function getLatestDrawNumber() {
-      // 로또 1회: 2002년 12월 7일 (토요일)
-      const firstDrawDate = new Date('2002-12-07');
-      const today = new Date();
+      // 로또 1회: 2002-12-07 (토), 한국 추첨 기준으로 계산
+      const firstDrawUtcMs = Date.UTC(2002, 11, 7, 0, 0, 0); // 2002-12-07T00:00:00Z
+      const now = new Date();
 
-      // 밀리초를 주 단위로 변환
-      const weeksDiff = Math.floor((today - firstDrawDate) / (7 * 24 * 60 * 60 * 1000));
+      // KST(+09:00) 기준 현재 시각을 UTC ms로 계산
+      const kstOffsetMs = 9 * 60 * 60 * 1000;
+      const nowKstMs = now.getTime() + kstOffsetMs;
+      const nowKst = new Date(nowKstMs);
 
-      return weeksDiff + 1;
+      // 기본 회차 계산 (KST 날짜 기준)
+      const weeksDiff = Math.floor((nowKstMs - firstDrawUtcMs) / (7 * 24 * 60 * 60 * 1000));
+      let drawNo = weeksDiff + 1;
+
+      // 토요일 추첨 전(20:45 KST 이전)에는 아직 이번 회차가 미발표이므로 -1
+      const day = nowKst.getUTCDay(); // KST 시각을 UTC getter로 읽으면 KST day/hour 값과 동일
+      const hour = nowKst.getUTCHours();
+      const minute = nowKst.getUTCMinutes();
+      const beforeDrawCutoff = day === 6 && (hour < 20 || (hour === 20 && minute < 45));
+      if (beforeDrawCutoff) drawNo -= 1;
+
+      return Math.max(1, drawNo);
     }
 
     // 당첨 번호 로드 (API 우선, 실패시 폴백)
@@ -2136,7 +2157,8 @@
       let winningList = await loadWinningListFromFirestore();
 
       // Firestore에 데이터가 없거나 부족하면 API에서 가져와서 저장
-      const latestDraw = getLatestDrawNumber();
+      // loadWinningNumbers()에서 검증된 최신 회차를 우선 사용해 미발표 회차 호출을 방지
+      const latestDraw = (winningData && winningData.drawNumber) || getLatestDrawNumber();
       if (winningList.length === 0 || winningList[0].drawNumber < latestDraw) {
         console.log('🔄 최신 데이터 API에서 가져오는 중...');
 
@@ -2261,13 +2283,13 @@
         <span class="text-xs text-gray-500 w-5 flex-shrink-0">#${manualInputLineCount}</span>
         ${[1,2,3,4,5,6].map(i => `
           <input type="text" maxlength="2" inputmode="numeric" pattern="[0-9]*"
-                 class="w-10 h-10 text-center text-lg font-bold border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors"
+                 class="hoxy-manual-line-input"
                  id="manual_${manualInputLineCount}_${i}"
                  oninput="onCheckManualInput(this, ${manualInputLineCount}, ${i})"
                  onblur="onCheckManualBlur(this, ${manualInputLineCount}, ${i})"
                  placeholder="${i}">
         `).join('')}
-        <button onclick="removeManualInputLine(this)" class="text-red-500 hover:text-red-700 flex-shrink-0 ml-1">
+        <button onclick="removeManualInputLine(this)" class="hoxy-manual-line-remove">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
@@ -2514,21 +2536,21 @@
       resultContainer.innerHTML = `
         <div class="text-xs font-bold text-gray-700 mb-2">📋 확인 결과 (${winning.drawNumber}회차 기준)</div>
         ${results.map((item, index) => {
-          let rankClass = 'bg-gray-50 border border-gray-200';
-          let badgeClass = 'bg-gray-400';
+          let rankClass = 'hoxy-check-card-default';
+          let badgeClass = 'hoxy-check-badge hoxy-check-badge-gray';
 
           if (item.rankInfo) {
             rankClass = `rank-${item.rankInfo.rank}`;
-            if (item.rankInfo.rank === 1) badgeClass = 'bg-gradient-to-r from-yellow-500 to-orange-500';
-            else if (item.rankInfo.rank === 2) badgeClass = 'bg-gradient-to-r from-gray-400 to-gray-500';
-            else if (item.rankInfo.rank === 3) badgeClass = 'bg-gradient-to-r from-orange-400 to-orange-600';
-            else badgeClass = 'bg-green-600';
+            if (item.rankInfo.rank === 1) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank1';
+            else if (item.rankInfo.rank === 2) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank2';
+            else if (item.rankInfo.rank === 3) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank3';
+            else badgeClass = 'hoxy-check-badge hoxy-check-badge-rank4';
           }
 
           return `
-            <div class="p-2 rounded-xl ${rankClass}">
-              <div class="flex items-center gap-1 mb-1.5">
-                <span class="text-xs text-gray-500 font-medium w-5 shrink-0">#${index + 1}</span>
+            <div class="hoxy-check-card ${rankClass}">
+              <div class="hoxy-check-row">
+                <span class="hoxy-check-index hoxy-check-index-default">#${index + 1}</span>
                 <div class="flex gap-1 flex-1 justify-center">
                   ${item.numbers.map(num => {
                     const isMatch = winning.numbers.includes(num);
@@ -2538,12 +2560,12 @@
               </div>
               ${item.rankInfo ? `
                 <div class="text-center">
-                  <div class="inline-block ${badgeClass} text-white px-2 py-1 rounded-full font-bold text-xs shadow-md">
+                  <div class="${badgeClass}">
                     ${item.rankInfo.rank <= 3 ? '🏆' : '🎉'} ${item.match.count}개 - ${item.rankInfo.text}
                   </div>
                 </div>
               ` : `
-                <div class="text-center text-xs text-gray-500">
+                <div class="hoxy-check-miss">
                   ${item.match.count}개 일치 - 미당첨
                 </div>
               `}
@@ -2701,7 +2723,7 @@
       const actionsEl = document.getElementById('luckyNumberActions');
       if (actionsEl) {
         actionsEl.innerHTML = `
-          <div class="w-full py-2 bg-gray-200 text-gray-500 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5">
+          <div class="hoxy-save-complete">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
@@ -2941,27 +2963,27 @@
       container.innerHTML = slots.map(slot => {
         if (slot.type === 'empty') {
           return `
-            <div class="flex items-center gap-1 p-2 bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl opacity-50">
-              <span class="text-xs text-gray-400 w-5 shrink-0">#${slot.index + 1}</span>
-              <div class="flex gap-1 flex-1 justify-center">
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
-                <div class="w-7 h-7 rounded-full bg-gray-200"></div>
+            <div class="hoxy-slot-empty-row">
+              <span class="hoxy-slot-empty-index">#${slot.index + 1}</span>
+              <div class="hoxy-slot-empty-balls hoxy-slot-empty-balls-fill">
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
+                <div class="hoxy-slot-empty-ball"></div>
               </div>
               <div class="w-5 h-5 shrink-0"></div>
             </div>
           `;
         } else {
           return `
-            <div class="flex items-center gap-1 p-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200">
-              <span class="text-xs text-blue-600 font-bold w-5 shrink-0">#${slot.index + 1}</span>
+            <div class="hoxy-saved-slot-filled">
+              <span class="hoxy-saved-slot-index">#${slot.index + 1}</span>
               <div class="flex gap-1 flex-1 justify-center overflow-hidden">
                 ${renderNumberBalls(slot.data.numbers)}
               </div>
-              <button onclick="deleteSaved(${slot.index})" class="text-red-500 hover:text-red-700 shrink-0 p-1">
+              <button onclick="deleteSaved(${slot.index})" class="hoxy-manual-line-remove hoxy-saved-slot-delete">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                 </svg>
@@ -3089,27 +3111,31 @@
         const rankInfo = getMatchRank(match.count, match.hasBonus);
 
         // 등수별 스타일 클래스
-        let rankClass = 'bg-gray-50 border border-gray-200';
-        let badgeClass = 'bg-gray-400';
+        let rankClass = 'hoxy-check-card-default';
+        let badgeClass = 'hoxy-check-badge hoxy-check-badge-gray';
         let clickable = '';
 
         if (rankInfo) {
           rankClass = `rank-${rankInfo.rank}`;
-          clickable = `cursor-pointer hover:scale-[1.02] transition-transform`;
+          clickable = 'hoxy-check-card-clickable';
 
-          if (rankInfo.rank === 1) badgeClass = 'bg-gradient-to-r from-yellow-500 to-orange-500';
-          else if (rankInfo.rank === 2) badgeClass = 'bg-gradient-to-r from-gray-400 to-gray-500';
-          else if (rankInfo.rank === 3) badgeClass = 'bg-gradient-to-r from-orange-400 to-orange-600';
-          else badgeClass = 'bg-green-600';
+          if (rankInfo.rank === 1) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank1';
+          else if (rankInfo.rank === 2) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank2';
+          else if (rankInfo.rank === 3) badgeClass = 'hoxy-check-badge hoxy-check-badge-rank3';
+          else badgeClass = 'hoxy-check-badge hoxy-check-badge-rank4';
         }
 
         const matchedNums = item.numbers.filter(n => winning.numbers.includes(n));
 
+        const checkIndexClass = rankInfo && rankInfo.rank <= 3
+          ? 'hoxy-check-index-rank'
+          : 'hoxy-check-index-default';
+
         return `
-          <div class="p-2 rounded-xl ${rankClass} ${clickable}"
+          <div class="hoxy-check-card ${rankClass} ${clickable}"
                ${rankInfo ? `onclick="showCongratsModal(${winning.drawNumber}, {rank: ${rankInfo.rank}, text: '${rankInfo.text}'}, ${JSON.stringify(matchedNums)})"` : ''}>
-            <div class="flex items-center gap-1 mb-1.5">
-              <span class="text-xs ${rankInfo && rankInfo.rank <= 3 ? 'text-gray-700 font-bold' : 'text-gray-500'} font-medium w-5 shrink-0">#${index + 1}</span>
+            <div class="hoxy-check-row">
+              <span class="hoxy-check-index ${checkIndexClass}">#${index + 1}</span>
               <div class="flex gap-1 flex-1 justify-center">
                 ${item.numbers.map(num => {
                   const isMatch = winning.numbers.includes(num);
@@ -3119,12 +3145,12 @@
             </div>
             ${rankInfo ? `
               <div class="text-center">
-                <div class="inline-block ${badgeClass} text-white px-2 py-1 rounded-full font-bold text-xs shadow-md">
+                <div class="${badgeClass}">
                   ${rankInfo.rank <= 3 ? '🏆' : '🎉'} ${match.count}개 - ${rankInfo.text}
                 </div>
               </div>
             ` : `
-              <div class="text-center text-xs text-gray-500">
+              <div class="hoxy-check-miss">
                 ${match.count}개 일치 - 미당첨
               </div>
             `}
@@ -3173,18 +3199,18 @@
         if (blurredEl) {
           blurredEl.style.filter = 'blur(8px)';
           blurredEl.innerHTML = `
-            <div class="number-ball bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full"></div>
-            <div class="number-ball bg-gradient-to-br from-blue-400 to-blue-600 rounded-full"></div>
-            <div class="number-ball bg-gradient-to-br from-red-400 to-red-600 rounded-full"></div>
-            <div class="number-ball bg-gradient-to-br from-gray-400 to-gray-600 rounded-full"></div>
-            <div class="number-ball bg-gradient-to-br from-green-400 to-green-600 rounded-full"></div>
-            <div class="number-ball bg-gradient-to-br from-green-500 to-green-700 rounded-full"></div>
+            <div class="number-ball hoxy-ball-yellow"></div>
+            <div class="number-ball hoxy-ball-blue"></div>
+            <div class="number-ball hoxy-ball-red"></div>
+            <div class="number-ball hoxy-ball-gray"></div>
+            <div class="number-ball hoxy-ball-green"></div>
+            <div class="number-ball hoxy-ball-bonus"></div>
           `;
         }
         if (revealEl) {
           setElementDisplay(revealEl, 'flex');
           revealEl.innerHTML = `
-            <button onclick="revealLuckyNumber()" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2.5 rounded-full font-bold text-xs shadow-2xl hover:shadow-purple-500/50 hover:scale-105 transition-all flex items-center gap-1.5">
+            <button onclick="revealLuckyNumber()" class="hoxy-lucky-reveal-btn">
               <span>🍀</span>
               오늘의 럭키 넘버는?!
             </button>
@@ -3210,24 +3236,22 @@
     }
 
     function renderBall(num, type = 'normal') {
-      let colorClass;
-
       if (type === 'bonus') {
-        colorClass = 'from-green-400 to-green-600';
-        return `<div class="number-ball bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white font-bold shadow-md border-2 border-white">${num}</div>`;
+        return `<div class="number-ball hoxy-ball-base hoxy-ball-bonus hoxy-ball-border">${num}</div>`;
       }
 
+      let colorClass = 'hoxy-ball-green';
       if (type === 'matched') {
-        colorClass = 'from-green-400 to-green-600';
+        colorClass = 'hoxy-ball-green';
       } else {
-        if (num <= 10) colorClass = 'from-yellow-400 to-orange-500';
-        else if (num <= 20) colorClass = 'from-blue-400 to-blue-600';
-        else if (num <= 30) colorClass = 'from-red-400 to-red-600';
-        else if (num <= 40) colorClass = 'from-gray-400 to-gray-600';
-        else colorClass = 'from-green-400 to-green-600';
+        if (num <= 10) colorClass = 'hoxy-ball-yellow';
+        else if (num <= 20) colorClass = 'hoxy-ball-blue';
+        else if (num <= 30) colorClass = 'hoxy-ball-red';
+        else if (num <= 40) colorClass = 'hoxy-ball-gray';
+        else colorClass = 'hoxy-ball-green';
       }
 
-      return `<div class="number-ball bg-gradient-to-br ${colorClass} rounded-full flex items-center justify-center text-white font-bold shadow-md">${num}</div>`;
+      return `<div class="number-ball hoxy-ball-base ${colorClass}">${num}</div>`;
     }
 
     function getMatchRank(count, hasBonus = false) {
@@ -3596,12 +3620,85 @@
 
     // ==================== 서비스 메뉴 ====================
 
+    function bindSidebarSearch() {
+      const input = document.getElementById('serviceMenuSearch');
+      const groupsRoot = document.getElementById('serviceMenuGroups');
+      if (!input || !groupsRoot || input.dataset.bound === '1') return;
+
+      const emptyState = document.getElementById('serviceMenuSearchEmpty');
+      const items = Array.from(groupsRoot.querySelectorAll('[data-service-item="1"]'));
+      const groups = Array.from(groupsRoot.querySelectorAll('.dp-side-group'));
+      const baseOrder = new Map(items.map((item, index) => [item, index]));
+
+      function rankItem(item, keyword) {
+        const text = String(item.getAttribute('data-service-search') || '');
+        const exact = text === keyword ? 0 : 1;
+        const starts = text.startsWith(keyword) ? 0 : 1;
+        const matchIndex = text.indexOf(keyword);
+        const indexScore = matchIndex === -1 ? Number.MAX_SAFE_INTEGER : matchIndex;
+        return {
+          exact,
+          starts,
+          indexScore,
+          length: text.length,
+          base: baseOrder.get(item) || 0,
+        };
+      }
+
+      function applyFilter() {
+        const keyword = String(input.value || '').trim().toLowerCase();
+        let visibleCount = 0;
+
+        items.forEach((item) => {
+          const text = item.getAttribute('data-service-search') || '';
+          const isVisible = keyword === '' || text.includes(keyword);
+          setClassActive(item, 'dp-side-hidden', !isVisible);
+          if (isVisible) visibleCount += 1;
+        });
+
+        groups.forEach((group) => {
+          const visibleItems = Array.from(group.querySelectorAll('[data-service-item="1"]:not(.dp-side-hidden)'));
+          const hasVisible = visibleItems.length > 0;
+          setClassActive(group, 'dp-side-hidden', !hasVisible);
+          if (!hasVisible) return;
+
+          if (keyword !== '') {
+            group.open = true;
+            visibleItems
+              .sort((a, b) => {
+                const ra = rankItem(a, keyword);
+                const rb = rankItem(b, keyword);
+                if (ra.exact !== rb.exact) return ra.exact - rb.exact;
+                if (ra.starts !== rb.starts) return ra.starts - rb.starts;
+                if (ra.indexScore !== rb.indexScore) return ra.indexScore - rb.indexScore;
+                if (ra.length !== rb.length) return ra.length - rb.length;
+                return ra.base - rb.base;
+              })
+              .forEach((item) => item.parentNode.appendChild(item));
+          } else {
+            visibleItems
+              .sort((a, b) => (baseOrder.get(a) || 0) - (baseOrder.get(b) || 0))
+              .forEach((item) => item.parentNode.appendChild(item));
+          }
+        });
+
+        if (emptyState) {
+          setClassActive(emptyState, 'show', visibleCount === 0);
+        }
+      }
+
+      input.addEventListener('input', applyFilter);
+      input.dataset.bound = '1';
+      applyFilter();
+    }
+
     function openServiceMenu() {
       const backdrop = document.getElementById('serviceMenuBackdrop');
       const sidebar = document.getElementById('serviceMenuSidebar');
       if (backdrop && sidebar) {
         setClassActive(backdrop, 'open', true);
         setClassActive(sidebar, 'open', true);
+        bindSidebarSearch();
       }
     }
 

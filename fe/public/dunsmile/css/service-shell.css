@@ -1,0 +1,32 @@
+@import url('/dunsmile/css/tokens.css');
+
+.service-shell-root {
+  min-height: 100vh;
+  background: var(--color-surface-subtle);
+}
+
+.service-shell-message {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-32) var(--space-16);
+}
+
+.service-shell-title {
+  margin: 0;
+  font-size: var(--font-size-20);
+  color: var(--color-text);
+}
+
+.service-shell-desc {
+  margin: var(--space-12) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-14);
+}
+
+.service-shell-link {
+  display: inline-block;
+  margin-top: var(--space-16);
+  color: var(--color-brand-strong);
+  text-decoration: none;
+  font-weight: 600;
+}

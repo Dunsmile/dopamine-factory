@@ -1,0 +1,17 @@
+<div id="settingsModal" class="modal-backdrop" onclick="if(event.target === this) closeSettings()">
+  <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-gray-900">설정</h3>
+      <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600" aria-label="설정 닫기">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="space-y-2">
+      <a href="/dunsmile/about/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">서비스 소개</a>
+      <a href="/dunsmile/privacy/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">개인정보처리방침</a>
+      <a href="/dunsmile/terms/" class="w-full block text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">이용약관</a>
+    </div>
+  </div>
+</div>

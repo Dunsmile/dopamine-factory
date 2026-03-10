@@ -1,0 +1,59 @@
+{
+  "fallbackServiceLinks": [
+    { "id": "hoxy-number", "icon": "🎱", "label": "HOXY NUMBER", "href": "/dunsmile/hoxy-number/", "category": "luck" },
+    { "id": "rich-face", "icon": "👤", "label": "부자가 될 상인가?", "href": "/dunsmile/rich-face/", "category": "fortune" },
+    { "id": "daily-fortune", "icon": "🔮", "label": "오늘의 운세", "href": "/dunsmile/daily-fortune/", "category": "fortune" },
+    { "id": "balance-game", "icon": "⚖️", "label": "오늘의 밸런스 게임", "href": "/dunsmile/balance-game/", "category": "fun" },
+    { "id": "name-compatibility", "icon": "💞", "label": "이름 궁합 테스트", "href": "/dunsmile/name-compatibility/", "category": "fortune" },
+    { "id": "market-sentiment", "icon": "📈", "label": "시장 감성 레이더", "href": "/dunsmile/market-sentiment/", "category": "finance" },
+    { "id": "tarot-reading", "icon": "🃏", "label": "ONE DAY MY CARD", "href": "/dunsmile/tarot-reading/", "category": "fortune" }
+  ],
+  "categoryMeta": {
+    "fortune": { "label": "운세/심리", "icon": "🔮" },
+    "fun": { "label": "놀이/테스트", "icon": "🎯" },
+    "luck": { "label": "행운/번호", "icon": "🍀" },
+    "finance": { "label": "시장/데이터", "icon": "📈" },
+    "experimental": { "label": "실험실", "icon": "🧪" },
+    "other": { "label": "기타", "icon": "🗂️" }
+  },
+  "categoryStyleMeta": {
+    "luck": {
+      "borderClass": "svc-related-card-blue",
+      "headClass": "bg-gradient-to-br from-blue-500 to-purple-600",
+      "linkClass": "text-blue-600"
+    },
+    "finance": {
+      "borderClass": "svc-related-card-indigo",
+      "headClass": "bg-gradient-to-br from-indigo-500 to-violet-600",
+      "linkClass": "text-indigo-600"
+    },
+    "fortune": {
+      "borderClass": "svc-related-card-purple",
+      "headClass": "bg-gradient-to-br from-purple-500 to-pink-600",
+      "linkClass": "text-purple-600"
+    },
+    "fun": {
+      "borderClass": "svc-related-card-amber",
+      "headClass": "bg-gradient-to-br from-amber-400 to-orange-500",
+      "linkClass": "text-amber-600"
+    },
+    "utility": {
+      "borderClass": "svc-related-card-blue",
+      "headClass": "bg-gradient-to-br from-cyan-500 to-blue-600",
+      "linkClass": "text-blue-600"
+    },
+    "experimental": {
+      "borderClass": "svc-related-card-indigo",
+      "headClass": "bg-gradient-to-br from-fuchsia-500 to-violet-600",
+      "linkClass": "text-violet-600"
+    },
+    "other": {
+      "borderClass": "svc-related-card-indigo",
+      "headClass": "bg-gradient-to-br from-slate-500 to-gray-700",
+      "linkClass": "text-slate-600"
+    }
+  },
+  "carousel": {
+    "targetCount": 6
+  }
+}

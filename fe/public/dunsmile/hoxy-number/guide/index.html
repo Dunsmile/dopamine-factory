@@ -7,9 +7,9 @@
   <meta name="description" content="로또 번호 선택 방법, 확률 기본, 자주 묻는 질문을 정리한 로또 가이드입니다.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://dopamine-factory.pages.dev/dunsmile/hoxy-number/guide/">
-  <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/dunsmile/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/dunsmile/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/dunsmile/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/dunsmile/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/dunsmile/assets/apple-touch-icon.png">
   <!-- Google Tag Manager -->
   <script>
     (function(w,d,s,l,i){
@@ -41,7 +41,7 @@
       <div class="flex items-center justify-between px-4 h-14">
         <button onclick="history.length > 1 ? history.back() : window.location.href='/dunsmile/hoxy-number/'" class="text-sm font-semibold text-gray-700">← 홈으로</button>
         <h1 class="text-base font-bold text-gray-900">로또 가이드</h1>
-        <span class="w-12"></span>
+        <button onclick="openServiceMenu()" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700" aria-label="서비스 메뉴">☰</button>
       </div>
     </div>
 
@@ -86,6 +86,62 @@
         <p>본 서비스는 오락 목적이며, 당첨을 보장하지 않습니다. 무리한 구매는 지양하고 책임 있는 이용을 권장합니다.</p>
       </section>
     </div>
+  <div id="serviceMenuBackdrop" class="dp-sidebar-overlay" onclick="closeServiceMenu()"></div>
+  <aside id="serviceMenuSidebar" class="dp-sidebar">
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
+        <button onclick="closeServiceMenu()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+
+      <div class="dp-side-search-wrap">
+        <input id="serviceMenuSearch" type="search" class="dp-side-search" placeholder="서비스 검색" aria-label="서비스 검색">
+        <div id="serviceMenuSearchEmpty" class="dp-side-search-empty">검색 결과가 없습니다.</div>
+      </div>
+
+      <nav>
+        <a href="/" class="dp-menu-item font-bold"><span>🏠</span><span>홈</span></a>
+        <div class="dp-divider"></div>
+        <div class="dp-section-title">전체 서비스</div>
+        <div id="serviceMenuGroups">
+          <details class="dp-side-group open">
+            <summary class="dp-side-group-title"><span>🍀 행운/번호</span><span class="dp-side-group-count">1</span></summary>
+            <div class="dp-side-group-body">
+              <a href="/dunsmile/hoxy-number/" class="dp-menu-item active" data-service-item="1" data-service-search="hoxy number"><span>🎱</span><span>HOXY NUMBER</span></a>
+            </div>
+          </details>
+          <details class="dp-side-group">
+            <summary class="dp-side-group-title"><span>🔮 운세/심리</span><span class="dp-side-group-count">4</span></summary>
+            <div class="dp-side-group-body">
+              <a href="/dunsmile/rich-face/" class="dp-menu-item" data-service-item="1" data-service-search="부자가 될 상인가?"><span>👤</span><span>부자가 될 상인가?</span></a>
+              <a href="/dunsmile/daily-fortune/" class="dp-menu-item" data-service-item="1" data-service-search="오늘의 운세"><span>🔮</span><span>오늘의 운세</span></a>
+              <a href="/dunsmile/name-compatibility/" class="dp-menu-item" data-service-item="1" data-service-search="이름 궁합 테스트"><span>💞</span><span>이름 궁합 테스트</span></a>
+              <a href="/dunsmile/tarot-reading/" class="dp-menu-item" data-service-item="1" data-service-search="one day my card"><span>🃏</span><span>ONE DAY MY CARD</span></a>
+            </div>
+          </details>
+          <details class="dp-side-group">
+            <summary class="dp-side-group-title"><span>🎯 놀이/테스트</span><span class="dp-side-group-count">1</span></summary>
+            <div class="dp-side-group-body">
+              <a href="/dunsmile/balance-game/" class="dp-menu-item" data-service-item="1" data-service-search="오늘의 밸런스 게임"><span>⚖️</span><span>오늘의 밸런스 게임</span></a>
+            </div>
+          </details>
+          <details class="dp-side-group">
+            <summary class="dp-side-group-title"><span>📈 시장/데이터</span><span class="dp-side-group-count">1</span></summary>
+            <div class="dp-side-group-body">
+              <a href="/dunsmile/market-sentiment/" class="dp-menu-item" data-service-item="1" data-service-search="시장 감성 레이더"><span>📈</span><span>시장 감성 레이더</span></a>
+            </div>
+          </details>
+        </div>
+        <div class="dp-divider"></div>
+        <a href="/dunsmile/about/" class="dp-menu-item"><span>📋</span><span>서비스 소개</span></a>
+        <a href="/dunsmile/privacy/" class="dp-menu-item"><span>🔒</span><span>개인정보처리방침</span></a>
+        <a href="/dunsmile/terms/" class="dp-menu-item"><span>📜</span><span>이용약관</span></a>
+      </nav>
+    </div>
+  </aside>
+
   </div>
+
+  <script src="/dunsmile/js/service-ui.js"></script>
 </body>
 </html>

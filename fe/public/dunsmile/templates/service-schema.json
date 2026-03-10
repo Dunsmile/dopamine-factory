@@ -1,0 +1,28 @@
+{
+  "serviceId": "sample-service",
+  "displayName": "샘플 서비스",
+  "route": "/dunsmile/sample-service/",
+  "category": "fortune",
+  "meta": {
+    "title": "샘플 서비스 | 도파민 공작소",
+    "description": "서비스 설명",
+    "ogImage": "https://dopamine-factory.pages.dev/dunsmile/assets/og-image.png"
+  },
+  "assets": {
+    "styles": [
+      "/assets/css/tailwind-built.css",
+      "/dunsmile/css/style.css"
+    ],
+    "scripts": [
+      "/dunsmile/js/app.js"
+    ]
+  },
+  "reuseChecklist": {
+    "tokenizedTypography": true,
+    "tokenizedColor": true,
+    "tokenizedSpacing": true,
+    "reusedExistingComponents": true,
+    "newTokensRequested": false,
+    "newComponentsRequested": false
+  }
+}

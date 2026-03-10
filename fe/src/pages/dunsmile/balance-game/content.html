@@ -1,0 +1,42 @@
+<section class="svc-card">
+  <p id="questionText" class="svc-result-title svc-balance-question">오늘의 질문</p>
+  <div class="svc-option-grid">
+    <button id="optionAButton" type="button" onclick="chooseOption('A')" class="svc-option" data-analytics-event="start">
+      <p class="svc-option-label">선택 A</p>
+      <p id="optionAText" class="svc-option-text">-</p>
+    </button>
+    <button id="optionBButton" type="button" onclick="chooseOption('B')" class="svc-option" data-analytics-event="start">
+      <p class="svc-option-label">선택 B</p>
+      <p id="optionBText" class="svc-option-text">-</p>
+    </button>
+  </div>
+</section>
+
+<section id="resultCard" class="svc-card svc-hidden">
+  <div class="svc-result-head">
+    <p class="svc-result-title">실시간 선택 통계</p>
+    <p id="selectedBadge" class="svc-tag">내 선택</p>
+  </div>
+
+  <div class="svc-result-rows">
+    <div class="svc-result-row">
+      <div class="svc-result-row-head">
+        <span id="resultALabel">A</span>
+        <span id="resultAPercent">50%</span>
+      </div>
+      <div class="svc-result-progress">
+        <div id="resultABar" class="svc-result-progress-bar svc-result-progress-bar-a"></div>
+      </div>
+    </div>
+    <div class="svc-result-row">
+      <div class="svc-result-row-head">
+        <span id="resultBLabel">B</span>
+        <span id="resultBPercent">50%</span>
+      </div>
+      <div class="svc-result-progress">
+        <div id="resultBBar" class="svc-result-progress-bar svc-result-progress-bar-b"></div>
+      </div>
+    </div>
+  </div>
+  {{RELATED_CAROUSEL}}
+</section>

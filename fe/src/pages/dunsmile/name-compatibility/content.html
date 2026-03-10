@@ -1,0 +1,20 @@
+<section class="svc-card svc-stack-12">
+  <div class="svc-field">
+    <label for="nameA" class="svc-label">첫 번째 이름</label>
+    <input id="nameA" type="text" maxlength="12" class="svc-input" placeholder="예: 민지" />
+  </div>
+  <div class="svc-field">
+    <label for="nameB" class="svc-label">두 번째 이름</label>
+    <input id="nameB" type="text" maxlength="12" class="svc-input" placeholder="예: 준호" />
+  </div>
+  <button type="button" onclick="runCompatibility()" class="svc-button svc-button-primary" data-analytics-event="start">궁합 결과 보기</button>
+</section>
+
+<section id="resultCard" class="svc-card svc-hidden svc-name-result">
+  <p id="resultPair" class="svc-result-title svc-name-pair">민지 ♥ 준호</p>
+  <p class="svc-result-score"><span id="resultScore">88</span><span class="svc-result-score-unit">점</span></p>
+  <p id="resultType" class="svc-result-title">찰떡 케미 타입</p>
+  <p id="resultDesc" class="svc-result-summary">서로의 텐션을 잘 맞추고, 대화 호흡이 빠른 타입입니다.</p>
+  <div id="resultTags" class="svc-tags svc-tags-center"></div>
+  {{RELATED_CAROUSEL}}
+</section>

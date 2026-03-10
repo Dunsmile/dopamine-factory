@@ -1,0 +1,156 @@
+{
+  "daily-fortune": {
+    "title": "행운을 이어가세요!",
+    "indicatorTone": "bg-amber-400",
+    "cards": [
+      {
+        "href": "/dunsmile/rich-face/",
+        "borderClass": "svc-related-card-purple",
+        "headClass": "bg-gradient-to-br from-purple-500 to-pink-600",
+        "emoji": "🔮",
+        "title": "부자가 될 상인가?",
+        "subtitle": "AI가 분석하는 나의 관상",
+        "label": "AI 관상 테스트",
+        "description": "사진 한 장으로 부자 관상을 분석해보세요. 닮은 유명인과 부자 확률까지 확인!",
+        "linkText": "관상 테스트 하기",
+        "linkClass": "text-purple-600",
+        "analytics": "cta_click|daily_fortune|carousel|go_to_face_test|"
+      },
+      {
+        "href": "/dunsmile/hoxy-number/",
+        "borderClass": "svc-related-card-blue",
+        "headClass": "bg-gradient-to-br from-blue-500 to-purple-600",
+        "emoji": "🎰",
+        "title": "행운의 번호 뽑기",
+        "subtitle": "오늘의 행운을 로또 번호로!",
+        "label": "HOXY NUMBER",
+        "description": "운세를 확인했다면 행운의 번호도 받아보세요. 오늘의 행운 숫자가 대박으로 이어질지도?",
+        "linkText": "번호 뽑으러 가기",
+        "linkClass": "text-blue-600",
+        "analytics": "cta_click|daily_fortune|carousel|go_to_hoxy_number|"
+      },
+      {
+        "href": "/dunsmile/tarot-reading/",
+        "borderClass": "svc-related-card-indigo",
+        "headClass": "bg-gradient-to-br from-purple-600 to-indigo-700",
+        "emoji": "🃏",
+        "title": "ONE DAY MY CARD",
+        "subtitle": "오늘의 타로 카드 리딩",
+        "label": "타로 리딩",
+        "description": "78장 타로 카드가 전하는 오늘의 메시지를 확인해보세요.",
+        "linkText": "카드 뽑으러 가기",
+        "linkClass": "text-purple-600",
+        "analytics": "cta_click|daily_fortune|carousel|go_to_tarot_reading|"
+      }
+    ]
+  },
+  "rich-face": {
+    "title": "행운을 이어가세요!",
+    "indicatorTone": "bg-amber-400",
+    "cards": [
+      {
+        "href": "/dunsmile/daily-fortune/",
+        "borderClass": "svc-related-card-amber",
+        "headClass": "bg-gradient-to-br from-amber-400 to-orange-500",
+        "emoji": "🌟",
+        "title": "오늘의 운세 풀이",
+        "subtitle": "별자리·띠·오행 종합 운세",
+        "label": "Daily Fortune",
+        "description": "오늘의 총운/애정/금전/건강/직장 운을 한 번에 확인하세요.",
+        "linkText": "운세 풀이 보러 가기",
+        "linkClass": "text-amber-600",
+        "analytics": "cta_click|face_test|carousel|go_to_daily_fortune|"
+      },
+      {
+        "href": "/dunsmile/hoxy-number/",
+        "borderClass": "svc-related-card-blue",
+        "headClass": "bg-gradient-to-br from-blue-500 to-purple-600",
+        "emoji": "🎰",
+        "title": "행운의 번호 뽑기",
+        "subtitle": "오늘의 행운을 로또 번호로!",
+        "label": "HOXY NUMBER",
+        "description": "운세를 확인했다면 행운의 번호도 받아보세요. 오늘의 행운 숫자가 대박으로 이어질지도?",
+        "linkText": "번호 뽑으러 가기",
+        "linkClass": "text-blue-600",
+        "analytics": "cta_click|face_test|carousel|go_to_hoxy_number|"
+      }
+    ]
+  },
+  "tarot-reading": {
+    "title": "다른 서비스도 확인해보세요!",
+    "indicatorTone": "bg-purple-400",
+    "cards": [
+      {
+        "href": "/dunsmile/daily-fortune/",
+        "borderClass": "svc-related-card-amber",
+        "headClass": "bg-gradient-to-br from-amber-500 to-orange-600",
+        "emoji": "🌟",
+        "title": "오늘의 운세 풀이",
+        "subtitle": "별자리·띠·사주 종합 운세",
+        "label": "Daily Fortune",
+        "description": "별자리, 띠, 사주로 보는 오늘의 종합 운세를 확인해보세요.",
+        "linkText": "운세 보러 가기",
+        "linkClass": "text-amber-600",
+        "analytics": "cta_click|tarot_reading|carousel|go_to_daily_fortune|"
+      },
+      {
+        "href": "/dunsmile/rich-face/",
+        "borderClass": "svc-related-card-purple",
+        "headClass": "bg-gradient-to-br from-purple-500 to-pink-600",
+        "emoji": "👤",
+        "title": "부자가 될 상인가?",
+        "subtitle": "AI가 분석하는 나의 관상",
+        "label": "AI 관상 테스트",
+        "description": "사진 한 장으로 부자 관상을 분석해보세요.",
+        "linkText": "관상 테스트 하기",
+        "linkClass": "text-purple-600",
+        "analytics": "cta_click|tarot_reading|carousel|go_to_face_test|"
+      },
+      {
+        "href": "/dunsmile/hoxy-number/",
+        "borderClass": "svc-related-card-blue",
+        "headClass": "bg-gradient-to-br from-blue-500 to-purple-600",
+        "emoji": "🎰",
+        "title": "행운의 번호 뽑기",
+        "subtitle": "오늘의 행운을 로또 번호로!",
+        "label": "HOXY NUMBER",
+        "description": "오늘의 행운 숫자가 대박으로 이어질지도?",
+        "linkText": "번호 뽑으러 가기",
+        "linkClass": "text-blue-600",
+        "analytics": "cta_click|tarot_reading|carousel|go_to_hoxy_number|"
+      }
+    ]
+  },
+  "hoxy-number": {
+    "title": "행운을 이어가세요!",
+    "indicatorTone": "bg-blue-400",
+    "cards": [
+      {
+        "href": "/dunsmile/rich-face/",
+        "borderClass": "svc-related-card-purple",
+        "headClass": "bg-gradient-to-br from-purple-500 to-pink-600",
+        "emoji": "🔮",
+        "title": "부자가 될 상인가?",
+        "subtitle": "AI가 분석하는 나의 관상",
+        "label": "AI 관상 테스트",
+        "description": "사진 한 장으로 부자 관상을 분석해보세요. 닮은 유명인과 부자 확률까지 확인!",
+        "linkText": "관상 테스트 하기",
+        "linkClass": "text-purple-600",
+        "analytics": "cta_click|hoxy_number|carousel|go_to_face_test|"
+      },
+      {
+        "href": "/dunsmile/daily-fortune/",
+        "borderClass": "svc-related-card-amber",
+        "headClass": "bg-gradient-to-br from-amber-400 to-orange-500",
+        "emoji": "🌟",
+        "title": "오늘의 운세 풀이",
+        "subtitle": "별자리·띠·오행 종합 운세",
+        "label": "Daily Fortune",
+        "description": "오늘의 총운/애정/금전/건강/직장 운을 한 번에 확인하세요.",
+        "linkText": "운세 풀이 보러 가기",
+        "linkClass": "text-amber-600",
+        "analytics": "cta_click|hoxy_number|carousel|go_to_daily_fortune|"
+      }
+    ]
+  }
+}

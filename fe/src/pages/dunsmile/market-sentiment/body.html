@@ -1,0 +1,168 @@
+<div class="main-container dp-shell-no-edge">
+  <div class="content-area">
+    <div class="dp-service-frame">
+      <header class="ms-topbar">
+        <div class="dp-market-header-row">
+          <div class="ms-header-brand">
+            <a href="/" class="dp-header-home">도파민 공작소</a><span class="dp-header-sep">›</span>
+            <h1 class="ms-title">시장 감성 레이더</h1>
+          </div>
+          <div class="ms-header-actions">
+            <button id="refreshBtn" class="ms-refresh-btn">새로고침</button>
+            <button onclick="openServiceMenu()" class="ms-menu-btn" aria-label="서비스 메뉴">
+              <svg class="ms-menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="dp-market-main" data-api-current="/api/market/sentiment/current">
+        <section class="ms-hero-card">
+          <p class="ms-hero-eyebrow">Community Pulse</p>
+          <div class="ms-hero-controls">
+            <label for="assetSelect" class="ms-hero-label">자산 선택</label>
+            <select id="assetSelect" class="ms-asset-select"></select>
+            <span id="statusBadge" class="ms-status-badge">NEUTRAL</span>
+          </div>
+          <p class="ms-hero-desc">디씨·레딧·유튜브 반응을 15분 주기로 분석합니다.</p>
+        </section>
+
+        <section id="pumpAlert" class="hidden ms-pump-alert"></section>
+
+        <section class="ms-kpi-grid">
+          <div class="ms-card ms-card-main">
+            <div class="ms-kpi-head">
+              <div>
+                <p class="ms-kpi-eyebrow">시장 심박수</p>
+                <p id="marketHeartbeat" class="ms-kpi-value">--</p>
+                <p id="heartbeatMeta" class="ms-kpi-meta">데이터 동기화 중</p>
+              </div>
+              <div class="ms-mention-orb">
+                <span class="ms-pulse-orbit"></span>
+                <span class="ms-pulse-orbit ms-delay"></span>
+                <div class="ms-mention-inner">
+                  <p id="mentionVolume" class="ms-mention-value">0</p>
+                  <p class="ms-mention-label">mentions</p>
+                </div>
+              </div>
+            </div>
+            <div class="ms-score-track">
+              <div id="scoreBar" class="ms-score-bar is-width-zero"></div>
+            </div>
+            <div class="ms-kpi-foot">
+              <p id="updatedAt" class="ms-meta-text">업데이트: -</p>
+              <p id="scoreValue" class="ms-meta-text">감성 점수: --</p>
+            </div>
+          </div>
+
+          <div class="ms-card">
+            <h2 class="ms-section-title">15분 급변</h2>
+            <div class="ms-momentum-body">
+              <p id="momentumValue" class="ms-momentum-value">--</p>
+              <p id="momentumLabel" class="ms-momentum-label">비교 데이터 부족</p>
+              <p id="momentumVolume" class="ms-meta-text">언급량 변화: -</p>
+            </div>
+            <div class="ms-notice-box">
+              급변 기준: 최근 15분 score 변화량
+            </div>
+          </div>
+        </section>
+
+        <section class="ms-card">
+          <div class="ms-row-between">
+            <h2 class="ms-section-title">키워드 전쟁</h2>
+            <span class="ms-meta-text">실시간 반응 대결</span>
+          </div>
+          <div id="keywordWar" class="ms-block-gap">
+            <div class="ms-empty-text">키워드 데이터가 아직 없습니다.</div>
+          </div>
+          <div id="keywords" class="ms-tags-wrap"></div>
+        </section>
+
+        <section class="ms-card">
+          <div class="ms-row-between">
+            <h2 class="ms-section-title">최근 24시간 감성 추이</h2>
+            <span id="pointCount" class="ms-meta-text">0 points</span>
+          </div>
+          <div class="ms-history-box">
+            <svg id="historyLine" class="ms-history-line" viewBox="0 0 1000 240" preserveAspectRatio="none"></svg>
+            <div id="historyDots" class="absolute inset-0"></div>
+          </div>
+          <div id="historyLabels" class="ms-history-labels"></div>
+        </section>
+
+        <section class="ms-card">
+          <div class="ms-row-between">
+            <h2 class="ms-section-title">실시간 반응 피드</h2>
+            <span id="feedMeta" class="ms-meta-text">커뮤니티 수집</span>
+          </div>
+          <div id="posts" class="ms-posts-list"></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+  <!-- 서비스 메뉴 사이드바 (스케일 구조) -->
+  <div id="serviceMenuBackdrop" class="dp-sidebar-overlay" onclick="closeServiceMenu()"></div>
+  <aside id="serviceMenuSidebar" class="dp-sidebar">
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
+        <button onclick="closeServiceMenu()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+
+      <div class="dp-side-search-wrap">
+        <input id="serviceMenuSearch" type="search" class="dp-side-search" placeholder="서비스 검색" aria-label="서비스 검색">
+        <div id="serviceMenuSearchEmpty" class="dp-side-search-empty">검색 결과가 없습니다.</div>
+      </div>
+
+      <nav>
+        <a href="/" class="dp-menu-item font-bold"><span>🏠</span><span>홈</span></a>
+        <div class="dp-divider"></div>
+      <div class="dp-section-title">전체 서비스</div>
+        <div id="serviceMenuGroups">
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>🍀 행운/번호</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/hoxy-number/" class="dp-menu-item" data-service-item="1" data-service-search="hoxy number"><span>🎱</span><span>HOXY NUMBER</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>🔮 운세/심리</span><span class="dp-side-group-count">4</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/rich-face/" class="dp-menu-item" data-service-item="1" data-service-search="부자가 될 상인가?"><span>👤</span><span>부자가 될 상인가?</span></a>
+          <a href="/dunsmile/daily-fortune/" class="dp-menu-item" data-service-item="1" data-service-search="오늘의 운세"><span>🔮</span><span>오늘의 운세</span></a>
+          <a href="/dunsmile/name-compatibility/" class="dp-menu-item" data-service-item="1" data-service-search="이름 궁합 테스트"><span>💞</span><span>이름 궁합 테스트</span></a>
+          <a href="/dunsmile/tarot-reading/" class="dp-menu-item" data-service-item="1" data-service-search="one day my card"><span>🃏</span><span>ONE DAY MY CARD</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>🎯 놀이/테스트</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/balance-game/" class="dp-menu-item" data-service-item="1" data-service-search="오늘의 밸런스 게임"><span>⚖️</span><span>오늘의 밸런스 게임</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group" open>
+        <summary class="dp-side-group-title"><span>📈 시장/데이터</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/market-sentiment/" class="dp-menu-item active" data-service-item="1" data-service-search="시장 감성 레이더"><span>📈</span><span>시장 감성 레이더</span></a>
+        </div>
+      </details>
+        </div>
+        <div class="dp-divider"></div>
+        <a href="/dunsmile/about/" class="dp-menu-item"><span>📋</span><span>서비스 소개</span></a>
+        <a href="/dunsmile/privacy/" class="dp-menu-item"><span>🔒</span><span>개인정보처리방침</span></a>
+        <a href="/dunsmile/terms/" class="dp-menu-item"><span>📜</span><span>이용약관</span></a>
+      </nav>
+    </div>
+  </aside>
+
+
+  <script>
+    window.MARKET_API_BASE = "https://market-sentiment-worker.leehk77789.workers.dev";
+  </script>
+  <script src="/dunsmile/js/market-sentiment.js"></script>

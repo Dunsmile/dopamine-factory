@@ -1,0 +1,460 @@
+<!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TD8GQFFB"
+            height="0" width="0" class="dp-noscript-frame"></iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- 토스트 메시지 -->
+  <div id="toast" class="toast">
+    <span id="toastMessage"></span>
+  </div>
+
+  <div class="main-container dp-shell-no-edge">
+    <div class="content-area">
+      <div class="dp-service-frame">
+
+        <!-- Top Navigation -->
+        <div class="sticky top-0 bg-white border-b border-gray-200 z-10 shadow-sm">
+          <div class="dp-service-topbar-row">
+            <div class="dp-service-topbar-brand">
+              <a href="/" class="dp-header-home">도파민 공작소</a><span class="dp-header-sep">›</span>
+              <h1 class="svc-title-gradient-amber">오늘의 운세 풀이</h1>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="openSettings()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" data-analytics="cta_click|daily_fortune|gnb|open_settings|">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </button>
+              <button onclick="openServiceMenu()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors" data-analytics="cta_click|daily_fortune|gnb|service_menu_open|">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 0: 환영 화면 (기억된 사용자) -->
+        <div id="step0" class="step dp-service-step space-y-4">
+
+          <!-- 환영 헤더 -->
+          <div class="text-center py-8">
+            <div class="text-6xl mb-4">🌟</div>
+            <h2 id="welcomeTitle" class="text-2xl font-black text-gray-900 mb-2"></h2>
+            <p id="welcomeSubtitle" class="text-gray-600"></p>
+          </div>
+
+          <!-- CTA 버튼 -->
+          <button id="welcomeCta" onclick="handleWelcomeCta()" class="svc-hero-cta svc-hero-cta-amber" data-analytics="cta_click|daily_fortune|welcome|welcome_cta|">
+          </button>
+
+          <!-- 다시 입력하기 링크 -->
+          <div class="text-center">
+            <button onclick="goToInputForm()" class="text-sm text-gray-500 underline hover:text-gray-700 transition-colors" data-analytics="cta_click|daily_fortune|welcome|go_to_input|">
+              운세 정보 다시 입력하기
+            </button>
+          </div>
+
+          <!-- 하단 안내 콘텐츠 -->
+          <div class="space-y-4 mt-6">
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-200">
+              <h3 class="font-bold text-gray-900 mb-3">별자리·띠·사주, 세 가지 운세를 한 번에!</h3>
+              <div class="space-y-2 text-sm text-gray-700">
+                <p><span class="font-semibold">별자리 운세</span>는 서양 점성술을 기반으로 태양이 위치한 별자리에 따라 성격과 운세를 분석합니다. 12개 별자리는 각각 고유한 원소(불, 흙, 공기, 물)와 수호성을 가지고 있어요.</p>
+                <p><span class="font-semibold">띠별 운세</span>는 동양의 12지신을 바탕으로 태어난 해의 동물에 따라 운세를 풀이합니다. 각 띠는 오행(목, 화, 토, 금, 수)과 연결되어 있습니다.</p>
+                <p><span class="font-semibold">사주팔자</span>는 태어난 연·월·일·시의 천간과 지지를 통해 타고난 운명의 흐름을 파악하는 동양 역학의 핵심입니다.</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-3">자주 묻는 질문</h3>
+              <div class="space-y-3 text-sm text-gray-700">
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세는 매일 바뀌나요?</p>
+                  <p class="mt-1">네, 매일 자정을 기준으로 새로운 운세가 제공됩니다. 같은 사람이라도 날마다 다른 운세를 확인할 수 있어요.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세 결과는 어떻게 만들어지나요?</p>
+                  <p class="mt-1">사용자의 이름, 성별, 생년월일 정보와 오늘의 날짜를 조합하여 별자리, 띠, 사주를 종합 분석한 결과입니다.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 기억된 정보를 초기화하려면?</p>
+                  <p class="mt-1">브라우저 캐시 삭제 시 저장된 정보가 초기화됩니다. 또는 "운세 정보 다시 입력하기"를 통해 새로운 정보로 다시 입력할 수 있어요.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 개인정보는 안전한가요?</p>
+                  <p class="mt-1">입력된 정보는 브라우저에만 저장되며, 서버에 별도로 전송되지 않습니다. 운세 결과 생성 목적으로만 사용됩니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Step 1: 입력 폼 -->
+        <div id="step1" class="step dp-service-step space-y-4">
+
+          <!-- 헤더 -->
+          <div class="text-center py-6">
+            <div class="text-6xl mb-4">🌟</div>
+            <h2 class="text-2xl font-black text-gray-900 mb-2">오늘의 운세 풀이</h2>
+            <p class="text-gray-600">별자리 · 띠 · 사주로 보는 나만의 운세 풀이</p>
+          </div>
+
+          <!-- 입력 폼 -->
+          <div class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 space-y-4">
+
+            <!-- 이름 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">이름</label>
+              <input type="text" id="userName" class="svc-input-text svc-input-text-amber" placeholder="이름을 입력하세요" maxlength="20">
+            </div>
+
+            <!-- 성별 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">성별</label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="selectGender('male')" id="genderMale" class="svc-select-btn svc-select-btn-amber" data-analytics="feature_use|daily_fortune|form|gender_male|">
+                  남성
+                </button>
+                <button type="button" onclick="selectGender('female')" id="genderFemale" class="svc-select-btn svc-select-btn-amber" data-analytics="feature_use|daily_fortune|form|gender_female|">
+                  여성
+                </button>
+              </div>
+            </div>
+
+            <!-- 생년월일 -->
+            <div>
+              <label class="text-sm font-semibold text-gray-700 block mb-2">생년월일</label>
+              <div class="flex gap-2">
+                <input type="text" id="birthYear" maxlength="4" inputmode="numeric"
+                  class="svc-input-birth svc-input-birth-year svc-input-birth-amber"
+                  placeholder="YYYY"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, ''); autoFocusNext(this, 'birthMonth', 4)">
+                <input type="text" id="birthMonth" maxlength="2" inputmode="numeric"
+                  class="svc-input-birth svc-input-birth-part svc-input-birth-amber"
+                  placeholder="MM"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, ''); autoFocusNext(this, 'birthDay', 2)">
+                <input type="text" id="birthDay" maxlength="2" inputmode="numeric"
+                  class="svc-input-birth svc-input-birth-part svc-input-birth-amber"
+                  placeholder="DD"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+              </div>
+            </div>
+
+            <!-- 동의 체크박스 -->
+            <div class="bg-gray-50 rounded-xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="agreeTerms" class="w-5 h-5 mt-0.5 text-amber-600 rounded">
+                <span class="text-sm text-gray-600">
+                  <span class="font-semibold text-gray-800">[필수]</span> 개인정보 수집 및 이용에 동의합니다.
+                  <br><span class="text-xs text-gray-400">수집항목: 이름, 성별, 생년월일 / 이용목적: 운세 결과 생성</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- 내 정보 기억하기 -->
+            <div class="bg-amber-50 rounded-xl p-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="rememberMe" class="w-5 h-5 mt-0.5 text-amber-600 rounded">
+                <span class="text-sm text-gray-600">
+                  <span class="font-semibold text-amber-700">[선택]</span> 내 운세 기억해 둘래요
+                  <br><span class="text-xs text-gray-400">다음 방문 시 바로 운세를 확인할 수 있어요</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- 시작 버튼 -->
+            <button onclick="startFortune()" class="svc-hero-cta svc-hero-cta-amber" data-analytics="cta_click|daily_fortune|form|start_fortune|">
+              오늘의 운세 풀이 보기
+            </button>
+          </div>
+
+          <!-- 하단 안내 콘텐츠 (AdSense 보강) -->
+          <div class="space-y-4 mt-6">
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-200">
+              <h3 class="font-bold text-gray-900 mb-3">별자리·띠·사주, 세 가지 운세를 한 번에!</h3>
+              <div class="space-y-2 text-sm text-gray-700">
+                <p><span class="font-semibold">별자리 운세</span>는 서양 점성술을 기반으로 태양이 위치한 별자리에 따라 성격과 운세를 분석합니다. 12개 별자리는 각각 고유한 원소(불, 흙, 공기, 물)와 수호성을 가지고 있어요.</p>
+                <p><span class="font-semibold">띠별 운세</span>는 동양의 12지신을 바탕으로 태어난 해의 동물에 따라 운세를 풀이합니다. 각 띠는 오행(목, 화, 토, 금, 수)과 연결되어 있습니다.</p>
+                <p><span class="font-semibold">사주팔자</span>는 태어난 연·월·일·시의 천간과 지지를 통해 타고난 운명의 흐름을 파악하는 동양 역학의 핵심입니다.</p>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-3">오늘의 운세 풀이에서 확인할 수 있는 것들</h3>
+              <div class="grid grid-cols-2 gap-3 text-sm">
+                <div class="flex items-center gap-2"><span>🌟</span> 총운</div>
+                <div class="flex items-center gap-2"><span>💕</span> 애정운</div>
+                <div class="flex items-center gap-2"><span>💰</span> 금전운</div>
+                <div class="flex items-center gap-2"><span>💪</span> 건강운</div>
+                <div class="flex items-center gap-2"><span>📈</span> 직장/학업운</div>
+                <div class="flex items-center gap-2"><span>🍀</span> 행운의 숫자·색·방향</div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow border border-gray-200">
+              <h3 class="font-bold text-gray-900 mb-3">자주 묻는 질문</h3>
+              <div class="space-y-3 text-sm text-gray-700">
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세는 매일 바뀌나요?</p>
+                  <p class="mt-1">네, 매일 자정을 기준으로 새로운 운세가 제공됩니다. 같은 사람이라도 날마다 다른 운세를 확인할 수 있어요.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 운세 결과는 어떻게 만들어지나요?</p>
+                  <p class="mt-1">사용자의 이름, 성별, 생년월일 정보와 오늘의 날짜를 조합하여 별자리, 띠, 사주를 종합 분석한 결과입니다.</p>
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-900">Q. 개인정보는 안전한가요?</p>
+                  <p class="mt-1">입력된 정보는 운세 결과 생성 목적으로만 사용되며, 외부에 제공되지 않습니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+        </div>
+
+        <!-- Step 2: 분석 중 -->
+        <div id="step2" class="step dp-service-step">
+          <div class="flex flex-col items-center justify-center min-h-[70vh]">
+
+            <div class="relative mb-8">
+              <div class="text-8xl fortune-pulse">🔮</div>
+              <div class="absolute -top-2 -right-2 text-3xl fortune-spin">✨</div>
+              <div class="absolute -bottom-2 -left-2 text-2xl fortune-spin fortune-star-delay-1">⭐</div>
+            </div>
+
+            <div class="text-center">
+              <div class="text-2xl font-black text-gray-900 mb-2">운세 분석 중...</div>
+              <div id="loadingMessage" class="text-amber-600 font-medium mb-6">별자리 에너지를 읽고 있어요...</div>
+
+              <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="loadingProgress" class="svc-score-bar svc-score-bar-amber is-width-zero"></div>
+              </div>
+              <div class="text-sm text-gray-500 mt-2"><span id="loadingPercent">0</span>%</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Step 3: 결과 -->
+        <div id="step3" class="step dp-service-step pb-8 space-y-4">
+
+          <!-- 결과 헤더: 종합 점수 -->
+          <div class="svc-result-hero svc-result-hero-amber">
+            <div class="absolute inset-0 shimmer"></div>
+            <div class="relative">
+              <div class="text-sm text-amber-700 font-medium mb-1" id="resultDate">2026년 2월 7일 (금)</div>
+              <div class="text-sm text-amber-600 font-medium mb-3"><span id="resultName">홍길동</span>님의 오늘의 운세 풀이</div>
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <span id="resultScoreEmoji" class="text-4xl">✨</span>
+                <div class="text-7xl font-black text-amber-600 count-up"><span id="resultScore">85</span><span class="text-3xl">점</span></div>
+              </div>
+              <div class="w-48 h-3 bg-white/50 rounded-full overflow-hidden mx-auto">
+                <div id="scoreBar" class="svc-score-bar svc-score-bar-amber is-width-zero"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 프로필 요약 (별자리/띠/사주/오행) -->
+          <div class="bg-white rounded-2xl p-4 shadow-lg border border-gray-200">
+            <h3 class="font-bold text-gray-900 mb-3 text-sm">나의 운세 프로필</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-indigo-50 rounded-xl p-3 text-center">
+                <div class="text-xs text-indigo-600 font-medium mb-1">별자리</div>
+                <div id="resultZodiac" class="text-sm font-bold text-gray-900">♈ 양자리</div>
+              </div>
+              <div class="bg-red-50 rounded-xl p-3 text-center">
+                <div class="text-xs text-red-600 font-medium mb-1">띠</div>
+                <div id="resultChinese" class="text-sm font-bold text-gray-900">🐉 용띠</div>
+              </div>
+              <div class="bg-purple-50 rounded-xl p-3 text-center">
+                <div class="text-xs text-purple-600 font-medium mb-1">사주 (년주)</div>
+                <div id="resultSaju" class="text-sm font-bold text-gray-900">갑(甲) 자(子)</div>
+              </div>
+              <div class="bg-green-50 rounded-xl p-3 text-center">
+                <div class="text-xs text-green-600 font-medium mb-1">오행</div>
+                <div id="resultElement" class="text-sm font-bold text-gray-900">🌿 목(木)</div>
+              </div>
+            </div>
+
+            <!-- 상세 설명 -->
+            <div class="mt-3 space-y-2">
+              <p id="zodiacDetail" class="text-xs text-gray-600 bg-gray-50 rounded-lg p-2"></p>
+              <p id="chineseDetail" class="text-xs text-gray-600 bg-gray-50 rounded-lg p-2"></p>
+              <p id="sajuDetail" class="text-xs text-gray-600 bg-gray-50 rounded-lg p-2"></p>
+            </div>
+          </div>
+
+          <!-- 카테고리별 운세 -->
+          <div class="space-y-3">
+            <div id="fortune-general"></div>
+            <div id="fortune-love"></div>
+            <div id="fortune-money"></div>
+            <div id="fortune-health"></div>
+            <div id="fortune-career"></div>
+          </div>
+
+          <!-- 행운의 요소 -->
+          <div class="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-2xl p-5 border-2 border-yellow-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">🍀 오늘의 행운 요소</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white rounded-xl p-3">
+                <div class="text-xs text-gray-500 mb-1">행운의 숫자</div>
+                <div id="luckyNumbers" class="text-lg font-bold text-amber-600">7, 23</div>
+              </div>
+              <div class="bg-white rounded-xl p-3">
+                <div class="text-xs text-gray-500 mb-1">행운의 아이템</div>
+                <div id="luckyItem" class="text-sm font-bold text-gray-900">보라색 액세서리</div>
+              </div>
+              <div class="bg-white rounded-xl p-3">
+                <div class="text-xs text-gray-500 mb-1">행운의 색</div>
+                <div class="flex items-center gap-2">
+                  <div id="luckyColorDot" class="w-5 h-5 rounded-full border border-gray-200" style="background-color: #a855f7"></div>
+                  <div>
+                    <div id="luckyColorName" class="text-sm font-bold text-gray-900">퍼플</div>
+                    <div id="luckyColorMeaning" class="text-xs text-gray-500">영감과 고귀함</div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-white rounded-xl p-3">
+                <div class="text-xs text-gray-500 mb-1">행운의 방향</div>
+                <div id="luckyDirection" class="text-sm font-bold text-gray-900">동남쪽</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1. 오늘의 한마디 -->
+          <div class="bg-white rounded-2xl p-5 shadow-lg border border-amber-200">
+            <h3 class="text-lg font-bold text-gray-900 mb-2">💡 오늘의 한마디</h3>
+            <p id="dailyAdvice" class="text-sm text-gray-700 leading-relaxed italic">"감사한 일 3가지를 떠올리며 하루를 시작하면 행운이 따릅니다."</p>
+          </div>
+
+          <!-- 2. 운세 가이드 -->
+          <a href="/dunsmile/daily-fortune/guide/" class="svc-action-btn svc-action-btn-outline-amber svc-action-btn-sm">
+            운세 해석의 비밀 공식
+          </a>
+
+          <!-- 3. 공유하기 -->
+          <button onclick="shareResult()" class="svc-action-btn svc-action-btn-outline-amber svc-action-btn-lg svc-action-btn-inline dp-cta-action" data-analytics="share_click|daily_fortune|result|share_result|">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+            </svg>
+            친구에게 운세 공유하기
+          </button>
+          <button onclick="downloadFortuneShareCard()" class="svc-action-btn svc-action-btn-outline-amber svc-action-btn-sm dp-cta-action" data-analytics="share_click|daily_fortune|result|download_share_card|">
+            결과 이미지 카드 저장
+          </button>
+
+          <!-- 4. 다시 운세 보기 -->
+          <button onclick="retakeFortune()" class="w-full py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors" data-analytics="cta_click|daily_fortune|result|retake_fortune|">
+            다시 운세 보기
+          </button>
+
+          {{RELATED_CAROUSEL}}
+          </div>
+
+          <!-- 6. 참고 사항 -->
+          <div class="bg-gray-100 rounded-xl p-4">
+            <div class="text-xs text-gray-500 space-y-1">
+              <p class="font-semibold text-gray-600">⚠️ 참고 사항</p>
+              <p>• 본 운세는 오락 목적으로 제작되었으며, 과학적 근거를 보장하지 않습니다.</p>
+              <p>• 운세 결과는 참고용이며, 중요한 결정은 본인의 판단에 따라 주세요.</p>
+              <p>• 수집된 개인정보는 운세 결과 생성 목적으로만 사용됩니다.</p>
+              <p>• 매일 자정을 기준으로 새로운 운세가 제공됩니다.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 서비스 메뉴 사이드바 (스케일 구조) -->
+  <div id="serviceMenuBackdrop" class="dp-sidebar-overlay" onclick="closeServiceMenu()"></div>
+  <aside id="serviceMenuSidebar" class="dp-sidebar">
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-base font-bold text-purple-600">도파민 공작소</span>
+        <button onclick="closeServiceMenu()" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600">&times;</button>
+      </div>
+
+      <div class="dp-side-search-wrap">
+        <input id="serviceMenuSearch" type="search" class="dp-side-search" placeholder="서비스 검색" aria-label="서비스 검색">
+        <div id="serviceMenuSearchEmpty" class="dp-side-search-empty">검색 결과가 없습니다.</div>
+      </div>
+
+      <nav>
+        <a href="/" class="dp-menu-item font-bold"><span>🏠</span><span>홈</span></a>
+        <div class="dp-divider"></div>
+      <div class="dp-section-title">전체 서비스</div>
+        <div id="serviceMenuGroups">
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>🍀 행운/번호</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/hoxy-number/" class="dp-menu-item" data-service-item="1" data-service-search="hoxy number"><span>🎱</span><span>HOXY NUMBER</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group" open>
+        <summary class="dp-side-group-title"><span>🔮 운세/심리</span><span class="dp-side-group-count">4</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/rich-face/" class="dp-menu-item" data-service-item="1" data-service-search="부자가 될 상인가?"><span>👤</span><span>부자가 될 상인가?</span></a>
+          <a href="/dunsmile/daily-fortune/" class="dp-menu-item active" data-service-item="1" data-service-search="오늘의 운세"><span>🔮</span><span>오늘의 운세</span></a>
+          <a href="/dunsmile/name-compatibility/" class="dp-menu-item" data-service-item="1" data-service-search="이름 궁합 테스트"><span>💞</span><span>이름 궁합 테스트</span></a>
+          <a href="/dunsmile/tarot-reading/" class="dp-menu-item" data-service-item="1" data-service-search="one day my card"><span>🃏</span><span>ONE DAY MY CARD</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>🎯 놀이/테스트</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/balance-game/" class="dp-menu-item" data-service-item="1" data-service-search="오늘의 밸런스 게임"><span>⚖️</span><span>오늘의 밸런스 게임</span></a>
+        </div>
+      </details>
+      <details class="dp-side-group">
+        <summary class="dp-side-group-title"><span>📈 시장/데이터</span><span class="dp-side-group-count">1</span></summary>
+        <div class="dp-side-group-body">
+          <a href="/dunsmile/market-sentiment/" class="dp-menu-item" data-service-item="1" data-service-search="시장 감성 레이더"><span>📈</span><span>시장 감성 레이더</span></a>
+        </div>
+      </details>
+        </div>
+        <div class="dp-divider"></div>
+        <a href="/dunsmile/about/" class="dp-menu-item"><span>📋</span><span>서비스 소개</span></a>
+        <a href="/dunsmile/privacy/" class="dp-menu-item"><span>🔒</span><span>개인정보처리방침</span></a>
+        <a href="/dunsmile/terms/" class="dp-menu-item"><span>📜</span><span>이용약관</span></a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- 설정 모달 -->
+  <div id="settingsModal" class="modal-backdrop" onclick="if(event.target === this) closeSettings()">
+    <div class="bg-white rounded-2xl p-6 max-w-[480px] w-full mx-4 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-bold text-gray-900">설정</h3>
+        <button onclick="closeSettings()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="space-y-2">
+        <a href="/dunsmile/daily-fortune/guide/" class="svc-settings-link">
+          운세 가이드
+        </a>
+        <a href="/dunsmile/about/" class="svc-settings-link">
+          서비스 소개
+        </a>
+        <a href="/dunsmile/privacy/" class="svc-settings-link">
+          개인정보처리방침
+        </a>
+        <a href="/dunsmile/terms/" class="svc-settings-link">
+          이용약관
+        </a>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-02-21T15:40:50.675Z",
+  "goals": {
+    "weeklyCadenceHealthy": true,
+    "leadTimeUnder15m": true,
+    "failureRateZero": true,
+    "monthlyRelease8plus": true
+  },
+  "source": {
+    "cadenceStatus": "PASS",
+    "cadenceCountLast7Days": 1,
+    "leadTimeMinutesP50": 15,
+    "buildDeployFailureRatePercent": 0,
+    "monthlyReleaseCount": 8
+  },
+  "summary": {
+    "passCount": 4,
+    "totalGoals": 4
+  },
+  "decision": "PASS"
+}

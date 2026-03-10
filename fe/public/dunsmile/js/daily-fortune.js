@@ -1,7 +1,5 @@
 // ==================== 오늘의 운세 로직 ====================
 
-const MARKET_SENTIMENT_ROUTE = '/dunsmile/market-sentiment/';
-
 // 상태 관리
 let selectedGender = null;
 let fortuneResult = null;
@@ -412,21 +410,21 @@ function getGradeText(level) {
 
 function getGradeColor(level) {
   switch (level) {
-    case 5: return 'text-red-500';
-    case 4: return 'text-orange-500';
-    case 3: return 'text-yellow-600';
-    case 2: return 'text-blue-500';
-    default: return 'text-gray-500';
+    case 5: return 'svc-grade-color-red';
+    case 4: return 'svc-grade-color-orange';
+    case 3: return 'svc-grade-color-yellow';
+    case 2: return 'svc-grade-color-blue';
+    default: return 'svc-grade-color-gray';
   }
 }
 
 function getGradeBg(level) {
   switch (level) {
-    case 5: return 'bg-red-50 border-red-200';
-    case 4: return 'bg-orange-50 border-orange-200';
-    case 3: return 'bg-yellow-50 border-yellow-200';
-    case 2: return 'bg-blue-50 border-blue-200';
-    default: return 'bg-gray-50 border-gray-200';
+    case 5: return 'svc-grade-bg-red';
+    case 4: return 'svc-grade-bg-orange';
+    case 3: return 'svc-grade-bg-yellow';
+    case 2: return 'svc-grade-bg-blue';
+    default: return 'svc-grade-bg-gray';
   }
 }
 
@@ -438,27 +436,24 @@ function getScoreEmoji(score) {
 }
 
 // ==================== UI 함수 ====================
+const FORTUNE_ACTIVE_CLASS = 'svc-select-active-amber';
 
 function selectGender(gender) {
   selectedGender = gender;
   const maleBtn = document.getElementById('genderMale');
   const femaleBtn = document.getElementById('genderFemale');
-  maleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
-  femaleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+  maleBtn.classList.remove(FORTUNE_ACTIVE_CLASS);
+  femaleBtn.classList.remove(FORTUNE_ACTIVE_CLASS);
   if (gender === 'male') {
-    maleBtn.classList.add('border-amber-500', 'bg-amber-50', 'text-amber-700');
+    maleBtn.classList.add(FORTUNE_ACTIVE_CLASS);
   } else {
-    femaleBtn.classList.add('border-amber-500', 'bg-amber-50', 'text-amber-700');
+    femaleBtn.classList.add(FORTUNE_ACTIVE_CLASS);
   }
 }
 
 function showToast(message, duration = 2000) {
-  const toast = document.getElementById('toast');
-  const toastMessage = document.getElementById('toastMessage');
-  if (toast && toastMessage) {
-    toastMessage.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), duration);
+  if (window.DunsmileUI && typeof window.DunsmileUI.showToast === 'function') {
+    window.DunsmileUI.showToast(message, duration);
   }
 }
 
@@ -605,8 +600,8 @@ function goToInputForm() {
   selectedGender = null;
   const maleBtn = document.getElementById('genderMale');
   const femaleBtn = document.getElementById('genderFemale');
-  if (maleBtn) maleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
-  if (femaleBtn) femaleBtn.classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+  if (maleBtn) maleBtn.classList.remove(FORTUNE_ACTIVE_CLASS);
+  if (femaleBtn) femaleBtn.classList.remove(FORTUNE_ACTIVE_CLASS);
   showStep(1);
 }
 
@@ -734,7 +729,7 @@ function renderFortuneCategory(id, title, emoji, data) {
   const barWidth = (data.level / 5) * 100;
 
   container.innerHTML = `
-    <div class="border rounded-2xl p-4 ${gradeBg}">
+    <div class="svc-grade-card ${gradeBg}">
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2">
           <span class="text-lg">${emoji}</span>
@@ -742,8 +737,8 @@ function renderFortuneCategory(id, title, emoji, data) {
         </div>
         <span class="text-sm font-bold ${gradeColor}">${gradeText}</span>
       </div>
-      <div class="h-2 bg-white/60 rounded-full overflow-hidden mb-3">
-        <div class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full transition-all duration-700 ease-out" style="width: ${barWidth}%"></div>
+      <div class="svc-grade-progress-track">
+        <div class="svc-score-bar svc-score-bar-amber svc-score-bar-anim" style="width: ${barWidth}%"></div>
       </div>
       <p class="text-sm text-gray-700 leading-relaxed">${data.text}</p>
     </div>
@@ -786,6 +781,9 @@ function showStep(stepNumber) {
   document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
   document.getElementById('step' + stepNumber).classList.add('active');
   window.scrollTo(0, 0);
+  if (stepNumber === 3 && window.DunsmileUI && typeof window.DunsmileUI.focusRelatedCarousel === 'function') {
+    window.DunsmileUI.focusRelatedCarousel({ selector: '#step3 .svc-related-section', delay: 220 });
+  }
 }
 
 // ==================== 공유 & 다시하기 ====================
@@ -854,36 +852,10 @@ function retakeFortune() {
     document.getElementById('birthMonth').value = '';
     document.getElementById('birthDay').value = '';
     document.getElementById('agreeTerms').checked = false;
-    document.getElementById('genderMale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
-    document.getElementById('genderFemale').classList.remove('border-amber-500', 'bg-amber-50', 'text-amber-700');
+    document.getElementById('genderMale').classList.remove(FORTUNE_ACTIVE_CLASS);
+    document.getElementById('genderFemale').classList.remove(FORTUNE_ACTIVE_CLASS);
     showStep(1);
   }
-}
-
-// ==================== 서비스 메뉴 ====================
-
-function openServiceMenu() {
-  const backdrop = document.getElementById('serviceMenuBackdrop');
-  const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) { backdrop.classList.add('open'); sidebar.classList.add('open'); }
-}
-
-function closeServiceMenu() {
-  const backdrop = document.getElementById('serviceMenuBackdrop');
-  const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) { backdrop.classList.remove('open'); sidebar.classList.remove('open'); }
-}
-
-// ==================== 설정 ====================
-
-function openSettings() {
-  const modalEl = document.getElementById('settingsModal');
-  if (modalEl) modalEl.classList.add('active');
-}
-
-function closeSettings() {
-  const modalEl = document.getElementById('settingsModal');
-  if (modalEl) modalEl.classList.remove('active');
 }
 
 // ==================== 전역 함수 노출 ====================
@@ -893,10 +865,6 @@ window.startFortune = startFortune;
 window.shareResult = shareResult;
 window.downloadFortuneShareCard = downloadFortuneShareCard;
 window.retakeFortune = retakeFortune;
-window.openServiceMenu = openServiceMenu;
-window.closeServiceMenu = closeServiceMenu;
-window.openSettings = openSettings;
-window.closeSettings = closeSettings;
 window.autoFocusNext = autoFocusNext;
 window.handleWelcomeCta = handleWelcomeCta;
 window.goToInputForm = goToInputForm;

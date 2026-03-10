@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도파민 공작소 | 프리미엄 심리 테스트 플랫폼</title>
+  <meta name="description" content="운세, 행운, 재미를 한 곳에서! 로또 번호 생성기, AI 관상 테스트, 오늘의 운세 등 다양한 서비스를 검색하고 즐겨보세요.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="도파민 공작소">
+  <meta property="og:description" content="수많은 심리 테스트와 운세를 카탈로그 형태로 만나보세요.">
+  <meta property="og:url" content="https://dopamine-factory.pages.dev/">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="/dunsmile/css/components.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+</head>
+<body class="home-page">
+
+  <div class="app-layout">
+    <!-- 1. Global Navigation Bar -->
+    <header class="global-header">
+      <nav class="global-header__nav" aria-label="Global">
+        <a href="/" class="global-header__logo" aria-label="도파민 공작소 홈으로 이동">
+          💎 도파민 공작소
+        </a>
+        <div class="hidden sm:flex items-center gap-4 text-sm font-medium text-slate-600">
+          <a href="/dunsmile/about/" class="hover:text-blue-600 transition-colors">스토리</a>
+          <button type="button" class="btn-primary px-3 py-1.5 text-xs">로그인</button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- 2. Main App Container -->
+    <div class="layout-container">
+      
+      <!-- 3. Sidebar (Categories & Filters) -->
+      <aside class="sidebar-filter" aria-label="카테고리 네비게이션">
+        <h2 class="sidebar-filter__title">카테고리 탐색</h2>
+        <ul class="sidebar-filter__list" id="categoryList">
+          <li>
+            <button type="button" class="sidebar-filter__btn sidebar-filter__btn--active" data-filter="all" aria-current="page">
+              <span class="text-lg w-6 text-center">🔥</span> 
+              <span>인기 (전체)</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-filter__btn" data-filter="fortune">
+              <span class="text-lg w-6 text-center">🔮</span> 
+              <span>운세 / 사주</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-filter__btn" data-filter="luck">
+              <span class="text-lg w-6 text-center">🍀</span> 
+              <span>행운 / 번호</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-filter__btn" data-filter="finance">
+              <span class="text-lg w-6 text-center">📈</span> 
+              <span>투자 / 마인드</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="sidebar-filter__btn" data-filter="fun">
+              <span class="text-lg w-6 text-center">🎯</span> 
+              <span>심리 / 연애</span>
+            </button>
+          </li>
+        </ul>
+        
+        <div class="mt-8">
+          <h2 class="sidebar-filter__title">컬렉션</h2>
+          <ul class="sidebar-filter__list">
+            <li>
+              <a href="#" class="sidebar-filter__btn text-xs">👀 내가 본 테스트</a>
+            </li>
+            <li>
+              <a href="#" class="sidebar-filter__btn text-xs">⭐ 즐겨찾기</a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- 4. Content Area -->
+      <main class="main-content">
+        
+        <!-- 5. Spotlight Hero (Featured Service) -->
+        <section class="hero-spotlight" aria-labelledby="spotlight-title">
+          <h2 id="spotlight-title" class="sr-only">에디터 추천 서비스</h2>
+          
+          <article class="hero-card" id="heroCardRoot">
+            <div class="relative z-10 max-w-lg">
+              <span class="hero-card__badge">Editor's Pick</span>
+              <h3 class="hero-card__title">혹시, 이번 주 당첨자는 나?</h3>
+              <p class="hero-card__desc">
+                100% 무료 로또 번호 생성기. 운세 기반으로 나만의 행운 번호를 즉시 발급받아보세요.
+              </p>
+              <div class="flex gap-3">
+                <a href="/dunsmile/hoxy-number/" class="hero-card__btn">
+                  지금 번호 생성하기 &rarr;
+                </a>
+              </div>
+            </div>
+            
+            <div class="relative z-10 hidden md:block">
+              <!-- Decorative 3D or tilt element area -->
+              <div class="w-48 h-48 bg-gradient-to-tr from-white/10 to-white/5 rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center transform rotate-6 shadow-2xl transition-transform hover:rotate-0 hover:scale-105 duration-500">
+                <span class="text-6xl origin-center">🎱</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- 6. App Directory (Grid) -->
+        <section class="service-gallery" aria-labelledby="gallery-title">
+          <header class="service-gallery__header">
+            <div>
+              <h2 id="gallery-title" class="service-gallery__title">전체 서비스 탐색</h2>
+              <p class="text-sm text-[var(--saas-text-muted)] mt-1">
+                원하는 테스트를 검색하거나 카테고리별로 모아보세요.
+              </p>
+            </div>
+            
+            <search class="search-input-wrap">
+              <form id="searchForm" role="search" onsubmit="event.preventDefault();">
+                <span class="search-icon">🔍</span>
+                <input 
+                  type="search" 
+                  id="searchInput"
+                  class="search-input" 
+                  placeholder="예: 타로, 궁합, 점보기..." 
+                  aria-label="서비스 스토어 검색" 
+                />
+              </form>
+            </search>
+          </header>
+
+          <!-- 100+ items will be rendered here via JS -->
+          <div id="serviceGridRoot" class="service-grid">
+            <!-- Skeleton/Loading state -->
+            <article class="service-card group animate-pulse">
+              <div class="w-12 h-12 bg-slate-200 rounded-xl mb-4"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-200 rounded w-full mb-1"></div>
+              <div class="h-3 bg-slate-200 rounded w-5/6 mb-4"></div>
+              <div class="service-card__footer">
+                <div class="h-4 bg-slate-200 rounded w-16"></div>
+              </div>
+            </article>
+            <article class="service-card animate-pulse delay-75">
+              <div class="w-12 h-12 bg-slate-200 rounded-xl mb-4"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-200 rounded w-full mb-1"></div>
+              <div class="h-3 bg-slate-200 rounded w-5/6 mb-4"></div>
+              <div class="service-card__footer">
+                <div class="h-4 bg-slate-200 rounded w-16"></div>
+              </div>
+            </article>
+            <article class="service-card animate-pulse delay-150">
+              <div class="w-12 h-12 bg-slate-200 rounded-xl mb-4"></div>
+              <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-200 rounded w-full mb-1"></div>
+              <div class="h-3 bg-slate-200 rounded w-5/6 mb-4"></div>
+              <div class="service-card__footer">
+                <div class="h-4 bg-slate-200 rounded w-16"></div>
+              </div>
+            </article>
+          </div>
+          
+          <div id="emptyState" class="hidden py-16 text-center">
+            <span class="text-4xl mb-4 block">🧐</span>
+            <h3 class="text-lg font-bold text-slate-900">검색 결과가 없습니다</h3>
+            <p class="text-slate-500 mt-1">다른 키워드로 검색해 보세요.</p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- 7. Global Footer -->
+    <footer class="global-footer">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+        <p class="global-footer__text">
+          &copy; 2026 Dopamine Factory. All rights reserved. 
+          <span class="mx-2">|</span> 
+          <a href="/dunsmile/privacy/" class="hover:underline">개인정보처리방침</a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- 8. Mobile Action Bar -->
+    <nav class="mobile-tab-bar" aria-label="Mobile Menu">
+      <a href="/" class="mobile-tab-btn mobile-tab-btn--active">
+        <span class="mobile-tab-btn__icon">🏠</span>
+        홈
+      </a>
+      <button type="button" class="mobile-tab-btn" onclick="document.getElementById('searchInput').focus(); window.scrollTo(0,0);">
+        <span class="mobile-tab-btn__icon">🔍</span>
+        검색
+      </button>
+      <a href="/dunsmile/about/" class="mobile-tab-btn">
+        <span class="mobile-tab-btn__icon">✨</span>
+        소개
+      </a>
+    </nav>
+  </div>
+
+  <!-- Data Logic -->
+  <script src="/js/home.data.js"></script>
+  <!-- New Vanilla JS UI logic -->
+  <script src="/js/store-ui.js"></script>
+</body>
+</html>

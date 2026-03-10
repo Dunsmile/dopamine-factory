@@ -1,0 +1,142 @@
+{
+  "pages": {
+    "daily-fortune": "efda75d7dc2e060437cddabb19bd0115f8e2baf4",
+    "rich-face": "3aaf6b6e1148ad97748a6d55ad5ba04d9e36b92a",
+    "balance-game": "b44e37eb81ae00ab3a1d52f9b4ad79aa70bf0946",
+    "name-compatibility": "22d8981cf839b9d6764e6e86aff286986022ae11",
+    "hoxy-number": "efa49a73b070eabfcc56af0f601f39e207f92270",
+    "tarot-reading": "7512f2c06331f9514b82461bdb0c1a4862b955e9",
+    "market-sentiment": "92829a841d39b768ee8d34fafc2c0011e7765129",
+    "wealth-dna-test": "7f21664a0a0e542f5f098d2eb03c1a0f712055fe"
+  },
+  "fileDigests": {
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/static-pages.json": {
+      "signature": "1771685113693.1462:4197",
+      "hash": "136a722f79d2807ae4e74510c3505de0667556c6"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/render-shell.js": {
+      "signature": "1771687888096.8496:15376",
+      "hash": "c8e7b8a777e4f7b89453816ead486a32279b5c97"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/header.html": {
+      "signature": "1771685085121.2354:2331",
+      "hash": "8a05df2b115cb52a70a3a73c1812cd8b04f5eaf1"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/sidebar.html": {
+      "signature": "1771674995142.4365:1461",
+      "hash": "e7c60ada64fea62d6d1854292547b4a1d0a70d4d"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/settings-modal.html": {
+      "signature": "1771656917461.4646:1166",
+      "hash": "229c221fbcc2852a4fcbaf464ccd538ced1e367d"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/related-card.html": {
+      "signature": "1771681614806.455:591",
+      "hash": "6e386226c9b25b8f3f3998bcaf60059f6195e275"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/related-carousel.html": {
+      "signature": "1771681614807.8728:372",
+      "hash": "eeb07bcdd39722a249f48c031711edaf60c51c67"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/data/services.manifest.json": {
+      "signature": "1771684690259.3284:7570",
+      "hash": "fa9ec4be7f10a03b8f0e9cf30b4218a23ee3f2e4"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/data/services.schema.json": {
+      "signature": "1771658639692.1155:2346",
+      "hash": "a4569631baa3be31fe1121a3fe2f0988d35e97bb"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/data/related-services.json": {
+      "signature": "1771681420412.0676:6673",
+      "hash": "991effc30a9e2e00bb0f92e332bbbd767224509e"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/daily-fortune/template.html": {
+      "signature": "1771655642933.929:5288",
+      "hash": "b71d86b6e79ce25e606ebc76d1f3202a3aef7914"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/daily-fortune/body.html": {
+      "signature": "1771684321848.1853:27510",
+      "hash": "10795973e4b40713f4cf3e11f17f984f2893b1b6"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/rich-face/template.html": {
+      "signature": "1771655643026.347:6092",
+      "hash": "e32cb021d9ccbac3da8dadb9d23c8deae9830a8f"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/rich-face/body.html": {
+      "signature": "1771684330857.5188:23846",
+      "hash": "c36e010e28fe916eaa23d881782ff5f3c3b4d1ff"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/balance-game/template.html": {
+      "signature": "1771681666014.121:2099",
+      "hash": "39bbb36755e37dbaa28c180d4348304de7f9f996"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/balance-game/content.html": {
+      "signature": "1771684294547.9114:1596",
+      "hash": "7235a201ac59aef4340f98832d5b3b635d7b39c8"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/balance-game/actions.html": {
+      "signature": "1771684291524.1836:503",
+      "hash": "a1506201d0fc6dc34779cb0a43dfc103cf2bdfca"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/name-compatibility/template.html": {
+      "signature": "1771681669895.411:2103",
+      "hash": "eb3cba8a130da8925db6ad8c64a5ce2c88f48086"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/name-compatibility/content.html": {
+      "signature": "1771684302344.449:1159",
+      "hash": "ffdbe9e810b0ef55486f2d0c1ffa099ff09e2948"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/name-compatibility/actions.html": {
+      "signature": "1771684298671.64:346",
+      "hash": "2a1767ee06c0bf0f350821a804defd79b00f0c74"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/hoxy-number/template.html": {
+      "signature": "1771656026797.9001:4657",
+      "hash": "3eb4f9b086c506d1230ee9aec0821a6b5f35cd2e"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/hoxy-number/body.html": {
+      "signature": "1771684335948.3745:36924",
+      "hash": "e7c5696775d299189da45be0d28295100ea9af1e"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/tarot-reading/template.html": {
+      "signature": "1771659591451.3247:4296",
+      "hash": "276bd8ac61b3817f04cf41cf11ec081595318b86"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/tarot-reading/body.html": {
+      "signature": "1771684327963.4758:24239",
+      "hash": "6ad3f6de72e8322677eedeb7d54f710b8c4b1cbe"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/market-sentiment/template.html": {
+      "signature": "1771688100021.6714:1665",
+      "hash": "71d60d2bef21b79ddaa60d6e56cbe57233de3784"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/market-sentiment/body.html": {
+      "signature": "1771684339127.8347:8604",
+      "hash": "87936924821e221326e77c80ea1384693fccdaac"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/ssg/partials/carousel-arrow-icon.html": {
+      "signature": "1771687849131.752:176",
+      "hash": "09b944455a165b90b04128e416e81d2fba7b0158"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/data/site-settings.json": {
+      "signature": "1771686436538.695:1708",
+      "hash": "c8f9e6ce11b3fb12ddc85f5d94ed07c308e031d0"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/data/shell-ui.json": {
+      "signature": "1771687845609.1824:2685",
+      "hash": "26ec565edfafd7eaecbb4e2704366856bfed0dd8"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/wealth-dna-test/template.html": {
+      "signature": "1771684763708.8965:2124",
+      "hash": "74f32ea8270c53bf8d62cacdd78d5c6231993712"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/wealth-dna-test/content.html": {
+      "signature": "1771685118716.1233:1664",
+      "hash": "eac92db9f3d6ada99696486a9a37d8b6e30b4a99"
+    },
+    "/Users/steve/Downloads/files/hoxy-number/fe/src/pages/dunsmile/wealth-dna-test/actions.html": {
+      "signature": "1771684306980.1443:587",
+      "hash": "a503aa5963bff146a9d19831bd9f93438892ba91"
+    }
+  }
+}

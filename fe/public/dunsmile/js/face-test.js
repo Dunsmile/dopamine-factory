@@ -1,11 +1,10 @@
 // ==================== 관상 테스트 로직 ====================
 
-const MARKET_SENTIMENT_ROUTE = '/dunsmile/market-sentiment/';
-
 // 상태 관리
 let selectedGender = null;
 let uploadedPhotoData = null;
 let testResult = null;
+const FACE_ACTIVE_CLASS = 'svc-select-active-purple';
 
 // ==================== 유명인 & 텍스트 데이터 ====================
 
@@ -246,13 +245,13 @@ function selectGender(gender) {
   const maleBtn = document.getElementById('genderMale');
   const femaleBtn = document.getElementById('genderFemale');
 
-  maleBtn.classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  femaleBtn.classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
+  maleBtn.classList.remove(FACE_ACTIVE_CLASS);
+  femaleBtn.classList.remove(FACE_ACTIVE_CLASS);
 
   if (gender === 'male') {
-    maleBtn.classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    maleBtn.classList.add(FACE_ACTIVE_CLASS);
   } else {
-    femaleBtn.classList.add('border-purple-500', 'bg-purple-50', 'text-purple-700');
+    femaleBtn.classList.add(FACE_ACTIVE_CLASS);
   }
 }
 
@@ -290,13 +289,16 @@ function handlePhotoUpload(event) {
 }
 
 function showToast(message, duration = 2000) {
+  if (window.DunsmileUI && typeof window.DunsmileUI.showToast === 'function') {
+    window.DunsmileUI.showToast(message, duration);
+    return;
+  }
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toastMessage');
-  if (toast && toastMessage) {
-    toastMessage.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), duration);
-  }
+  if (!toast || !toastMessage) return;
+  toastMessage.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), duration);
 }
 
 // ==================== 생년월일 입력 자동 포커스 ====================
@@ -508,6 +510,9 @@ function showStep(stepNumber) {
 
   // 스크롤 맨 위로
   window.scrollTo(0, 0);
+  if (stepNumber === 3 && window.DunsmileUI && typeof window.DunsmileUI.focusRelatedCarousel === 'function') {
+    window.DunsmileUI.focusRelatedCarousel({ selector: '#step3 .svc-related-section', delay: 220 });
+  }
 }
 
 // ==================== 공유 & 다시하기 ====================
@@ -575,37 +580,11 @@ function retakeTest() {
   document.getElementById('photoUpload').classList.remove('has-photo');
 
   // 성별 버튼 초기화
-  document.getElementById('genderMale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
-  document.getElementById('genderFemale').classList.remove('border-purple-500', 'bg-purple-50', 'text-purple-700');
+  document.getElementById('genderMale').classList.remove(FACE_ACTIVE_CLASS);
+  document.getElementById('genderFemale').classList.remove(FACE_ACTIVE_CLASS);
 
   // Step 1로 이동
   showStep(1);
-}
-
-// ==================== 서비스 메뉴 ====================
-
-function openServiceMenu() {
-  const backdrop = document.getElementById('serviceMenuBackdrop');
-  const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) { backdrop.classList.add('open'); sidebar.classList.add('open'); }
-}
-
-function closeServiceMenu() {
-  const backdrop = document.getElementById('serviceMenuBackdrop');
-  const sidebar = document.getElementById('serviceMenuSidebar');
-  if (backdrop && sidebar) { backdrop.classList.remove('open'); sidebar.classList.remove('open'); }
-}
-
-// ==================== 설정 ====================
-
-function openSettings() {
-  const modalEl = document.getElementById('settingsModal');
-  if (modalEl) modalEl.classList.add('active');
-}
-
-function closeSettings() {
-  const modalEl = document.getElementById('settingsModal');
-  if (modalEl) modalEl.classList.remove('active');
 }
 
 // ==================== 전역 함수 노출 ====================
@@ -616,8 +595,4 @@ window.startAnalysis = startAnalysis;
 window.shareResult = shareResult;
 window.downloadFaceShareCard = downloadFaceShareCard;
 window.retakeTest = retakeTest;
-window.openServiceMenu = openServiceMenu;
-window.closeServiceMenu = closeServiceMenu;
-window.openSettings = openSettings;
-window.closeSettings = closeSettings;
 window.autoFocusNext = autoFocusNext;

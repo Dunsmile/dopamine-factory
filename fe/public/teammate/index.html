@@ -3,16 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>새로운 서비스 준비 중 | 도파민 공작소</title>
+  <title>운영 패널 | 도파민 공작소</title>
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/assets/css/tailwind-built.css">
+  <link rel="stylesheet" href="/teammate/teammate.css">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
-  <div class="text-center px-4">
-    <p class="text-6xl mb-4">🚀</p>
-    <h1 class="text-2xl font-bold text-gray-800 mb-2">새로운 서비스 준비 중</h1>
-    <p class="text-gray-500 mb-6">곧 새로운 도파민이 찾아옵니다!</p>
-    <a href="/" class="text-purple-600 hover:text-purple-800 font-semibold">&larr; 도파민 공작소로 돌아가기</a>
+<body class="tm-page">
+  <div class="tm-shell">
+    <header class="tm-header">
+      <p class="tm-kicker">DOPAMINE FACTORY OPS</p>
+      <h1 class="tm-title">홈 레퍼런스/배너 운영 패널</h1>
+      <p class="tm-subtitle">선택 후 명령어를 복사해서 터미널에서 실행하세요.</p>
+    </header>
+
+    <main class="tm-main">
+      <section class="tm-card">
+        <h2 class="tm-card-title">홈 레퍼런스 설정</h2>
+        <div class="tm-grid-2">
+          <label class="tm-field">
+            <span>레퍼런스 프리셋</span>
+            <select id="homeReference">
+              <option value="testmoa">testmoa</option>
+              <option value="poomang">poomang</option>
+              <option value="banggooso">banggooso</option>
+            </select>
+          </label>
+          <label class="tm-field">
+            <span>배너 모드</span>
+            <select id="homeBannerMode">
+              <option value="auto">auto</option>
+              <option value="manual">manual</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="tm-card">
+        <h2 class="tm-card-title">배너 문구/서비스 선택</h2>
+        <div class="tm-grid-2">
+          <label class="tm-field">
+            <span>배지 문구</span>
+            <input id="homeBannerBadge" type="text" placeholder="추천테스트" />
+          </label>
+          <label class="tm-field">
+            <span>CTA 문구</span>
+            <input id="homeBannerCta" type="text" placeholder="테스트시작" />
+          </label>
+          <label class="tm-field">
+            <span>배너 1 서비스</span>
+            <select id="homeBanner1Service"></select>
+          </label>
+          <label class="tm-field">
+            <span>배너 2 서비스</span>
+            <select id="homeBanner2Service"></select>
+          </label>
+        </div>
+      </section>
+
+      <section class="tm-card">
+        <h2 class="tm-card-title">서비스 셸 스킨 운영</h2>
+        <div class="tm-grid-2">
+          <label class="tm-field">
+            <span>기본 셸 스킨</span>
+            <select id="serviceShellDefaultSkin">
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+          <label class="tm-field">
+            <span>전체 서비스 일괄 스킨 (선택 시 override 정리)</span>
+            <select id="allServiceSkin">
+              <option value="">사용 안함</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="tm-card">
+        <h2 class="tm-card-title">실행 명령</h2>
+        <textarea id="commandPreview" class="tm-command" readonly></textarea>
+        <div class="tm-actions">
+          <button id="copyCommandBtn" type="button" class="tm-btn tm-btn-primary">명령 복사</button>
+          <button id="copyBuildBtn" type="button" class="tm-btn">빌드 명령 복사</button>
+          <a href="/" class="tm-link">홈으로 이동</a>
+        </div>
+        <p id="statusText" class="tm-status"></p>
+      </section>
+    </main>
   </div>
+
+  <script src="/teammate/teammate.js"></script>
 </body>
 </html>

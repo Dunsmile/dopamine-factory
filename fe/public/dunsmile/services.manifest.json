@@ -1,0 +1,278 @@
+{
+  "$schema": "/dunsmile/services.schema.json",
+  "version": "1.0.0",
+  "updatedAt": "2026-02-21",
+  "services": [
+    {
+      "id": "balance-game",
+      "name": "밸런스",
+      "fullName": "오늘의 밸런스 게임",
+      "emoji": "⚖️",
+      "desc": "두 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요",
+      "category": "fun",
+      "status": "active",
+      "route": "/dunsmile/balance-game/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/balance-game/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image.png",
+      "tags": [
+        "플레이",
+        "밸런스"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 4,
+      "trendingScore": 96,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "daily-fortune",
+      "name": "운세",
+      "fullName": "오늘의 운세",
+      "emoji": "🔮",
+      "desc": "별자리, 띠, 사주로 보는 오늘의 종합 운세",
+      "category": "fortune",
+      "status": "active",
+      "route": "/dunsmile/daily-fortune/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/daily-fortune/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image-daily-fortune.svg",
+      "tags": [
+        "운세",
+        "오늘운세"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 3,
+      "trendingScore": 97,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "dopamine-lab",
+      "name": "실험실",
+      "fullName": "도파민 랩 프리뷰",
+      "emoji": "🧪",
+      "desc": "신규 실험형 서비스를 가장 먼저 만나보는 프리뷰 라운지",
+      "category": "experimental",
+      "status": "active",
+      "route": "/dunsmile/about/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/about/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image.svg",
+      "tags": [
+        "플레이",
+        "프리뷰"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 8,
+      "trendingScore": 92,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "hoxy-number",
+      "name": "HOXY",
+      "fullName": "HOXY NUMBER",
+      "emoji": "🎱",
+      "desc": "무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지",
+      "category": "luck",
+      "status": "active",
+      "route": "/dunsmile/hoxy-number/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/hoxy-number/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image-v2.png",
+      "tags": [
+        "유틸",
+        "랜덤번호"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 1,
+      "trendingScore": 99,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "market-sentiment",
+      "name": "시장감성",
+      "fullName": "시장 감성 레이더",
+      "emoji": "📈",
+      "desc": "펨코·디씨 게시글 기반 주식/코인 커뮤니티 감성 분석",
+      "category": "finance",
+      "status": "active",
+      "route": "/dunsmile/market-sentiment/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/market-sentiment/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image.svg",
+      "tags": [
+        "데이터",
+        "시장감성"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 6,
+      "trendingScore": 94,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "name-compatibility",
+      "name": "이름궁합",
+      "fullName": "이름 궁합 테스트",
+      "emoji": "💞",
+      "desc": "두 이름을 입력하면 케미 점수와 궁합 키워드를 확인할 수 있어요",
+      "category": "fortune",
+      "status": "active",
+      "route": "/dunsmile/name-compatibility/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/name-compatibility/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image.png",
+      "tags": [
+        "운세",
+        "이름궁합"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 5,
+      "trendingScore": 95,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "rich-face",
+      "name": "부자상?",
+      "fullName": "부자가 될 상인가?",
+      "emoji": "👤",
+      "desc": "AI 관상 분석으로 알아보는 나의 부자 확률",
+      "category": "fortune",
+      "status": "active",
+      "route": "/dunsmile/rich-face/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/rich-face/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image-face-test.svg",
+      "tags": [
+        "운세",
+        "AI관상"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 2,
+      "trendingScore": 98,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "tarot-reading",
+      "name": "타로",
+      "fullName": "ONE DAY MY CARD",
+      "emoji": "🃏",
+      "desc": "78장 타로 카드가 전하는 오늘의 메시지, 무료 타로 리딩",
+      "category": "fortune",
+      "status": "active",
+      "route": "/dunsmile/tarot-reading/",
+      "homeVisible": true,
+      "shellEnabled": false,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/tarot-reading/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image-tarot-reading.svg",
+      "tags": [
+        "운세",
+        "타로"
+      ],
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 3,
+      "questionCount": 10,
+      "featuredRank": 7,
+      "trendingScore": 93,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      }
+    },
+    {
+      "id": "wealth-dna-test",
+      "name": "부자 DNA 테스트",
+      "fullName": "부자 DNA 테스트",
+      "emoji": "💰",
+      "desc": "8개 질문으로 내 부자 DNA 타입과 자산 성장 잠재력을 3분 안에 확인해보세요.",
+      "category": "fun",
+      "status": "beta",
+      "route": "/dunsmile/wealth-dna-test/",
+      "homeVisible": true,
+      "shellEnabled": true,
+      "module": {
+        "type": "legacy-page",
+        "entry": "/dunsmile/wealth-dna-test/index.html"
+      },
+      "ogImage": "/dunsmile/assets/og-image.png",
+      "updatedAt": "2026-02-21",
+      "estimatedDuration": 4,
+      "questionCount": 8,
+      "featuredRank": 9,
+      "trendingScore": 0,
+      "socialProof": {
+        "views": 0,
+        "likes": 0
+      },
+      "tags": [
+        "mbti",
+        "심리테스트",
+        "자산성향"
+      ]
+    }
+  ]
+}

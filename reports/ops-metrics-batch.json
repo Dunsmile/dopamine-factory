@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-02-21T08:53:44.538Z",
+  "phaseB": {
+    "services": [
+      {
+        "serviceId": "daily-fortune",
+        "baseline": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        },
+        "current": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        }
+      },
+      {
+        "serviceId": "tarot-reading",
+        "baseline": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        },
+        "current": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        }
+      },
+      {
+        "serviceId": "balance-game",
+        "baseline": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        },
+        "current": {
+          "cardClick": 0,
+          "start": 0,
+          "complete": 0
+        }
+      }
+    ]
+  },
+  "phaseD": {
+    "leadTimeMinutesP50": null,
+    "buildDeployFailureRatePercent": null,
+    "monthlyReleaseCount": null
+  },
+  "astroPilotExecution": {
+    "executed": false,
+    "serviceId": "",
+    "routePath": "",
+    "deployedAt": ""
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dunsmile Reusable Layout Slots",
+  "type": "object",
+  "required": ["layout", "slots"],
+  "properties": {
+    "layout": {
+      "type": "string",
+      "enum": ["fortune", "tarot", "face"]
+    },
+    "slots": {
+      "type": "object",
+      "required": ["hero", "input", "result"],
+      "properties": {
+        "hero": {
+          "type": "object",
+          "required": ["title", "subtitle"],
+          "properties": {
+            "title": { "type": "string" },
+            "subtitle": { "type": "string" }
+          }
+        },
+        "input": {
+          "type": "object",
+          "required": ["fields"],
+          "properties": {
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "label", "type"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "label": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "result": {
+          "type": "object",
+          "required": ["summary"],
+          "properties": {
+            "summary": { "type": "string" },
+            "panels": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
