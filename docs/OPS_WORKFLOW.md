@@ -12,7 +12,7 @@ python3 -m http.server 8080 --directory fe/public
 npm run measure:kpi
 ```
 
-Output: `reports/kpi-baseline.json`, `reports/kpi-baseline.md`
+Output: `docs/reports/kpi-baseline.json`, `docs/reports/kpi-baseline.md`
 
 목표:
 - Mobile LCP < 2500ms
@@ -58,7 +58,7 @@ npm run report:cadence
 - `0`: WARN (릴리즈 부족)
 - `3+`: WARN_OVER (QA 리스크 점검 필요)
 
-Output: `reports/release-cadence-report.json`
+Output: `docs/reports/release-cadence-report.json`
 
 ---
 
@@ -86,7 +86,7 @@ npm run report:ops-trend
 
 # 배치 입력
 npm run init:ops-batch
-# reports/ops-metrics-batch.json 입력 후
+# docs/reports/ops-metrics-batch.json 입력 후
 npm run apply:ops-batch
 
 # 테스트

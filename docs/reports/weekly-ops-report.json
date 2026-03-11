@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.466Z",
+  "totals": {
+    "services": 9,
+    "status": {
+      "active": 8,
+      "beta": 1
+    },
+    "category": {
+      "fun": 2,
+      "fortune": 4,
+      "experimental": 1,
+      "luck": 1,
+      "finance": 1
+    }
+  },
+  "freshness": {
+    "recentlyUpdated": [],
+    "staleServices": []
+  },
+  "kpi": {
+    "passCount": 7,
+    "total": 7,
+    "avgLcp": 154,
+    "avgCls": 0
+  },
+  "cadence": {
+    "status": "WARN",
+    "countLast7Days": 0,
+    "recommendation": "No new service released this week. Target at least 1."
+  },
+  "astroGate": {
+    "decision": "GO",
+    "reason": "All gate conditions passed."
+  },
+  "phaseBKpi": {
+    "decision": "PASS",
+    "passCount": 3,
+    "totalGoals": 3,
+    "avgCtrDeltaPercent": 16.8,
+    "avgStartDeltaPercent": 14.9,
+    "avgCompletionRateDeltaPercent": 6.8
+  },
+  "phaseDOps": {
+    "decision": "PENDING",
+    "passCount": 3,
+    "totalGoals": 4,
+    "leadTimeMinutesP50": 15,
+    "buildDeployFailureRatePercent": 0,
+    "monthlyReleaseCount": 8
+  }
+}

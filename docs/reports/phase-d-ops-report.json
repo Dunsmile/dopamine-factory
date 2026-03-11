@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.210Z",
+  "goals": {
+    "weeklyCadenceHealthy": false,
+    "leadTimeUnder15m": true,
+    "failureRateZero": true,
+    "monthlyRelease8plus": true
+  },
+  "source": {
+    "cadenceStatus": "WARN",
+    "cadenceCountLast7Days": 0,
+    "leadTimeMinutesP50": 15,
+    "buildDeployFailureRatePercent": 0,
+    "monthlyReleaseCount": 8
+  },
+  "summary": {
+    "passCount": 3,
+    "totalGoals": 4
+  },
+  "decision": "PENDING"
+}

@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const LOG_PATH = path.join(ROOT, 'reports', 'release-log.json');
-const OUT_PATH = path.join(ROOT, 'reports', 'release-cadence-report.json');
+const LOG_PATH = path.join(ROOT, 'docs', 'reports', 'release-log.json');
+const OUT_PATH = path.join(ROOT, 'docs', 'reports', 'release-cadence-report.json');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

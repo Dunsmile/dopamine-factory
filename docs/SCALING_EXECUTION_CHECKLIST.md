@@ -4,7 +4,7 @@
 
 자동 집계 리포트:
 - `npm run report:checklist`
-- 출력: `reports/scaling-checklist-status.json`, `reports/scaling-checklist-status.md`
+- 출력: `docs/reports/scaling-checklist-status.json`, `docs/reports/scaling-checklist-status.md`
 
 ## Baseline (Completed)
 
@@ -23,9 +23,9 @@
 - [x] 핵심 CTA 애니메이션만 제한 적용 (공유/다음)
 
 완료 기준(수치):
-- [x] 모바일 LCP < 2.5s (`reports/kpi-baseline.md`)
-- [x] CLS < 0.1 (`reports/kpi-baseline.md`)
-- [x] 콘솔 오류 0건 (블로킹 기준, `reports/kpi-baseline.md`)
+- [x] 모바일 LCP < 2.5s (`docs/reports/kpi-baseline.md`)
+- [x] CLS < 0.1 (`docs/reports/kpi-baseline.md`)
+- [x] 콘솔 오류 0건 (블로킹 기준, `docs/reports/kpi-baseline.md`)
 
 ## Phase B (다음 주) - 파일럿 이관/레거시 정리
 

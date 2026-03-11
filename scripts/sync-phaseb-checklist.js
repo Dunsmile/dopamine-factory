@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECKLIST_PATH = path.join(ROOT, 'docs', 'SCALING_EXECUTION_CHECKLIST.md');
-const PHASEB_REPORT_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-report.json');
+const PHASEB_REPORT_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.json');
 
 function fail(message) {
   console.error(`[phaseb-sync] ${message}`);

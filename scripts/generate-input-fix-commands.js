@@ -4,10 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_HEALTH_PATH = path.join(ROOT, 'reports', 'ops-input-health.json');
-const TARGET_METRICS_PATH = path.join(ROOT, 'reports', 'target-metrics.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'input-fix-commands.json');
-const OUT_MD = path.join(ROOT, 'reports', 'input-fix-commands.md');
+const INPUT_HEALTH_PATH = path.join(ROOT, 'docs', 'reports', 'ops-input-health.json');
+const TARGET_METRICS_PATH = path.join(ROOT, 'docs', 'reports', 'target-metrics.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'input-fix-commands.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'input-fix-commands.md');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-03-11T00:58:13.615Z",
+  "status": {
+    "readiness": "PENDING",
+    "checklistCompletion": 98.1,
+    "checklistPending": 1,
+    "inputHealth": "PASS",
+    "trendDelta": -1.9
+  },
+  "topActions": [
+    {
+      "id": "A-1",
+      "section": "Phase D (4주차+) - 대량 생산 체제",
+      "item": "주당 1~2개 신규 서비스 배포 루틴 정착",
+      "owner": "TBD",
+      "input": "docs/SCALING_EXECUTION_CHECKLIST.md",
+      "run": "npm run ops:sync",
+      "doneWhen": "checkbox becomes checked by policy decision"
+    }
+  ],
+  "blockers": [
+    "Phase D ops goals are not fully passed.",
+    "Checklist has pending items: 1."
+  ]
+}

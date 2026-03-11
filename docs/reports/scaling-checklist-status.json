@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.594Z",
+  "totals": {
+    "total": 53,
+    "completed": 52,
+    "pending": 1,
+    "completionRate": 98.1
+  },
+  "bySection": {
+    "Baseline (Completed)": {
+      "total": 5,
+      "completed": 5,
+      "pending": 0
+    },
+    "Phase A (이번 주) - 디자인 시스템/안전 가드": {
+      "total": 8,
+      "completed": 8,
+      "pending": 0
+    },
+    "Phase B (다음 주) - 파일럿 이관/레거시 정리": {
+      "total": 11,
+      "completed": 11,
+      "pending": 0
+    },
+    "Phase C (3주차) - 분기점 판단": {
+      "total": 10,
+      "completed": 10,
+      "pending": 0
+    },
+    "Phase D (4주차+) - 대량 생산 체제": {
+      "total": 7,
+      "completed": 6,
+      "pending": 1
+    },
+    "Governance": {
+      "total": 3,
+      "completed": 3,
+      "pending": 0
+    },
+    "Home V3 Cleanup (2026-02-27)": {
+      "total": 9,
+      "completed": 9,
+      "pending": 0
+    }
+  },
+  "pendingItems": [
+    {
+      "section": "Phase D (4주차+) - 대량 생산 체제",
+      "checked": false,
+      "text": "주당 1~2개 신규 서비스 배포 루틴 정착"
+    }
+  ]
+}

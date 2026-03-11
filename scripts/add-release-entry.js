@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const LOG_PATH = path.join(ROOT, 'reports', 'release-log.json');
+const LOG_PATH = path.join(ROOT, 'docs', 'reports', 'release-log.json');
 
 function fail(message) {
   console.error(`[release:add] ${message}`);

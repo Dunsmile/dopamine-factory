@@ -16,6 +16,7 @@
 
 ```text
 dopamin/
+├── .github/                 (CI / workflow)
 ├── be/                      (백엔드 코드/인프라)
 ├── fe/
 │   ├── README.md
@@ -26,11 +27,13 @@ dopamin/
 │       ├── teammate/        (팀원 서비스 - 준비 중)
 │       └── assets/          (공용 리소스)
 ├── docs/
-│   └── GIT_WORKFLOW.md
+│   ├── GIT_WORKFLOW.md
+│   └── reports/             (운영 리포트 / 체크리스트 산출물)
+├── scripts/                 (빌드 / 운영 / 자동화 스크립트)
+├── skills/                  (저장소 내 공용 에이전트 스킬)
 ├── tests/
 │   └── structure.test.sh
-└── .github/workflows/
-    └── ci.yml
+└── package.json             (공용 스크립트 진입점)
 ```
 
 ## 서비스 경로 (운영 URL)

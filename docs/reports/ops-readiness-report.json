@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.847Z",
+  "status": "PENDING",
+  "summary": {
+    "checklistCompletionRate": 98.1,
+    "checklistPending": 1,
+    "phaseBDecision": "PASS",
+    "phaseDDecision": "PENDING",
+    "astroDecision": "GO",
+    "opsInputHealth": "PASS"
+  },
+  "blockers": [
+    "Phase D ops goals are not fully passed.",
+    "Checklist has pending items: 1."
+  ]
+}

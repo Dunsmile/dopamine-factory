@@ -56,4 +56,4 @@
 - [x] `npm run report:checklist`
 - [x] `npm run test:build`
 - [x] `npm run ops:doctor`
-- [x] 결과를 `reports/` 기준으로 기록/공유
+- [x] 결과를 `docs/reports/` 기준으로 기록/공유

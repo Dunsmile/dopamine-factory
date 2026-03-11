@@ -4,11 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const CHECKLIST_PATH = path.join(ROOT, 'reports', 'scaling-checklist-status.json');
-const READINESS_PATH = path.join(ROOT, 'reports', 'ops-readiness-report.json');
-const PHASEB_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-report.json');
-const PHASED_PATH = path.join(ROOT, 'reports', 'phase-d-ops-report.json');
-const HISTORY_PATH = path.join(ROOT, 'reports', 'ops-history.json');
+const CHECKLIST_PATH = path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.json');
+const READINESS_PATH = path.join(ROOT, 'docs', 'reports', 'ops-readiness-report.json');
+const PHASEB_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.json');
+const PHASED_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.json');
+const HISTORY_PATH = path.join(ROOT, 'docs', 'reports', 'ops-history.json');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

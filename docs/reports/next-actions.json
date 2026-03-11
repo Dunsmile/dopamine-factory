@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.722Z",
+  "pendingCount": 1,
+  "actions": [
+    {
+      "id": "A-1",
+      "section": "Phase D (4주차+) - 대량 생산 체제",
+      "item": "주당 1~2개 신규 서비스 배포 루틴 정착",
+      "owner": "TBD",
+      "input": "docs/SCALING_EXECUTION_CHECKLIST.md",
+      "run": "npm run ops:sync",
+      "doneWhen": "checkbox becomes checked by policy decision"
+    }
+  ]
+}

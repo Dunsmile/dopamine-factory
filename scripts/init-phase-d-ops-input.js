@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT_PATH = path.join(ROOT, 'reports', 'phase-d-ops-input.json');
+const OUT_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-input.json');
 
 const template = {
   generatedAt: new Date().toISOString(),

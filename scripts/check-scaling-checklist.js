@@ -5,8 +5,8 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECKLIST_PATH = path.join(ROOT, 'docs', 'SCALING_EXECUTION_CHECKLIST.md');
-const OUT_JSON = path.join(ROOT, 'reports', 'scaling-checklist-status.json');
-const OUT_MD = path.join(ROOT, 'reports', 'scaling-checklist-status.md');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.md');
 
 function parseChecklist(markdown) {
   const lines = markdown.split('\n');

@@ -4,8 +4,8 @@
 
 ## Input
 
-- `reports/kpi-baseline.json`
-- `reports/astro-pilot-input.json` (수동 입력)
+- `docs/reports/kpi-baseline.json`
+- `docs/reports/astro-pilot-input.json` (수동 입력)
 
 초기 파일 생성:
 
@@ -27,7 +27,7 @@
 
 ## Output
 
-- `reports/astro-go-no-go.json`
+- `docs/reports/astro-go-no-go.json`
 
 ## Go Conditions
 

@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-03-11T00:58:12.976Z",
+  "phaseBTargets": [
+    {
+      "serviceId": "daily-fortune",
+      "baseline": {
+        "cardClick": 1000,
+        "start": 700,
+        "complete": 315,
+        "completionRate": 45
+      },
+      "targetMinimum": {
+        "cardClick": 1100,
+        "start": 771,
+        "complete": 386,
+        "completionRate": 50
+      }
+    },
+    {
+      "serviceId": "tarot-reading",
+      "baseline": {
+        "cardClick": 900,
+        "start": 620,
+        "complete": 279,
+        "completionRate": 45
+      },
+      "targetMinimum": {
+        "cardClick": 991,
+        "start": 682,
+        "complete": 341,
+        "completionRate": 50
+      }
+    },
+    {
+      "serviceId": "balance-game",
+      "baseline": {
+        "cardClick": 1100,
+        "start": 760,
+        "complete": 334,
+        "completionRate": 43.9
+      },
+      "targetMinimum": {
+        "cardClick": 1210,
+        "start": 837,
+        "complete": 410,
+        "completionRate": 48.9
+      }
+    }
+  ],
+  "phaseDTargets": {
+    "leadTimeMinutesP50": 15,
+    "buildDeployFailureRatePercent": 0,
+    "monthlyReleaseCount": 8,
+    "current": {
+      "leadTimeMinutesP50": 15,
+      "buildDeployFailureRatePercent": 0,
+      "monthlyReleaseCount": 8
+    }
+  }
+}

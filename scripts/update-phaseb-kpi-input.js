@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-input.json');
+const INPUT_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-input.json');
 
 function fail(message) {
   console.error(`[phaseb-input:update] ${message}`);

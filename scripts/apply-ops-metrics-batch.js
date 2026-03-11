@@ -5,10 +5,10 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const BATCH_PATH = path.join(ROOT, 'reports', 'ops-metrics-batch.json');
-const PHASEB_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-input.json');
-const PHASED_PATH = path.join(ROOT, 'reports', 'phase-d-ops-input.json');
-const ASTRO_EXEC_PATH = path.join(ROOT, 'reports', 'astro-pilot-execution.json');
+const BATCH_PATH = path.join(ROOT, 'docs', 'reports', 'ops-metrics-batch.json');
+const PHASEB_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-input.json');
+const PHASED_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-input.json');
+const ASTRO_EXEC_PATH = path.join(ROOT, 'docs', 'reports', 'astro-pilot-execution.json');
 
 function fail(message) {
   console.error(`[ops-metrics-batch] ${message}`);

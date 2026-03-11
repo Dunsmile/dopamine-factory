@@ -4,10 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_PATH = path.join(ROOT, 'reports', 'phase-d-ops-input.json');
-const CADENCE_PATH = path.join(ROOT, 'reports', 'release-cadence-report.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'phase-d-ops-report.json');
-const OUT_MD = path.join(ROOT, 'reports', 'phase-d-ops-report.md');
+const INPUT_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-input.json');
+const CADENCE_PATH = path.join(ROOT, 'docs', 'reports', 'release-cadence-report.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.md');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

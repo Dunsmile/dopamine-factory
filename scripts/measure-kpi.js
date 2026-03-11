@@ -5,7 +5,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const ROOT = path.resolve(__dirname, '..');
-const REPORT_DIR = path.join(ROOT, 'reports');
+const REPORT_DIR = path.join(ROOT, 'docs', 'reports');
 const BASE_URL = process.env.KPI_BASE_URL || 'http://127.0.0.1:8080';
 
 const SERVICES = [

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_PATH = path.join(ROOT, 'reports', 'astro-pilot-execution.json');
+const INPUT_PATH = path.join(ROOT, 'docs', 'reports', 'astro-pilot-execution.json');
 
 function fail(message) {
   console.error(`[astro-pilot:update] ${message}`);

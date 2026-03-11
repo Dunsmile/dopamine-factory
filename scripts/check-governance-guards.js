@@ -7,7 +7,7 @@ const ROOT = path.resolve(__dirname, '..');
 const PR_TEMPLATE_PATH = path.join(ROOT, '.github', 'pull_request_template.md');
 const DESIGN_LOG_PATH = path.join(ROOT, 'docs', 'DESIGN_CHANGE_LOG.md');
 const ADSENSE_ROLLBACK_LOG_PATH = path.join(ROOT, 'docs', 'ADSENSE_INCIDENT_ROLLBACK_LOG.md');
-const OUT_PATH = path.join(ROOT, 'reports', 'governance-guards-report.json');
+const OUT_PATH = path.join(ROOT, 'docs', 'reports', 'governance-guards-report.json');
 
 function read(filePath) {
   if (!fs.existsSync(filePath)) {

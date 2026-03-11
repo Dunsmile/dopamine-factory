@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const KPI_PATH = path.join(ROOT, 'reports', 'kpi-baseline.json');
-const INPUT_PATH = path.join(ROOT, 'reports', 'astro-pilot-input.json');
-const OUT_PATH = path.join(ROOT, 'reports', 'astro-go-no-go.json');
+const KPI_PATH = path.join(ROOT, 'docs', 'reports', 'kpi-baseline.json');
+const INPUT_PATH = path.join(ROOT, 'docs', 'reports', 'astro-pilot-input.json');
+const OUT_PATH = path.join(ROOT, 'docs', 'reports', 'astro-go-no-go.json');
 
 function readJson(filePath) {
   if (!fs.existsSync(filePath)) return null;

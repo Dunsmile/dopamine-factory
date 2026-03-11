@@ -5,11 +5,11 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const FILES = {
-  checklist: path.join(ROOT, 'reports', 'scaling-checklist-status.json'),
-  readiness: path.join(ROOT, 'reports', 'ops-readiness-report.json'),
-  inputHealth: path.join(ROOT, 'reports', 'ops-input-health.json'),
-  nextActions: path.join(ROOT, 'reports', 'next-actions.json'),
-  dashboard: path.join(ROOT, 'reports', 'ops-dashboard.json'),
+  checklist: path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.json'),
+  readiness: path.join(ROOT, 'docs', 'reports', 'ops-readiness-report.json'),
+  inputHealth: path.join(ROOT, 'docs', 'reports', 'ops-input-health.json'),
+  nextActions: path.join(ROOT, 'docs', 'reports', 'next-actions.json'),
+  dashboard: path.join(ROOT, 'docs', 'reports', 'ops-dashboard.json'),
 };
 
 function parseArgs(argv) {

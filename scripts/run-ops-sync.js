@@ -44,7 +44,7 @@ function main() {
   run('npm', ['run', 'report:ops-trend']);
   run('npm', ['run', 'report:ops-dashboard']);
 
-  console.log('[ops-sync] all reports/checklist sync completed');
+  console.log('[ops-sync] all docs/reports/checklist sync completed');
 }
 
 main();

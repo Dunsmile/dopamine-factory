@@ -5,13 +5,13 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'fe', 'src', 'data', 'services.manifest.json');
-const KPI_PATH = path.join(ROOT, 'reports', 'kpi-baseline.json');
-const CADENCE_PATH = path.join(ROOT, 'reports', 'release-cadence-report.json');
-const ASTRO_GATE_PATH = path.join(ROOT, 'reports', 'astro-go-no-go.json');
-const PHASEB_KPI_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-report.json');
-const PHASED_OPS_PATH = path.join(ROOT, 'reports', 'phase-d-ops-report.json');
-const OUT_MD = path.join(ROOT, 'reports', 'weekly-ops-report.md');
-const OUT_JSON = path.join(ROOT, 'reports', 'weekly-ops-report.json');
+const KPI_PATH = path.join(ROOT, 'docs', 'reports', 'kpi-baseline.json');
+const CADENCE_PATH = path.join(ROOT, 'docs', 'reports', 'release-cadence-report.json');
+const ASTRO_GATE_PATH = path.join(ROOT, 'docs', 'reports', 'astro-go-no-go.json');
+const PHASEB_KPI_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.json');
+const PHASED_OPS_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'weekly-ops-report.md');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'weekly-ops-report.json');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

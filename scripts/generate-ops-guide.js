@@ -4,11 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_HEALTH_PATH = path.join(ROOT, 'reports', 'ops-input-health.json');
-const NEXT_ACTIONS_PATH = path.join(ROOT, 'reports', 'next-actions.json');
-const TARGET_METRICS_PATH = path.join(ROOT, 'reports', 'target-metrics.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'ops-guide.json');
-const OUT_MD = path.join(ROOT, 'reports', 'ops-guide.md');
+const INPUT_HEALTH_PATH = path.join(ROOT, 'docs', 'reports', 'ops-input-health.json');
+const NEXT_ACTIONS_PATH = path.join(ROOT, 'docs', 'reports', 'next-actions.json');
+const TARGET_METRICS_PATH = path.join(ROOT, 'docs', 'reports', 'target-metrics.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'ops-guide.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'ops-guide.md');
 
 function readJson(filePath) {
   if (!fs.existsSync(filePath)) return null;

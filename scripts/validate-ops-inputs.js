@@ -4,12 +4,12 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const PHASEB_INPUT = path.join(ROOT, 'reports', 'phaseb-kpi-input.json');
-const PHASED_INPUT = path.join(ROOT, 'reports', 'phase-d-ops-input.json');
-const ASTRO_EXEC_INPUT = path.join(ROOT, 'reports', 'astro-pilot-execution.json');
-const ASTRO_INPUT = path.join(ROOT, 'reports', 'astro-pilot-input.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'ops-input-health.json');
-const OUT_MD = path.join(ROOT, 'reports', 'ops-input-health.md');
+const PHASEB_INPUT = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-input.json');
+const PHASED_INPUT = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-input.json');
+const ASTRO_EXEC_INPUT = path.join(ROOT, 'docs', 'reports', 'astro-pilot-execution.json');
+const ASTRO_INPUT = path.join(ROOT, 'docs', 'reports', 'astro-pilot-input.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'ops-input-health.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'ops-input-health.md');
 
 function readJson(filePath) {
   if (!fs.existsSync(filePath)) return null;

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-input.json');
+const OUT_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-input.json');
 
 const template = {
   generatedAt: new Date().toISOString(),

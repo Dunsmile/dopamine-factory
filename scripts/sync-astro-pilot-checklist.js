@@ -5,8 +5,8 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECKLIST_PATH = path.join(ROOT, 'docs', 'SCALING_EXECUTION_CHECKLIST.md');
-const ASTRO_GATE_PATH = path.join(ROOT, 'reports', 'astro-go-no-go.json');
-const PILOT_PATH = path.join(ROOT, 'reports', 'astro-pilot-execution.json');
+const ASTRO_GATE_PATH = path.join(ROOT, 'docs', 'reports', 'astro-go-no-go.json');
+const PILOT_PATH = path.join(ROOT, 'docs', 'reports', 'astro-pilot-execution.json');
 
 function fail(message) {
   console.error(`[astro-pilot-sync] ${message}`);

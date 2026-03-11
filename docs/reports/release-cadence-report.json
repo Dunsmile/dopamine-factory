@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-03-11T00:58:10.931Z",
+  "rule": "new_service done count in last 7 days should be 1~2",
+  "countLast7Days": 0,
+  "status": "WARN",
+  "recentEntries": [],
+  "recommendation": "No new service released this week. Target at least 1."
+}

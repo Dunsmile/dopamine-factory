@@ -1,0 +1,141 @@
+{
+  "generatedAt": "2026-03-11T00:58:13.489Z",
+  "sampleCount": 10,
+  "latest": {
+    "ts": "2026-03-11T00:58:13.361Z",
+    "checklist": {
+      "completionRate": 98.1,
+      "completed": 52,
+      "total": 53,
+      "pending": 1
+    },
+    "readiness": "PENDING",
+    "phaseB": "PASS",
+    "phaseD": "PENDING"
+  },
+  "deltaFromPrev": {
+    "completionRate": -1.9
+  },
+  "recent": [
+    {
+      "ts": "2026-02-21T09:19:54.231Z",
+      "checklist": {
+        "completionRate": 86.4,
+        "completed": 38,
+        "total": 44,
+        "pending": 6
+      },
+      "readiness": "PENDING",
+      "phaseB": "PENDING",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:21:31.691Z",
+      "checklist": {
+        "completionRate": 86.4,
+        "completed": 38,
+        "total": 44,
+        "pending": 6
+      },
+      "readiness": "PENDING",
+      "phaseB": "PENDING",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:23:21.415Z",
+      "checklist": {
+        "completionRate": 86.4,
+        "completed": 38,
+        "total": 44,
+        "pending": 6
+      },
+      "readiness": "PENDING",
+      "phaseB": "PENDING",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:25:54.992Z",
+      "checklist": {
+        "completionRate": 86.4,
+        "completed": 38,
+        "total": 44,
+        "pending": 6
+      },
+      "readiness": "PENDING",
+      "phaseB": "PENDING",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:25:55.045Z",
+      "checklist": {
+        "completionRate": 86.4,
+        "completed": 38,
+        "total": 44,
+        "pending": 6
+      },
+      "readiness": "PENDING",
+      "phaseB": "PENDING",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:29:55.497Z",
+      "checklist": {
+        "completionRate": 100,
+        "completed": 44,
+        "total": 44,
+        "pending": 0
+      },
+      "readiness": "PENDING",
+      "phaseB": "PASS",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:29:55.584Z",
+      "checklist": {
+        "completionRate": 100,
+        "completed": 44,
+        "total": 44,
+        "pending": 0
+      },
+      "readiness": "PENDING",
+      "phaseB": "PASS",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T09:30:50.060Z",
+      "checklist": {
+        "completionRate": 100,
+        "completed": 44,
+        "total": 44,
+        "pending": 0
+      },
+      "readiness": "READY",
+      "phaseB": "PASS",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-02-21T15:40:51.846Z",
+      "checklist": {
+        "completionRate": 100,
+        "completed": 44,
+        "total": 44,
+        "pending": 0
+      },
+      "readiness": "READY",
+      "phaseB": "PASS",
+      "phaseD": "PASS"
+    },
+    {
+      "ts": "2026-03-11T00:58:13.361Z",
+      "checklist": {
+        "completionRate": 98.1,
+        "completed": 52,
+        "total": 53,
+        "pending": 1
+      },
+      "readiness": "PENDING",
+      "phaseB": "PASS",
+      "phaseD": "PENDING"
+    }
+  ]
+}

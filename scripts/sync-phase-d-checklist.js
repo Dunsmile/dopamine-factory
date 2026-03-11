@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECKLIST_PATH = path.join(ROOT, 'docs', 'SCALING_EXECUTION_CHECKLIST.md');
-const REPORT_PATH = path.join(ROOT, 'reports', 'phase-d-ops-report.json');
+const REPORT_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.json');
 
 function fail(message) {
   console.error(`[phase-d-sync] ${message}`);

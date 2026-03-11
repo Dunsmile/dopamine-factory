@@ -4,13 +4,13 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const CHECKLIST_PATH = path.join(ROOT, 'reports', 'scaling-checklist-status.json');
-const READINESS_PATH = path.join(ROOT, 'reports', 'ops-readiness-report.json');
-const INPUT_HEALTH_PATH = path.join(ROOT, 'reports', 'ops-input-health.json');
-const NEXT_ACTIONS_PATH = path.join(ROOT, 'reports', 'next-actions.json');
-const TREND_PATH = path.join(ROOT, 'reports', 'ops-trend.json');
-const OUT_MD = path.join(ROOT, 'reports', 'ops-dashboard.md');
-const OUT_JSON = path.join(ROOT, 'reports', 'ops-dashboard.json');
+const CHECKLIST_PATH = path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.json');
+const READINESS_PATH = path.join(ROOT, 'docs', 'reports', 'ops-readiness-report.json');
+const INPUT_HEALTH_PATH = path.join(ROOT, 'docs', 'reports', 'ops-input-health.json');
+const NEXT_ACTIONS_PATH = path.join(ROOT, 'docs', 'reports', 'next-actions.json');
+const TREND_PATH = path.join(ROOT, 'docs', 'reports', 'ops-trend.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'ops-dashboard.md');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'ops-dashboard.json');
 
 function readJson(filePath) {
   if (!fs.existsSync(filePath)) return null;

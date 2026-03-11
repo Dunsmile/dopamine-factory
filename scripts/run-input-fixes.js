@@ -5,7 +5,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_FIX_PATH = path.join(ROOT, 'reports', 'input-fix-commands.json');
+const INPUT_FIX_PATH = path.join(ROOT, 'docs', 'reports', 'input-fix-commands.json');
 
 function parseArgs(argv) {
   return {

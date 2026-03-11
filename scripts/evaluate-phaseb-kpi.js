@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-input.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'phaseb-kpi-report.json');
-const OUT_MD = path.join(ROOT, 'reports', 'phaseb-kpi-report.md');
+const INPUT_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-input.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.md');
 
 function readJson(filePath, fallback = null) {
   if (!fs.existsSync(filePath)) return fallback;

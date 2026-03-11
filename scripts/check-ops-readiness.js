@@ -4,13 +4,13 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const PHASEB_PATH = path.join(ROOT, 'reports', 'phaseb-kpi-report.json');
-const PHASED_PATH = path.join(ROOT, 'reports', 'phase-d-ops-report.json');
-const ASTRO_PATH = path.join(ROOT, 'reports', 'astro-go-no-go.json');
-const CHECKLIST_PATH = path.join(ROOT, 'reports', 'scaling-checklist-status.json');
-const INPUT_HEALTH_PATH = path.join(ROOT, 'reports', 'ops-input-health.json');
-const OUT_JSON = path.join(ROOT, 'reports', 'ops-readiness-report.json');
-const OUT_MD = path.join(ROOT, 'reports', 'ops-readiness-report.md');
+const PHASEB_PATH = path.join(ROOT, 'docs', 'reports', 'phaseb-kpi-report.json');
+const PHASED_PATH = path.join(ROOT, 'docs', 'reports', 'phase-d-ops-report.json');
+const ASTRO_PATH = path.join(ROOT, 'docs', 'reports', 'astro-go-no-go.json');
+const CHECKLIST_PATH = path.join(ROOT, 'docs', 'reports', 'scaling-checklist-status.json');
+const INPUT_HEALTH_PATH = path.join(ROOT, 'docs', 'reports', 'ops-input-health.json');
+const OUT_JSON = path.join(ROOT, 'docs', 'reports', 'ops-readiness-report.json');
+const OUT_MD = path.join(ROOT, 'docs', 'reports', 'ops-readiness-report.md');
 
 function readJson(filePath) {
   if (!fs.existsSync(filePath)) return null;

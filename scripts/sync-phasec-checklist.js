@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECKLIST_PATH = path.join(ROOT, 'docs', 'SCALING_EXECUTION_CHECKLIST.md');
-const ASTRO_REPORT_PATH = path.join(ROOT, 'reports', 'astro-go-no-go.json');
+const ASTRO_REPORT_PATH = path.join(ROOT, 'docs', 'reports', 'astro-go-no-go.json');
 
 function fail(message) {
   console.error(`[phasec-sync] ${message}`);
