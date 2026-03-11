@@ -18,6 +18,8 @@ node_modules/
 
 # Local captures
 screenshots/
+.npm-cache/
+build_error.log
 .worktrees/
 
 # Build

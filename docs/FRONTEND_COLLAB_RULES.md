@@ -76,3 +76,21 @@
 - 리허설(무변경 검증): `npm run create:service -- <service-id> --dry-run ...`
 - 실제 생성 후: `npm run build:pages`, `npm run test:build`, `npm run check:service-data`
 - 홈/스킨/배너 운영은 `/teammate/` 생성 명령 또는 `npm run settings:update -- ...`만 사용한다.
+
+## 9) 에이전트 스킬 디렉터리 규칙
+
+- 저장소 내 스킬 원본은 `skills/` 하나만 유지한다.
+- 툴별 경로(`.agents/skills`, `.claude/skills`, `.continue/skills` 등)는 복제본을 두지 않고 `skills/`를 가리키는 링크로 유지한다.
+- 툴별 전용 설정 파일은 유지한다.
+  - 예: `.claude/context.md`
+- 새 스킬을 추가하거나 수정할 때는 `skills/`만 변경한다.
+- 툴별 스킬 경로 안에 실파일을 다시 만들지 않는다.
+
+## 10) 로컬 산출물 정리 규칙
+
+- 아래 경로는 로컬 작업 산출물로 취급하고 버전에 포함하지 않는다.
+  - `screenshots/`
+  - `.npm-cache/`
+  - `.worktrees/`
+  - `build_error.log`
+- 검증 중 생성된 산출물이 필요 없으면 커밋 전에 정리한다.
