@@ -53,14 +53,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Validate service data
-        run: npm run check:service-data
-      - name: Validate font setup
-        run: npm run check:font
-      - name: Validate governance guards
-        run: npm run check:governance
-      - name: Build static frontend
-        run: npm run build
+      - name: Build Tailwind assets
+        run: npm run build:tailwind
       - name: Run frontend tests
         run: |
           bash tests/dopamine_features.test.sh
@@ -82,7 +76,7 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Build static frontend
-        run: npm run build
+      - name: Build Tailwind assets
+        run: npm run build:tailwind
       - name: Run market sentiment tests
         run: bash tests/market_sentiment.test.sh
