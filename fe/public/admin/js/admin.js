@@ -378,7 +378,7 @@
                           상세 관리 →
                         </button>
                       `}
-                      <button class="adm-btn adm-btn--ghost" style="padding:5px 10px;font-size:13px;color:#ef4444;border-color:#ef444430;" title="휴지통으로 이동" onclick="window.__admTrashService('${escHtml(s.id)}')">
+                      <button class="adm-btn adm-btn--ghost" style="padding:5px 10px;font-size:13px;color:var(--adm-danger);border-color:var(--adm-danger-border);" title="휴지통으로 이동" onclick="window.__admTrashService('${escHtml(s.id)}')">
                         🗑
                       </button>
                     </div>
@@ -434,7 +434,7 @@
                       <button class="adm-btn adm-btn--ghost" style="padding:5px 12px;font-size:12px;" onclick="window.__admRestoreService('${escHtml(s.id)}')">
                         ↩ 복원
                       </button>
-                      <button class="adm-btn adm-btn--ghost" style="padding:5px 12px;font-size:12px;color:#ef4444;border-color:#ef444430;" onclick="window.__admDeleteService('${escHtml(s.id)}')">
+                      <button class="adm-btn adm-btn--ghost" style="padding:5px 12px;font-size:12px;color:var(--adm-danger);border-color:var(--adm-danger-border);" onclick="window.__admDeleteService('${escHtml(s.id)}')">
                         최종 삭제
                       </button>
                     </div>
@@ -528,7 +528,7 @@
         <span style="font-size:22px;">${escHtml(svc.emoji||'')}</span>
         <h2 style="margin:0;font-size:18px;font-weight:800;">${escHtml(svc.fullName||svc.name)}</h2>
         <span class="adm-badge adm-badge--${svc.status==='disabled'?'inactive':'active'}">${svc.status==='disabled'?'비활성':'활성'}</span>
-        <button class="adm-btn adm-btn--ghost" style="margin-left:auto;padding:5px 12px;font-size:12px;color:#ef4444;border-color:#ef444430;" onclick="window.__admTrashService('${escHtml(svc.id)}')">
+        <button class="adm-btn adm-btn--ghost" style="margin-left:auto;padding:5px 12px;font-size:12px;color:var(--adm-danger);border-color:var(--adm-danger-border);" onclick="window.__admTrashService('${escHtml(svc.id)}')">
           🗑 휴지통으로
         </button>
       </div>
@@ -695,7 +695,7 @@
             <h2 class="adm-panel__title">최근 14일 일별 트래픽</h2>
             <div style="display:flex;gap:12px;font-size:11px;color:var(--adm-text-muted);align-items:center;">
               <span><span style="display:inline-block;width:10px;height:10px;background:var(--adm-accent);border-radius:2px;margin-right:4px;"></span>클릭</span>
-              <span><span style="display:inline-block;width:10px;height:10px;background:rgba(124,92,255,0.3);border-radius:2px;margin-right:4px;"></span>뷰</span>
+              <span><span style="display:inline-block;width:10px;height:10px;background:var(--adm-accent-soft);border-radius:2px;margin-right:4px;"></span>뷰</span>
             </div>
           </div>
           <div class="adm-panel__body" style="padding-bottom:8px;">
@@ -703,7 +703,7 @@
               ${days.map((d) => `
                 <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
                   <div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:1px;justify-content:flex-end;height:80px;">
-                    <div title="${d.views} 뷰" style="width:60%;background:rgba(124,92,255,0.3);border-radius:2px 2px 0 0;height:${maxDay > 0 ? Math.max(2, Math.round((d.views/maxDay)*76)) : 0}px;"></div>
+                    <div title="${d.views} 뷰" style="width:60%;background:var(--adm-accent-soft);border-radius:2px 2px 0 0;height:${maxDay > 0 ? Math.max(2, Math.round((d.views/maxDay)*76)) : 0}px;"></div>
                     <div title="${d.clicks} 클릭" style="width:100%;background:var(--adm-accent);border-radius:2px 2px 0 0;height:${maxDay > 0 ? Math.max(d.clicks > 0 ? 2 : 0, Math.round((d.clicks/maxDay)*76)) : 0}px;"></div>
                   </div>
                   <div style="font-size:9px;color:var(--adm-text-muted);transform:rotate(-45deg);transform-origin:top left;margin-top:4px;white-space:nowrap;">${d.label}</div>
@@ -727,7 +727,7 @@
                 <div style="font-size:20px;font-weight:700;">${stats.totalViews || 0}</div>
               </div>
             </div>
-            <div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:rgba(124,92,255,0.06);border:1px solid rgba(124,92,255,0.15);font-size:12px;color:var(--adm-text-muted);">
+            <div style="margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--adm-accent-glow-soft);border:1px solid var(--adm-border-accent);font-size:12px;color:var(--adm-text-muted);">
               💡 트렌딩 점수는 관리자 로드 시 자동으로 재계산되어 Firestore에 저장됩니다. 홈 페이지 서비스 순서에 반영됩니다.
             </div>
           </div>
@@ -1321,7 +1321,7 @@
         <div style="border-radius:0 0 12px 12px;overflow:hidden;background:#000;">
           <div style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--adm-surface-2);">
             <div style="display:flex;gap:5px;">
-              <span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:block;"></span>
+              <span style="width:10px;height:10px;border-radius:50%;background:var(--adm-danger);display:block;"></span>
               <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:block;"></span>
               <span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:block;"></span>
             </div>
@@ -1683,7 +1683,7 @@
             <div style="display:flex;gap:1px;flex-shrink:0;">
               ${i > 0 ? `<button onclick="event.stopPropagation();window.__bldMoveEl(${i},-1)" style="background:none;border:none;color:var(--adm-text-muted);cursor:pointer;padding:3px 5px;font-size:11px;">↑</button>` : ''}
               ${i < page.elements.length-1 ? `<button onclick="event.stopPropagation();window.__bldMoveEl(${i},1)" style="background:none;border:none;color:var(--adm-text-muted);cursor:pointer;padding:3px 5px;font-size:11px;">↓</button>` : ''}
-              <button onclick="event.stopPropagation();window.__bldDeleteEl(${i})" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:3px 6px;font-size:14px;opacity:0.6;">×</button>
+              <button onclick="event.stopPropagation();window.__bldDeleteEl(${i})" style="background:none;border:none;color:var(--adm-danger);cursor:pointer;padding:3px 6px;font-size:14px;opacity:0.6;">×</button>
             </div>
           </div>
         `).join('')}
@@ -1795,7 +1795,7 @@
                 <option value="restart" ${opt.action==='restart'?'selected':''}>처음부터</option>
                 ${pageOpts}
               </select>
-              ${el.options.length > 2 ? `<button onclick="window.__bldRemoveChoiceOpt(${oi})" style="margin-top:6px;background:none;border:none;color:#ef4444;cursor:pointer;font-size:11px;padding:0;">× 삭제</button>` : ''}
+              ${el.options.length > 2 ? `<button onclick="window.__bldRemoveChoiceOpt(${oi})" style="margin-top:6px;background:none;border:none;color:var(--adm-danger);cursor:pointer;font-size:11px;padding:0;">× 삭제</button>` : ''}
             </div>
           `).join('')}
           ${(el.options||[]).length < 4 ? `
@@ -2111,7 +2111,7 @@
       </div>
 
       <!-- 저장 안내 -->
-      <div style="margin-top:16px;padding:14px 18px;border-radius:10px;background:rgba(124,92,255,0.08);border:1px solid rgba(124,92,255,0.2);font-size:12px;color:var(--adm-text-muted);">
+      <div style="margin-top:16px;padding:14px 18px;border-radius:10px;background:var(--adm-accent-glow-soft);border:1px solid var(--adm-border-accent);font-size:12px;color:var(--adm-text-muted);">
         💡 <strong style="color:var(--adm-text);">저장 방식</strong> — "저장" 클릭 시 Firestore에 즉시 저장되며 홈 페이지에 바로 반영됩니다.
       </div>
     `;
@@ -2165,7 +2165,7 @@
                   <div style="font-size:11px;color:var(--adm-text-muted);">${escHtml(s.category)} · 트렌딩 ${s.trendingScore||0}</div>
                 </div>
                 ${i < 5
-                  ? `<span style="font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(124,92,255,0.15);color:var(--adm-accent);">로테이션 포함</span>`
+                  ? `<span style="font-size:11px;padding:3px 8px;border-radius:999px;background:var(--adm-accent-soft);color:var(--adm-accent);">로테이션 포함</span>`
                   : `<span style="font-size:11px;color:var(--adm-text-muted);">대기</span>`}
                 <div style="display:flex;gap:4px;">
                   ${i > 0 ? `<button class="adm-btn adm-btn--ghost" style="padding:3px 7px;font-size:11px;" onclick="window.__admMoveRotation(${i}, -1)">↑</button>` : ''}
