@@ -1590,7 +1590,7 @@
         <strong style="font-size:15px;">${escHtml(def.name)}</strong>
         <code style="font-size:11px;color:var(--adm-text-muted);background:var(--adm-surface-2);padding:3px 8px;border-radius:4px;">${route}</code>
         <div style="margin-left:auto;display:flex;gap:8px;">
-          <a href="${route}" target="_blank" class="adm-btn adm-btn--ghost" style="font-size:12px;">미리보기 ↗</a>
+          <button class="adm-btn adm-btn--ghost" style="font-size:12px;" onclick="window.__bldPreviewOpen()">미리보기</button>
           <button class="adm-btn adm-btn--primary" onclick="window.__bldPublish()">저장 & 게시</button>
         </div>
       </div>
@@ -1987,10 +1987,64 @@
         });
       }
       await persistData();
-      showToast(`✓ "${def.name}" 저장 & 게시 완료!\n주소: ${route}`);
+      showToast(`✓ "${def.name}" 저장 & 게시 완료!`);
+      _bldDef = null; _bldPageIdx = 0; _bldElIdx = null;
+      setTimeout(() => navigate('services'), 1200);
     } catch (e) {
       showToast('저장 실패. 네트워크를 확인해 주세요.');
     }
+  };
+
+  // 미리보기 — iframe 오버레이 모달 (닫기 가능)
+  window.__bldPreviewOpen = async function() {
+    if (!_bldDef) return;
+    const def = _bldDef;
+    const route = '/dunsmile/service-app/?s=' + encodeURIComponent(def.id);
+
+    // 먼저 Firestore에 임시 저장해야 service-app이 렌더할 수 있음
+    showToast('미리보기 준비 중...');
+    try {
+      await db.collection('siteConfig').doc('builderService-' + def.id).set({
+        ...def,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    } catch (_e) {
+      showToast('저장 실패 — 미리보기를 열 수 없습니다');
+      return;
+    }
+
+    // 기존 모달 제거
+    const existing = document.getElementById('bld-preview-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'bld-preview-modal';
+    modal.style.cssText = [
+      'position:fixed;inset:0;z-index:9999;',
+      'background:rgba(0,0,0,0.85);',
+      'display:flex;flex-direction:column;',
+    ].join('');
+    modal.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--adm-surface);border-bottom:1px solid var(--adm-border);flex-shrink:0;">
+        <span style="font-size:18px;">${escHtml(def.emoji)}</span>
+        <span style="font-weight:600;font-size:14px;color:var(--adm-text);">${escHtml(def.name)}</span>
+        <code style="font-size:11px;color:var(--adm-text-muted);background:var(--adm-surface-2);padding:2px 8px;border-radius:4px;">${route}</code>
+        <button
+          onclick="document.getElementById('bld-preview-modal').remove()"
+          class="adm-btn adm-btn--ghost"
+          style="margin-left:auto;padding:5px 14px;font-size:13px;"
+          aria-label="미리보기 닫기"
+        >× 닫기</button>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;">
+        <iframe
+          src="${route}"
+          style="width:390px;height:min(844px,80vh);border:none;border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,0.5);"
+          title="서비스 미리보기"
+        ></iframe>
+      </div>
+    `;
+    document.body.appendChild(modal);
   };
 
   // 기존 빌더 서비스 편집 진입점
@@ -2569,7 +2623,15 @@ ${activeServices.map((s) => `      &lt;li&gt;&lt;a href="${escHtml(s.route||`/du
   window.persistData  = persistData;
 
   // ── 초기화 ──
-  loadData().then(() => loadServiceStats()).then(() => {
+  loadData().then(() => {
+    // market-sentiment: DB 할당량 초과로 강제 비활성화
+    const ms = allServices.find((s) => s.id === 'market-sentiment');
+    if (ms && ms.status !== 'disabled') {
+      ms.status = 'disabled';
+      ms.homeVisible = false;
+      persistData().catch(() => {});
+    }
+  }).then(() => loadServiceStats()).then(() => {
     if (applyAutoTrending()) persistData().catch(() => {});
   }).then(() => {
     const params = new URLSearchParams(location.search);

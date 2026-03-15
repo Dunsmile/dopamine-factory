@@ -130,9 +130,9 @@
       "emoji": "📈",
       "desc": "펨코·디씨 게시글 기반 주식/코인 커뮤니티 감성 분석",
       "category": "finance",
-      "status": "active",
+      "status": "disabled",
       "route": "/dunsmile/market-sentiment/",
-      "homeVisible": true,
+      "homeVisible": false,
       "shellEnabled": false,
       "module": {
         "type": "legacy-page",
