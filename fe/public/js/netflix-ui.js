@@ -2,10 +2,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const railsContainer = document.getElementById('nflx-rails');
   const heroContent = document.getElementById('hero-content');
   const nav = document.getElementById('nflx-nav');
+  const adminTrigger = document.getElementById('admin-login-trigger');
+  const adminModal = document.getElementById('admin-modal');
+  const adminModalClose = document.getElementById('admin-modal-close');
+  const adminLoginForm = document.getElementById('admin-login-form');
+  const adminPasswordInput = document.getElementById('admin-password');
+  const adminLoginError = document.getElementById('admin-login-error');
+  const ADMIN_PW_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+  const SESSION_KEY = 'dp_admin_token';
 
   if (!railsContainer || !heroContent || !nav || !window.HomeData || !window.NetflixShell) return;
 
   window.NetflixShell.setupNav(nav);
+  bindAdminLogin();
 
   try {
     const allServices = await window.HomeData.loadServices();
@@ -78,5 +87,68 @@ document.addEventListener('DOMContentLoaded', async () => {
         hrefResolver: (service) => service.url
       });
     }).join('');
+  }
+
+  function bindAdminLogin() {
+    if (!adminTrigger || !adminModal || !adminModalClose || !adminLoginForm || !adminPasswordInput || !adminLoginError) {
+      return;
+    }
+
+    adminTrigger.addEventListener('click', openAdminModal);
+    adminModalClose.addEventListener('click', closeAdminModal);
+    adminModal.addEventListener('click', (event) => {
+      if (event.target === adminModal || event.target.classList.contains('nflx-admin-modal__backdrop')) {
+        closeAdminModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !adminModal.hidden) {
+        closeAdminModal();
+      }
+    });
+
+    adminLoginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const password = adminPasswordInput.value;
+      if (!password) return;
+
+      const hash = await sha256(password);
+      if (hash === ADMIN_PW_HASH) {
+        sessionStorage.setItem(SESSION_KEY, hash);
+        closeAdminModal();
+        window.location.href = '/admin/';
+        return;
+      }
+
+      adminLoginError.hidden = false;
+      adminPasswordInput.value = '';
+      adminPasswordInput.focus();
+    });
+  }
+
+  function openAdminModal() {
+    adminModal.hidden = false;
+    adminModal.classList.add('is-open');
+    adminLoginError.hidden = true;
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => adminPasswordInput.focus(), 60);
+  }
+
+  function closeAdminModal() {
+    adminModal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    adminLoginForm.reset();
+    adminLoginError.hidden = true;
+    setTimeout(() => {
+      adminModal.hidden = true;
+    }, 250);
+  }
+
+  async function sha256(value) {
+    const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+    return Array.from(new Uint8Array(buffer))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
   }
 });
