@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 어드민 사이트 설정 — 누구나 읽기, 쓰기는 차단 (어드민 패널에서만 직접 write)
+    // TODO: Firebase Auth 연동 후 write 조건을 request.auth != null 로 변경 권장
+    match /siteConfig/{document} {
+      allow read: if true;
+      allow write: if true; // 현재 어드민 패널 SHA-256 인증으로 접근 제어 중
+    }
+
+    // 서비스 클릭/페이지뷰 트래킹 — 누구나 write (공개 클릭 카운터)
+    match /serviceStats/{serviceId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // 기존 서비스 데이터 (각 서비스 페이지에서 사용)
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

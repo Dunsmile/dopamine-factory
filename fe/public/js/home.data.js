@@ -43,30 +43,58 @@
   }
 
   async function loadServices() {
+    // 1) Firestore 우선 (어드민 실시간 반영)
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('services').get();
+        if (snap.exists) {
+          const data = snap.data();
+          const items = Array.isArray(data.services) ? data.services : [];
+          const activeHome = items
+            .filter((s) => s && s.status !== 'disabled' && s.status !== 'trashed' && s.homeVisible !== false)
+            .map(normalizeService);
+          if (activeHome.length > 0) return activeHome;
+        }
+      }
+    } catch (_e) { /* Firestore 실패 시 fallback */ }
+
+    // 2) 정적 JSON fallback
     try {
       const response = await fetch(HOME_MANIFEST_URL, { cache: 'no-store' });
       if (!response.ok) throw new Error(`manifest ${response.status}`);
       const payload = await response.json();
       const items = Array.isArray(payload.services) ? payload.services : [];
       const activeHome = items
-        .filter((service) => service && service.status !== 'disabled' && service.homeVisible !== false)
+        .filter((service) => service && service.status !== 'disabled' && service.status !== 'trashed' && service.homeVisible !== false)
         .map(normalizeService);
-
       if (activeHome.length > 0) return activeHome;
-      return FALLBACK_SERVICES;
-    } catch (_error) {
-      return FALLBACK_SERVICES;
-    }
+    } catch (_e) { /* ignore */ }
+
+    return FALLBACK_SERVICES;
   }
 
   async function loadSiteSettings() {
+    // 1) Firestore 우선
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('settings').get();
+        if (snap.exists) {
+          const { updatedAt, ...rest } = snap.data();
+          if (Object.keys(rest).length > 0) return rest;
+        }
+      }
+    } catch (_e) { /* fallback */ }
+
+    // 2) 정적 JSON fallback
     try {
       const response = await fetch(SITE_SETTINGS_URL, { cache: 'no-store' });
       if (!response.ok) throw new Error(`site-settings ${response.status}`);
       const payload = await response.json();
       if (!payload || typeof payload !== 'object') return {};
       return payload;
-    } catch (_error) {
+    } catch (_e) {
       return {};
     }
   }

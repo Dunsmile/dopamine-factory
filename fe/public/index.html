@@ -5,13 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>도파민 공작소 - 심리테스트 & 운세</title>
   <meta name="description" content="타로, 운세, 심리테스트, 밸런스게임 모두 무료. 클릭 한 번으로 내 심리를 꿰뚫어 보세요.">
+
+  <!-- OG / SNS 공유 -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dopamine.kr/">
+  <meta property="og:title" content="도파민 공작소 - 심리테스트 & 운세">
+  <meta property="og:description" content="타로, 운세, 심리테스트, 밸런스게임 모두 무료. 클릭 한 번으로 내 심리를 꿰뚫어 보세요.">
+  <meta property="og:image" content="/dunsmile/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="도파민 공작소 - 심리테스트 & 운세">
+  <meta name="twitter:description" content="타로, 운세, 심리테스트, 밸런스게임 모두 무료. 클릭 한 번으로 내 심리를 꿰뚫어 보세요.">
+  <meta name="twitter:image" content="/dunsmile/assets/og-image.png">
+
   <link rel="stylesheet" href="/assets/css/tailwind-built.css">
   <link rel="stylesheet" href="/assets/css/home.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey:            'AIzaSyDw9j_3Di_Zn1kI_5KyQbGUV5o3I2APwkI',
+        authDomain:        'hoxy-number.firebaseapp.com',
+        projectId:         'hoxy-number',
+        storageBucket:     'hoxy-number.firebasestorage.app',
+        messagingSenderId: '311606639114',
+        appId:             '1:311606639114:web:ea5d008da413abb9d33df3',
+      });
+    }
+    window.__db = firebase.firestore();
+  </script>
   <script src="/js/home.data.js" defer></script>
+  <script src="/js/tracking.js" defer></script>
   <script src="/js/netflix-shell.js" defer></script>
   <script src="/js/netflix-ui.js" defer></script>
 </head>
 <body class="nflx-page">
+
+  <!-- ===== 네비게이션 ===== -->
   <nav class="fixed top-0 z-50 w-full bg-gradient-to-b from-black/80 to-transparent px-[4vw] py-4 transition-colors duration-300" id="nflx-nav">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-8">
@@ -26,14 +56,20 @@
         </ul>
       </div>
       <div class="flex items-center gap-4">
-        <svg class="h-6 w-6 cursor-pointer text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <div class="nflx-brand-avatar h-8 w-8 cursor-pointer rounded border border-transparent transition hover:border-white"></div>
+        <!-- 검색: 아이콘 단독 버튼 → button으로 래핑하여 키보드/스크린리더 접근 가능 -->
+        <button class="flex items-center justify-center cursor-pointer bg-transparent border-0 p-0" aria-label="검색">
+          <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+        <!-- 프로필 아바타: 클릭 시 관리자 로그인 모달 오픈 -->
+        <div class="nflx-brand-avatar h-8 w-8 cursor-pointer rounded border border-transparent transition hover:border-white"
+          role="button" tabindex="0" aria-label="관리자 로그인" id="admin-login-trigger"></div>
       </div>
     </div>
   </nav>
 
+  <!-- ===== 히어로 ===== -->
   <header class="relative min-h-[500px] w-full overflow-hidden bg-[#141414] max-h-[85vh] h-[56.25vw]" id="nflx-hero">
     <div class="nflx-hero-backdrop absolute inset-0">
       <div class="nflx-hero-backdrop__core absolute inset-0"></div>
@@ -44,40 +80,73 @@
     <div class="absolute bottom-0 z-10 h-[150px] w-full bg-gradient-to-t from-[#141414] to-transparent"></div>
     <div class="absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-[#141414] to-transparent"></div>
 
+    <!-- 히어로 로테이션 인디케이터 dot -->
+    <div id="hero-indicators" class="nflx-hero-indicators absolute bottom-6 z-20 px-[4vw]" aria-label="서비스 목록 인디케이터" role="tablist"></div>
+
     <div class="absolute inset-0 z-10 mt-12 flex w-full flex-col justify-center px-[4vw] md:w-[50%] lg:w-[40%]">
+      <!--
+        #hero-content는 JS(netflix-ui.js > updateHero)가 DOMContentLoaded 후
+        trendingScore 1위 서비스로 innerHTML을 완전히 교체합니다.
+        아래 콘텐츠는 JS 로드 실패 / 네트워크 오류 시 보여주는 정적 fallback입니다.
+        fallback 기준 서비스: hoxy-number (현재 trendingScore 97위)
+      -->
       <div id="hero-content">
-        <h2 class="nflx-hero-title mb-2 text-5xl font-black leading-tight text-white md:text-6xl">오늘의 추천<br>도파민</h2>
-        <div class="mb-4 flex items-center gap-3 text-sm font-bold text-white">
-          <span class="nflx-accent-score font-bold">98% 일치</span>
-          <span class="rounded border border-gray-600 bg-gray-600/50 px-1 text-xs">2026</span>
-          <span class="rounded border border-gray-600 px-1 text-xs">무료</span>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="nflx-accent-text text-sm font-bold tracking-widest drop-shadow-md">ORIGINAL</span>
         </div>
-        <p class="nflx-copy-glow mb-6 text-lg font-medium leading-snug text-white md:text-xl">
-          재미와 몰입의 끝판왕. 지금 바로 당신의 심리를 테스트해 보세요. 엄청난 결과가 기다립니다.
+        <h2 class="nflx-hero-title mb-2 text-5xl font-black leading-tight text-white md:text-6xl">HOXY NUMBER</h2>
+        <div class="mb-4 flex items-center gap-3 text-sm font-bold text-white">
+          <span class="nflx-accent-score font-bold">97% 일치</span>
+          <span class="rounded border border-gray-600 bg-gray-600/50 px-1 text-xs">행운/번호</span>
+          <span class="text-gray-300">지금 화제</span>
+        </div>
+        <p class="nflx-copy-glow mb-6 text-base font-medium leading-snug text-white md:text-lg max-w-xl pb-2">
+          무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지
         </p>
         <div class="flex gap-3">
           <a href="/dunsmile/hoxy-number/" class="flex items-center justify-center gap-2 rounded bg-white px-6 py-2.5 text-lg font-bold text-black shadow transition hover:bg-white/80 cursor-pointer">
             <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            지금 시작
+            실행하기
           </a>
-          <button class="flex items-center justify-center gap-2 rounded bg-gray-500/70 px-6 py-2.5 text-lg font-bold text-white transition hover:bg-gray-500/50 cursor-pointer">
+          <a href="/category/luck/" class="flex items-center justify-center gap-2 rounded bg-gray-500/70 px-6 py-2.5 text-lg font-bold text-white transition hover:bg-gray-500/50 cursor-pointer">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            전체 서비스
-          </button>
+            카테고리 보기
+          </a>
         </div>
       </div>
     </div>
   </header>
 
+  <!-- ===== 서비스 레일 (JS 주입, 실패 시 정적 fallback 노출) ===== -->
   <main class="nflx-rail-container" id="nflx-rails">
-    <!-- Rails injected by JS -->
+    <!--
+      JS가 정상 작동하면 이 내용은 교체됩니다.
+      JS 실패 / JS 비활성화 환경을 위한 정적 fallback 서비스 목록입니다.
+    -->
+    <noscript>
+      <section class="nflx-noscript">
+        <h2 class="nflx-noscript__title">전체 서비스</h2>
+        <ul class="nflx-noscript__list">
+          <li><a href="/dunsmile/hoxy-number/" class="nflx-noscript__link">🎱 HOXY 번호</a></li>
+          <li><a href="/dunsmile/daily-fortune/" class="nflx-noscript__link">🔮 오늘의 운세</a></li>
+          <li><a href="/dunsmile/tarot-reading/" class="nflx-noscript__link">🃏 타로 카드</a></li>
+          <li><a href="/dunsmile/name-compatibility/" class="nflx-noscript__link">💞 이름 궁합</a></li>
+          <li><a href="/dunsmile/balance-game/" class="nflx-noscript__link">⚖️ 밸런스 게임</a></li>
+          <li><a href="/dunsmile/wealth-dna-test/" class="nflx-noscript__link">💰 부자 DNA 테스트</a></li>
+          <li><a href="/dunsmile/rich-face/" class="nflx-noscript__link">👤 부자상?</a></li>
+          <li><a href="/dunsmile/market-sentiment/" class="nflx-noscript__link">📈 시장 감성</a></li>
+        </ul>
+      </section>
+    </noscript>
   </main>
 
+  <!-- ===== 푸터 ===== -->
   <footer class="nflx-footer">
     <div class="nflx-footer__inner">
       <div class="nflx-footer__grid">
         <section class="nflx-footer__column">
-          <h2 class="nflx-footer__heading">서비스</h2>
+          <!-- heading 계층: h1(로고) > h2(섹션)가 아닌 보조 레이블이므로 h3 사용 -->
+          <h3 class="nflx-footer__heading">서비스</h3>
           <a href="/category/fortune/" class="nflx-footer__link">운세/사주</a>
           <a href="/category/fun/" class="nflx-footer__link">재미/밸런스</a>
           <a href="/category/luck/" class="nflx-footer__link">행운/번호</a>
@@ -85,14 +154,14 @@
           <a href="/category/experimental/" class="nflx-footer__link">실험실</a>
         </section>
         <section class="nflx-footer__column">
-          <h2 class="nflx-footer__heading">이용안내</h2>
+          <h3 class="nflx-footer__heading">이용안내</h3>
           <a href="/dunsmile/about/" class="nflx-footer__link">서비스 소개</a>
           <a href="/dunsmile/terms/" class="nflx-footer__link">이용약관</a>
           <a href="/dunsmile/privacy/" class="nflx-footer__link">개인정보처리방침</a>
           <a href="/dunsmile/about/" class="nflx-footer__link">문의 및 제안</a>
         </section>
         <section class="nflx-footer__column">
-          <h2 class="nflx-footer__heading">브랜드</h2>
+          <h3 class="nflx-footer__heading">브랜드</h3>
           <p class="nflx-footer__copy">
             도파민 공작소는 운세, 심리테스트,
             <br class="nflx-footer__mobile-break">
@@ -108,5 +177,100 @@
       </div>
     </div>
   </footer>
+
+
+  <!-- ===== 관리자 로그인 모달 ===== -->
+  <div id="admin-modal" class="nflx-admin-modal" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title" hidden>
+    <div class="nflx-admin-modal__backdrop" id="admin-modal-backdrop"></div>
+    <div class="nflx-admin-modal__box">
+      <div class="nflx-admin-modal__header">
+        <h2 id="admin-modal-title" class="nflx-admin-modal__title">관리자 로그인</h2>
+        <button class="nflx-admin-modal__close" id="admin-modal-close" aria-label="닫기">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <form id="admin-login-form" class="nflx-admin-modal__form" novalidate>
+        <div class="nflx-admin-modal__field">
+          <label for="admin-password" class="nflx-admin-modal__label">비밀번호</label>
+          <input
+            type="password"
+            id="admin-password"
+            name="password"
+            class="nflx-admin-modal__input"
+            placeholder="관리자 비밀번호를 입력하세요"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+        <p id="admin-login-error" class="nflx-admin-modal__error" hidden>비밀번호가 올바르지 않습니다.</p>
+        <button type="submit" class="nflx-admin-modal__submit">로그인</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+  (function initAdminModal() {
+    const ADMIN_PW_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'; // 'admin' SHA-256 — 운영 전 반드시 교체
+    const SESSION_KEY = 'dp_admin_token';
+
+    const trigger = document.getElementById('admin-login-trigger');
+    const modal = document.getElementById('admin-modal');
+    const backdrop = document.getElementById('admin-modal-backdrop');
+    const closeBtn = document.getElementById('admin-modal-close');
+    const form = document.getElementById('admin-login-form');
+    const pwInput = document.getElementById('admin-password');
+    const errorEl = document.getElementById('admin-login-error');
+
+    function openModal() {
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      setTimeout(() => pwInput.focus(), 50);
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      setTimeout(() => {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        form.reset();
+        errorEl.hidden = true;
+      }, 250);
+    }
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    trigger && trigger.addEventListener('click', openModal);
+    trigger && trigger.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); } });
+    closeBtn && closeBtn.addEventListener('click', closeModal);
+    backdrop && backdrop.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+
+    form && form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pw = pwInput.value;
+      if (!pw) return;
+      const hash = await sha256(pw);
+      if (hash === ADMIN_PW_HASH) {
+        sessionStorage.setItem(SESSION_KEY, hash);
+        closeModal();
+        window.location.href = '/admin/';
+      } else {
+        errorEl.hidden = false;
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    });
+  })();
+  </script>
+
 </body>
 </html>
