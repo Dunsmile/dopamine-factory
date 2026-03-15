@@ -55,7 +55,9 @@
     "dev": "npm run build:watch",
     "test:market": "bash tests/market_sentiment.test.sh",
     "create:service": "node scripts/create-service.js",
-    "settings:update": "node scripts/update-site-settings.js"
+    "settings:update": "node scripts/update-site-settings.js",
+    "skills:normalize": "node scripts/normalize-local-skills.js --apply",
+    "skills:check": "node scripts/normalize-local-skills.js"
   },
   "devDependencies": {
     "playwright": "^1.58.2",

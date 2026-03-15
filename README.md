@@ -58,6 +58,16 @@ python3 -m http.server 8080 --directory fe/public
 # http://localhost:8080/ 에서 확인
 ```
 
+## 로컬 스킬 정리
+
+```bash
+npm run skills:check
+npm run skills:normalize
+```
+
+- 저장소 내 스킬 원본은 `skills/` 하나만 사용한다.
+- 툴별 로컬 숨김 디렉터리의 `skills`는 `skills/`를 가리키는 링크로 정리한다.
+
 ## Git Workflow
 
 브랜치 전략과 배포 규칙은 `docs/GIT_WORKFLOW.md`를 참고하세요.
