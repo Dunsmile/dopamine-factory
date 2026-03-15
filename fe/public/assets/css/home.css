@@ -6,13 +6,6 @@
   --home-accent-score: #c4b5fd;
   --home-accent-soft: rgba(124, 92, 255, 0.2);
   --home-accent-glow: rgba(124, 92, 255, 0.24);
-  --home-accent-glow-soft: rgba(139, 123, 255, 0.18);
-  --home-card-rose: #5b34d6;
-  --home-card-indigo: #4338ca;
-  --home-card-emerald: #3730a3;
-  --home-card-amber: #6d28d9;
-  --home-card-fuchsia: #581c87;
-  --home-card-zinc: #312e81;
 }
 
 html,
@@ -41,8 +34,8 @@ body {
   background:
     linear-gradient(120deg, rgba(9, 9, 11, 0.92) 0%, rgba(27, 27, 39, 0.72) 42%, rgba(18, 18, 18, 0.9) 100%),
     radial-gradient(circle at 18% 28%, var(--home-accent-soft), transparent 32%),
-    radial-gradient(circle at 78% 22%, var(--home-accent-glow-soft), transparent 28%),
-    radial-gradient(circle at 58% 78%, rgba(88, 28, 135, 0.2), transparent 26%);
+    radial-gradient(circle at 78% 22%, rgba(99, 102, 241, 0.18), transparent 28%),
+    radial-gradient(circle at 58% 78%, rgba(168, 85, 247, 0.16), transparent 26%);
 }
 
 .nflx-hero-backdrop__glow {
@@ -177,27 +170,27 @@ body {
 }
 
 .nflx-poster--tone-rose {
-  background-color: var(--home-card-rose);
+  background-color: #881337;
 }
 
 .nflx-poster--tone-indigo {
-  background-color: var(--home-card-indigo);
+  background-color: #1e1b4b;
 }
 
 .nflx-poster--tone-emerald {
-  background-color: var(--home-card-emerald);
+  background-color: #064e3b;
 }
 
 .nflx-poster--tone-amber {
-  background-color: var(--home-card-amber);
+  background-color: #78350f;
 }
 
 .nflx-poster--tone-fuchsia {
-  background-color: var(--home-card-fuchsia);
+  background-color: #4a044e;
 }
 
 .nflx-poster--tone-zinc {
-  background-color: var(--home-card-zinc);
+  background-color: #3f3f46;
 }
 
 .nflx-poster-icon {
