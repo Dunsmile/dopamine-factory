@@ -1,0 +1,74 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-02-21",
+  "home": {
+    "referencePreset": "poomang",
+    "activeSkin": "A",
+    "featured": {
+      "title": "지금 인기 서비스",
+      "subtitle": "조회/트렌드 기준으로 먼저 시작해보세요."
+    },
+    "banner": {
+      "mode": "manual",
+      "fallback": "auto",
+      "maxSecondary": 2,
+      "badgeText": "오늘의 픽",
+      "ctaText": "지금 해보기",
+      "primaryServiceId": "daily-fortune",
+      "secondaryServiceIds": [
+        "wealth-dna-test",
+        "balance-game"
+      ],
+      "cards": [
+        {
+          "serviceId": "daily-fortune",
+          "variant": 1
+        },
+        {
+          "serviceId": "balance-game",
+          "variant": 2
+        }
+      ]
+    },
+    "skins": {
+      "A": {
+        "kicker": "DOPAMINE FACTORY",
+        "title": "도파민 공작소",
+        "subtitle": "홈에서 서비스 선택 후 바로 테스트를 시작하세요.",
+        "flowSteps": [
+          "1. 서비스 선택",
+          "2. 테스트 시작",
+          "3. 결과 공유/다른 테스트"
+        ],
+        "heroImage": "/dunsmile/assets/og-image.png"
+      },
+      "B": {
+        "kicker": "TRENDING TEST LAB",
+        "title": "오늘의 테스트 허브",
+        "subtitle": "가볍게 시작하고, 결과를 공유하고, 바로 다음 테스트로 이동하세요.",
+        "flowSteps": [
+          "1. 인기 테스트 탐색",
+          "2. 3분 안에 완료",
+          "3. 결과 저장·공유"
+        ],
+        "heroImage": "/dunsmile/assets/og-image-v2.png"
+      }
+    }
+  },
+  "serviceShell": {
+    "defaultSkin": "B",
+    "skins": {
+      "A": {
+        "className": "svc-skin-a"
+      },
+      "B": {
+        "className": "svc-skin-b"
+      }
+    }
+  },
+  "services": {
+    "wealth-dna-test": {
+      "heroImage": "/dunsmile/assets/og-image-v2.png"
+    }
+  }
+}

@@ -1,126 +1,161 @@
-/* 도파민 공작소 홈 데이터 - 조립 및 헬퍼 */
+/* 도파민 공작소 홈 - manifest-driven shared data */
 (function initHomeData(global) {
-  const parts = global.__HOME_DATA_PARTS || {};
-  const SERVICE_BANNERS = {
-    'hoxy-number': '/assets/banners/banner-hoxy-number.svg',
-    'rich-face': '/assets/banners/banner-rich-face.svg',
-    'daily-fortune': '/assets/banners/banner-daily-fortune.svg',
-    'balance-game': '/assets/banners/banner-balance-game.svg',
-    'name-compatibility': '/assets/banners/banner-name-compatibility.svg',
-    'market-sentiment': '/assets/banners/banner-market-sentiment.svg',
-    'tarot-reading': '/assets/banners/banner-tarot-reading.svg',
-    'dopamine-lab': '/assets/banners/banner-dopamine-lab.svg',
+  const HOME_MANIFEST_URL = '/dunsmile/services.manifest.json';
+  const SITE_SETTINGS_URL = '/dunsmile/site-settings.json';
+  const CATEGORY_META = {
+    all: { label: '전체 보기', summary: '현재 노출 중인 전체 서비스를 한 번에 탐색하세요.', tone: 'zinc' },
+    fortune: { label: '운세/사주', summary: '오늘의 운세, 타로, 궁합처럼 해석과 몰입이 중심인 서비스를 한 번에 탐색하세요.', tone: 'fuchsia' },
+    fun: { label: '재미/밸런스', summary: '가볍게 시작해서 바로 결과를 확인할 수 있는 게임형 테스트를 모았습니다.', tone: 'rose' },
+    luck: { label: '행운/번호', summary: '번호 추천과 행운 요소를 중심으로 빠르게 즐길 수 있는 서비스를 모았습니다.', tone: 'indigo' },
+    finance: { label: '시장/데이터', summary: '시장 반응과 데이터 해석처럼 정보 탐색형 콘텐츠를 한곳에 모았습니다.', tone: 'emerald' },
+    experimental: { label: '실험실', summary: '새로운 포맷과 실험적인 시도를 먼저 볼 수 있는 카테고리입니다.', tone: 'amber' }
   };
+  const CATEGORY_ORDER = ['fortune', 'fun', 'luck', 'finance', 'experimental'];
+  let cachedSiteSettings = null;
 
-  const SERVICE_START_META = {
-    'hoxy-number': { author: '도파민 공작소', plays: '4.1만', duration: '약 1분', tags: ['유틸', '랜덤번호'] },
-    'rich-face': { author: '도파민 공작소', plays: '3.6만', duration: '약 2분', tags: ['운세', 'AI관상'] },
-    'daily-fortune': { author: '도파민 공작소', plays: '5.4만', duration: '약 1분', tags: ['운세', '오늘운세'] },
-    'balance-game': { author: '도파민 공작소', plays: '2.8만', duration: '약 1분', tags: ['플레이', '밸런스'] },
-    'name-compatibility': { author: '도파민 공작소', plays: '3.2만', duration: '약 2분', tags: ['운세', '이름궁합'] },
-    'market-sentiment': { author: '도파민 공작소', plays: '1.2만', duration: '약 2분', tags: ['데이터', '시장감성'] },
-    'tarot-reading': { author: '도파민 공작소', plays: '2.4만', duration: '약 2분', tags: ['운세', '타로'] },
-    'dopamine-lab': { author: '도파민 랩', plays: '베타', duration: '약 1분', tags: ['플레이', '프리뷰'] },
-    'mbti-wealth-dna': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['심리', 'MBTI'] },
-    'past-life-mbti': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['심리', '전생'] },
-    'love-chat-style': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['연애', '대화톤'] },
-    'breakup-recovery': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['연애', '회복력'] },
-    'weekly-opportunity': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['운세', '주간'] },
-    'monthly-money-fortune': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['운세', '재물'] },
-    'balance-game-love': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['플레이', '연애편'] },
-    'balance-game-work': { author: '도파민 공작소', plays: '준비 중', duration: '약 1분', tags: ['플레이', '직장편'] },
-    'habit-starter': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['유틸', '습관'] },
-    'procrastination-type': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['유틸', '생산성'] },
-    'spending-impulse': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['데이터', '소비'] },
-    'side-hustle-fit': { author: '도파민 공작소', plays: '준비 중', duration: '약 2분', tags: ['데이터', '부업'] },
-  };
-
-  const DEFAULT_FAQ = [
-    { q: '결과는 정확한 진단인가요?', a: '이 테스트는 재미와 자기 점검을 위한 콘텐츠이며, 참고용으로 활용해 주세요.' },
-    { q: '데이터는 저장되나요?', a: '서비스 개선 목적의 비식별 사용 로그만 활용하며, 민감한 개인정보는 저장하지 않습니다.' },
+  const FALLBACK_SERVICES = [
+    { id: 'hoxy-number', name: 'HOXY', emoji: '🎱', url: '/dunsmile/hoxy-number/', desc: '무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지', fullName: 'HOXY NUMBER', category: 'luck', estimatedDuration: 3, questionCount: 0, trendingScore: 97, tags: ['행운', '번호'], ogImage: '/dunsmile/assets/og-image.png' },
+    { id: 'rich-face', name: '부자상?', emoji: '👤', url: '/dunsmile/rich-face/', desc: 'AI 관상 분석으로 알아보는 나의 부자 확률', fullName: '부자가 될 상인가?', category: 'fortune', estimatedDuration: 3, questionCount: 8, trendingScore: 95, tags: ['관상', '심리'], ogImage: '/dunsmile/assets/og-image.png' },
+    { id: 'daily-fortune', name: '운세', emoji: '🔮', url: '/dunsmile/daily-fortune/', desc: '별자리, 띠, 사주로 보는 오늘의 종합 운세', fullName: '오늘의 운세', category: 'fortune', estimatedDuration: 3, questionCount: 6, trendingScore: 96, tags: ['운세', '오늘'], ogImage: '/dunsmile/assets/og-image.png' },
+    { id: 'balance-game', name: '밸런스', emoji: '⚖️', url: '/dunsmile/balance-game/', desc: '두 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요', fullName: '오늘의 밸런스 게임', category: 'fun', estimatedDuration: 2, questionCount: 6, trendingScore: 90, tags: ['게임', '선택'], ogImage: '/dunsmile/assets/og-image.png' },
+    { id: 'name-compatibility', name: '이름궁합', emoji: '💞', url: '/dunsmile/name-compatibility/', desc: '두 이름을 입력하면 케미 점수와 궁합 키워드를 확인할 수 있어요', fullName: '이름 궁합 테스트', category: 'fortune', estimatedDuration: 2, questionCount: 0, trendingScore: 91, tags: ['궁합', '이름'], ogImage: '/dunsmile/assets/og-image.png' },
+    // market-sentiment: DB 할당량 초과로 비활성화 (유료 플랜 전환 후 재활성화 예정)
+    { id: 'tarot-reading', name: '타로', emoji: '🃏', url: '/dunsmile/tarot-reading/', desc: '78장 타로 카드가 전하는 오늘의 메시지, 무료 타로 리딩', fullName: 'ONE DAY MY CARD', category: 'fortune', estimatedDuration: 3, questionCount: 5, trendingScore: 93, tags: ['타로', '리딩'], ogImage: '/dunsmile/assets/og-image.png' },
+    { id: 'wealth-dna-test', name: '부자 DNA', emoji: '💰', url: '/dunsmile/wealth-dna-test/', desc: '내가 부자가 될 수 있을까? MBTI 기반 부자 DNA 테스트', fullName: '부자 DNA 테스트', category: 'fun', estimatedDuration: 4, questionCount: 8, trendingScore: 92, tags: ['MBTI', '자산성향'], ogImage: '/dunsmile/assets/og-image.png' }
   ];
 
-  const SERVICE_CONTENT_GUIDES = {
-    'hoxy-number': {
-      policy: '로또 번호 생성 로직과 사용 흐름을 명확히 안내하고, 결과 화면에 추가 설명을 제공합니다.',
-      updatedAt: '2026-02-18',
-      faq: [
-        { q: '생성된 번호는 당첨을 보장하나요?', a: '아니요. 무작위 추천 도구이며, 당첨 확률을 보장하지 않습니다.' },
-        { q: '번호는 다시 생성할 수 있나요?', a: '네. 언제든지 재생성 가능하며 생성 이력도 확인할 수 있습니다.' },
-      ],
-    },
-    'balance-game': {
-      policy: '질문 문구를 점진적으로 확장하고, 중복/자극 문구를 주기적으로 정리합니다.',
-      updatedAt: '2026-02-18',
-      faq: [
-        { q: '선택 비율은 어떻게 계산되나요?', a: '로컬 저장된 익명 투표 합산값을 기반으로 비율을 보여줍니다.' },
-        { q: '질문 수는 몇 개인가요?', a: '현재 100문항이 반영되어 있으며, 품질 점검 후 추가 확장합니다.' },
-      ],
-    },
-  };
-
-  function makeDummyArt(title, tone = 'blue') {
-    const palette = {
-      blue: ['#0f172a', '#172554', '#2563eb'],
-      violet: ['#180f2f', '#312e81', '#7c3aed'],
-      emerald: ['#06231a', '#064e3b', '#10b981'],
-      amber: ['#261507', '#78350f', '#f59e0b'],
-    };
-    const [base, mid, accent] = palette[tone] || palette.blue;
-    const safeTitle = encodeURIComponent(title);
-    return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 780'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='${encodeURIComponent(base)}'/%3E%3Cstop offset='55%25' stop-color='${encodeURIComponent(mid)}'/%3E%3Cstop offset='100%25' stop-color='${encodeURIComponent(accent)}'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='780' fill='url(%23g)'/%3E%3Ccircle cx='982' cy='92' r='180' fill='white' fill-opacity='0.09'/%3E%3Ccircle cx='260' cy='670' r='240' fill='white' fill-opacity='0.05'/%3E%3Ctext x='72' y='660' fill='white' fill-opacity='0.88' font-size='74' font-family='Pretendard, Noto Sans KR, sans-serif' font-weight='700'%3E${safeTitle}%3C/text%3E%3C/svg%3E`;
-  }
-
-  function serviceBanner(service) {
-    return SERVICE_BANNERS[service.id] || '/assets/banners/banner-hoxy-number.svg';
-  }
-
-  function categoryPillLabel(category) {
-    const map = { fortune: '운세', personality: '심리', money: '데이터', utility: '유틸', love: '연애', lab: '랩', play: '플레이' };
-    return map[category] || '플레이';
-  }
-
-  function latestServiceTags(service) {
-    const tags = {
-      'hoxy-number': ['유틸', '랜덤번호'],
-      'rich-face': ['운세', 'AI관상'],
-      'daily-fortune': ['운세', '오늘운세'],
-      'balance-game': ['플레이', '밸런스'],
-      'name-compatibility': ['운세', '이름궁합'],
-      'market-sentiment': ['데이터', '시장감성'],
-      'tarot-reading': ['운세', '타로'],
-      'dopamine-lab': ['플레이', '프리뷰'],
-    };
-    return tags[service.id] || [categoryPillLabel(service.category)];
-  }
-
-  function serviceStartMeta(service) {
-    const meta = SERVICE_START_META[service.id] || {};
+  function normalizeService(raw) {
+    const social = raw.socialProof || {};
     return {
-      author: meta.author || '도파민 공작소',
-      plays: meta.plays || '신규',
-      duration: meta.duration || '약 1분',
-      tags: Array.isArray(meta.tags) && meta.tags.length ? meta.tags : latestServiceTags(service),
+      id: raw.id,
+      name: raw.name,
+      emoji: raw.emoji || '✨',
+      url: raw.route || raw.url || '#',
+      desc: raw.desc || '',
+      fullName: raw.fullName || raw.name || raw.id,
+      category: raw.category || 'fun',
+      tags: Array.isArray(raw.tags) ? raw.tags : [],
+      questionCount: Number(raw.questionCount || 0),
+      estimatedDuration: Number(raw.estimatedDuration || 0),
+      trendingScore: Number(raw.trendingScore || 0),
+      views: Number(social.views || raw.views || 0),
+      likes: Number(social.likes || raw.likes || 0),
+      ogImage: raw.ogImage || '/dunsmile/assets/og-image.png',
     };
   }
 
-  function serviceContentGuide(service) {
-    const guide = SERVICE_CONTENT_GUIDES[service.id] || {};
-    return {
-      policy: guide.policy || '각 서비스는 고유 설명, 결과 해설, 업데이트 이력을 포함하도록 운영합니다.',
-      updatedAt: guide.updatedAt || '2026-02-18',
-      faq: Array.isArray(guide.faq) && guide.faq.length ? guide.faq : DEFAULT_FAQ,
-    };
+  // DB 할당량 초과 등의 이유로 홈에서 강제 제외할 서비스 ID 목록
+  // (Firestore에 active로 남아있어도 홈에 노출하지 않음)
+  const BLOCKED_SERVICE_IDS = ['market-sentiment'];
+
+  async function loadServices() {
+    // 1) Firestore 우선 (어드민 실시간 반영)
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('services').get();
+        if (snap.exists) {
+          const data = snap.data();
+          const items = Array.isArray(data.services) ? data.services : [];
+          const activeHome = items
+            .filter((s) => s && s.status !== 'disabled' && s.status !== 'trashed' && s.homeVisible !== false && !BLOCKED_SERVICE_IDS.includes(s.id))
+            .map(normalizeService);
+          if (activeHome.length > 0) return activeHome;
+        }
+      }
+    } catch (_e) { /* Firestore 실패 시 fallback */ }
+
+    // 2) 정적 JSON fallback
+    try {
+      const response = await fetch(HOME_MANIFEST_URL, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`manifest ${response.status}`);
+      const payload = await response.json();
+      const items = Array.isArray(payload.services) ? payload.services : [];
+      const activeHome = items
+        .filter((service) => service && service.status !== 'disabled' && service.status !== 'trashed' && service.homeVisible !== false)
+        .map(normalizeService);
+      if (activeHome.length > 0) return activeHome;
+    } catch (_e) { /* ignore */ }
+
+    return FALLBACK_SERVICES;
+  }
+
+  async function loadSiteSettings() {
+    if (cachedSiteSettings) return cachedSiteSettings;
+    // 1) Firestore 우선
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('settings').get();
+        if (snap.exists) {
+          const { updatedAt, ...rest } = snap.data();
+          if (Object.keys(rest).length > 0) {
+            cachedSiteSettings = rest;
+            return cachedSiteSettings;
+          }
+        }
+      }
+    } catch (_e) { /* fallback */ }
+
+    // 2) 정적 JSON fallback
+    try {
+      const response = await fetch(SITE_SETTINGS_URL, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`site-settings ${response.status}`);
+      const payload = await response.json();
+      if (!payload || typeof payload !== 'object') {
+        cachedSiteSettings = {};
+        return cachedSiteSettings;
+      }
+      cachedSiteSettings = payload;
+      return cachedSiteSettings;
+    } catch (_e) {
+      cachedSiteSettings = {};
+      return cachedSiteSettings;
+    }
+  }
+
+  function getHomeSections(services, siteSettings = {}) {
+    const categories = siteSettings.categories || {};
+    const home = siteSettings.home || {};
+    const sectionAssignments = home.sectionAssignments || {};
+    const order = Array.isArray(siteSettings.categoryOrder) && siteSettings.categoryOrder.length
+      ? siteSettings.categoryOrder
+      : CATEGORY_ORDER;
+    const activeServices = Array.isArray(services) ? services : [];
+    const sections = [{
+      key: 'all',
+      label: (categories.all && categories.all.label) || CATEGORY_META.all.label,
+      tone: CATEGORY_META.all.tone,
+      summary: CATEGORY_META.all.summary,
+      services: activeServices
+    }];
+
+    order
+      .filter((key) => key && key !== 'all')
+      .forEach((key) => {
+        const meta = categories[key] || CATEGORY_META[key] || { label: key, tone: 'zinc', summary: '' };
+        const ids = Array.isArray(sectionAssignments[key]) ? sectionAssignments[key] : activeServices.filter((service) => service.category === key).map((service) => service.id);
+        const sectionServices = ids
+          .map((id) => activeServices.find((service) => service.id === id))
+          .filter(Boolean);
+        sections.push({
+          key,
+          label: meta.label || key,
+          tone: meta.tone || CATEGORY_META[key]?.tone || 'zinc',
+          summary: meta.summary || CATEGORY_META[key]?.summary || '',
+          services: sectionServices
+        });
+      });
+
+    return sections.filter((section) => section.services.length > 0);
   }
 
   global.HomeData = {
-    ...parts,
-    SERVICE_BANNERS,
-    makeDummyArt,
-    serviceBanner,
-    serviceStartMeta,
-    serviceContentGuide,
-    categoryPillLabel,
-    latestServiceTags,
+    loadServices,
+    loadSiteSettings,
+    getHomeSections,
+    FALLBACK_SERVICES,
+    CATEGORY_META,
+    CATEGORY_ORDER
   };
 })(window);
