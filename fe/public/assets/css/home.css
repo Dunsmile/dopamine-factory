@@ -394,3 +394,146 @@ body {
     gap: 10px;
   }
 }
+
+.nflx-admin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.nflx-admin-modal[hidden] {
+  display: none;
+}
+
+.nflx-admin-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(124, 92, 255, 0.18), transparent 40%),
+    rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.nflx-admin-modal.is-open .nflx-admin-modal__backdrop {
+  opacity: 1;
+}
+
+.nflx-admin-modal__box {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(21, 21, 24, 0.98), rgba(10, 10, 14, 0.98));
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nflx-admin-modal.is-open .nflx-admin-modal__box {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.nflx-admin-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.nflx-admin-modal__title {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+.nflx-admin-modal__close {
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5f5;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.nflx-admin-modal__close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.nflx-admin-modal__form {
+  display: grid;
+  gap: 16px;
+}
+
+.nflx-admin-modal__field {
+  display: grid;
+  gap: 8px;
+}
+
+.nflx-admin-modal__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a1a1aa;
+}
+
+.nflx-admin-modal__input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.nflx-admin-modal__input:focus {
+  border-color: var(--home-accent, #7c5cff);
+}
+
+.nflx-admin-modal__input::placeholder {
+  color: #52525b;
+}
+
+.nflx-admin-modal__error {
+  margin: 0;
+  font-size: 13px;
+  color: #f87171;
+}
+
+.nflx-admin-modal__submit {
+  width: 100%;
+  padding: 13px;
+  background: var(--home-accent, #7c5cff);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.nflx-admin-modal__submit:hover {
+  opacity: 0.88;
+}

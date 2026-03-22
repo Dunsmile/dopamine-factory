@@ -1,7 +1,6 @@
 (function initCategoryPage() {
   const CATEGORY_META = (window.HomeData && window.HomeData.CATEGORY_META) || {};
   const pageCategory = document.body.dataset.category || 'fortune';
-  const meta = CATEGORY_META[pageCategory] || CATEGORY_META.fortune;
   const heroTitle = document.getElementById('categoryHeroTitle');
   const heroSummary = document.getElementById('categoryHeroSummary');
   const heroCount = document.getElementById('categoryHeroCount');
@@ -10,27 +9,34 @@
   const nav = document.getElementById('nflx-nav');
   const navLinks = document.querySelectorAll('[data-category-link]');
 
-  if (!meta || !heroTitle || !heroSummary || !heroCount || !heroRailLabel || !railsRoot || !window.NetflixShell) return;
+  if (!heroTitle || !heroSummary || !heroCount || !heroRailLabel || !railsRoot || !window.NetflixShell || !window.HomeData) return;
 
   window.NetflixShell.setupNav(nav);
-
-  heroTitle.textContent = meta.label;
-  heroSummary.textContent = meta.summary;
-  heroRailLabel.textContent = `${meta.label} 전체`;
-  navLinks.forEach((link) => {
-    if (link.getAttribute('data-category-link') === pageCategory) {
-      link.classList.add('font-bold', 'text-white');
-    }
-  });
 
   loadAndRender();
 
   async function loadAndRender() {
-    const services = await window.HomeData.loadServices();
+    const [services, siteSettings] = await Promise.all([
+      window.HomeData.loadServices(),
+      window.HomeData.loadSiteSettings()
+    ]);
+    const managedMeta = ((siteSettings.categories || {})[pageCategory]) || {};
+    const meta = {
+      ...(CATEGORY_META[pageCategory] || CATEGORY_META.fortune || {}),
+      ...managedMeta
+    };
     const filtered = services.filter((service) => service.category === pageCategory);
 
     document.title = `${meta.label} | 도파민 공작소`;
+    heroTitle.textContent = meta.label;
+    heroSummary.textContent = meta.summary;
+    heroRailLabel.textContent = `${meta.label} 전체`;
     heroCount.textContent = `${filtered.length}개 서비스`;
+    navLinks.forEach((link) => {
+      if (link.getAttribute('data-category-link') === pageCategory) {
+        link.classList.add('font-bold', 'text-white');
+      }
+    });
 
     if (filtered.length === 0) {
       railsRoot.innerHTML = '<div class="category-empty">이 카테고리에 등록된 서비스가 아직 없습니다.</div>';

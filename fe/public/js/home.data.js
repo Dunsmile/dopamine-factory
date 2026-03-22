@@ -3,6 +3,7 @@
   const HOME_MANIFEST_URL = '/dunsmile/services.manifest.json';
   const SITE_SETTINGS_URL = '/dunsmile/site-settings.json';
   const CATEGORY_META = {
+    all: { label: '전체 보기', summary: '현재 노출 중인 전체 서비스를 한 번에 탐색하세요.', tone: 'zinc' },
     fortune: { label: '운세/사주', summary: '오늘의 운세, 타로, 궁합처럼 해석과 몰입이 중심인 서비스를 한 번에 탐색하세요.', tone: 'fuchsia' },
     fun: { label: '재미/밸런스', summary: '가볍게 시작해서 바로 결과를 확인할 수 있는 게임형 테스트를 모았습니다.', tone: 'rose' },
     luck: { label: '행운/번호', summary: '번호 추천과 행운 요소를 중심으로 빠르게 즐길 수 있는 서비스를 모았습니다.', tone: 'indigo' },
@@ -10,6 +11,7 @@
     experimental: { label: '실험실', summary: '새로운 포맷과 실험적인 시도를 먼저 볼 수 있는 카테고리입니다.', tone: 'amber' }
   };
   const CATEGORY_ORDER = ['fortune', 'fun', 'luck', 'finance', 'experimental'];
+  let cachedSiteSettings = null;
 
   const FALLBACK_SERVICES = [
     { id: 'hoxy-number', name: 'HOXY', emoji: '🎱', url: '/dunsmile/hoxy-number/', desc: '무료 로또 번호 생성기 - 행운의 번호를 추천받고 당첨 확인까지', fullName: 'HOXY NUMBER', category: 'luck', estimatedDuration: 3, questionCount: 0, trendingScore: 97, tags: ['행운', '번호'], ogImage: '/dunsmile/assets/og-image.png' },
@@ -17,7 +19,7 @@
     { id: 'daily-fortune', name: '운세', emoji: '🔮', url: '/dunsmile/daily-fortune/', desc: '별자리, 띠, 사주로 보는 오늘의 종합 운세', fullName: '오늘의 운세', category: 'fortune', estimatedDuration: 3, questionCount: 6, trendingScore: 96, tags: ['운세', '오늘'], ogImage: '/dunsmile/assets/og-image.png' },
     { id: 'balance-game', name: '밸런스', emoji: '⚖️', url: '/dunsmile/balance-game/', desc: '두 선택 중 하나를 고르고, 전체 선택 비율을 확인해보세요', fullName: '오늘의 밸런스 게임', category: 'fun', estimatedDuration: 2, questionCount: 6, trendingScore: 90, tags: ['게임', '선택'], ogImage: '/dunsmile/assets/og-image.png' },
     { id: 'name-compatibility', name: '이름궁합', emoji: '💞', url: '/dunsmile/name-compatibility/', desc: '두 이름을 입력하면 케미 점수와 궁합 키워드를 확인할 수 있어요', fullName: '이름 궁합 테스트', category: 'fortune', estimatedDuration: 2, questionCount: 0, trendingScore: 91, tags: ['궁합', '이름'], ogImage: '/dunsmile/assets/og-image.png' },
-    { id: 'market-sentiment', name: '시장감성', emoji: '📈', url: '/dunsmile/market-sentiment/', desc: '펨코·디씨 게시글 기반 주식/코인 커뮤니티 감성 분석', fullName: '시장 감성 레이더', category: 'finance', estimatedDuration: 2, questionCount: 0, trendingScore: 88, tags: ['시장', '데이터'], ogImage: '/dunsmile/assets/og-image.png' },
+    // market-sentiment: DB 할당량 초과로 비활성화 (유료 플랜 전환 후 재활성화 예정)
     { id: 'tarot-reading', name: '타로', emoji: '🃏', url: '/dunsmile/tarot-reading/', desc: '78장 타로 카드가 전하는 오늘의 메시지, 무료 타로 리딩', fullName: 'ONE DAY MY CARD', category: 'fortune', estimatedDuration: 3, questionCount: 5, trendingScore: 93, tags: ['타로', '리딩'], ogImage: '/dunsmile/assets/og-image.png' },
     { id: 'wealth-dna-test', name: '부자 DNA', emoji: '💰', url: '/dunsmile/wealth-dna-test/', desc: '내가 부자가 될 수 있을까? MBTI 기반 부자 DNA 테스트', fullName: '부자 DNA 테스트', category: 'fun', estimatedDuration: 4, questionCount: 8, trendingScore: 92, tags: ['MBTI', '자산성향'], ogImage: '/dunsmile/assets/og-image.png' }
   ];
@@ -42,38 +44,116 @@
     };
   }
 
+  // DB 할당량 초과 등의 이유로 홈에서 강제 제외할 서비스 ID 목록
+  // (Firestore에 active로 남아있어도 홈에 노출하지 않음)
+  const BLOCKED_SERVICE_IDS = ['market-sentiment'];
+
   async function loadServices() {
+    // 1) Firestore 우선 (어드민 실시간 반영)
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('services').get();
+        if (snap.exists) {
+          const data = snap.data();
+          const items = Array.isArray(data.services) ? data.services : [];
+          const activeHome = items
+            .filter((s) => s && s.status !== 'disabled' && s.status !== 'trashed' && s.homeVisible !== false && !BLOCKED_SERVICE_IDS.includes(s.id))
+            .map(normalizeService);
+          if (activeHome.length > 0) return activeHome;
+        }
+      }
+    } catch (_e) { /* Firestore 실패 시 fallback */ }
+
+    // 2) 정적 JSON fallback
     try {
       const response = await fetch(HOME_MANIFEST_URL, { cache: 'no-store' });
       if (!response.ok) throw new Error(`manifest ${response.status}`);
       const payload = await response.json();
       const items = Array.isArray(payload.services) ? payload.services : [];
       const activeHome = items
-        .filter((service) => service && service.status !== 'disabled' && service.homeVisible !== false)
+        .filter((service) => service && service.status !== 'disabled' && service.status !== 'trashed' && service.homeVisible !== false)
         .map(normalizeService);
-
       if (activeHome.length > 0) return activeHome;
-      return FALLBACK_SERVICES;
-    } catch (_error) {
-      return FALLBACK_SERVICES;
-    }
+    } catch (_e) { /* ignore */ }
+
+    return FALLBACK_SERVICES;
   }
 
   async function loadSiteSettings() {
+    if (cachedSiteSettings) return cachedSiteSettings;
+    // 1) Firestore 우선
+    try {
+      const db = window.__db;
+      if (db) {
+        const snap = await db.collection('siteConfig').doc('settings').get();
+        if (snap.exists) {
+          const { updatedAt, ...rest } = snap.data();
+          if (Object.keys(rest).length > 0) {
+            cachedSiteSettings = rest;
+            return cachedSiteSettings;
+          }
+        }
+      }
+    } catch (_e) { /* fallback */ }
+
+    // 2) 정적 JSON fallback
     try {
       const response = await fetch(SITE_SETTINGS_URL, { cache: 'no-store' });
       if (!response.ok) throw new Error(`site-settings ${response.status}`);
       const payload = await response.json();
-      if (!payload || typeof payload !== 'object') return {};
-      return payload;
-    } catch (_error) {
-      return {};
+      if (!payload || typeof payload !== 'object') {
+        cachedSiteSettings = {};
+        return cachedSiteSettings;
+      }
+      cachedSiteSettings = payload;
+      return cachedSiteSettings;
+    } catch (_e) {
+      cachedSiteSettings = {};
+      return cachedSiteSettings;
     }
+  }
+
+  function getHomeSections(services, siteSettings = {}) {
+    const categories = siteSettings.categories || {};
+    const home = siteSettings.home || {};
+    const sectionAssignments = home.sectionAssignments || {};
+    const order = Array.isArray(siteSettings.categoryOrder) && siteSettings.categoryOrder.length
+      ? siteSettings.categoryOrder
+      : CATEGORY_ORDER;
+    const activeServices = Array.isArray(services) ? services : [];
+    const sections = [{
+      key: 'all',
+      label: (categories.all && categories.all.label) || CATEGORY_META.all.label,
+      tone: CATEGORY_META.all.tone,
+      summary: CATEGORY_META.all.summary,
+      services: activeServices
+    }];
+
+    order
+      .filter((key) => key && key !== 'all')
+      .forEach((key) => {
+        const meta = categories[key] || CATEGORY_META[key] || { label: key, tone: 'zinc', summary: '' };
+        const ids = Array.isArray(sectionAssignments[key]) ? sectionAssignments[key] : activeServices.filter((service) => service.category === key).map((service) => service.id);
+        const sectionServices = ids
+          .map((id) => activeServices.find((service) => service.id === id))
+          .filter(Boolean);
+        sections.push({
+          key,
+          label: meta.label || key,
+          tone: meta.tone || CATEGORY_META[key]?.tone || 'zinc',
+          summary: meta.summary || CATEGORY_META[key]?.summary || '',
+          services: sectionServices
+        });
+      });
+
+    return sections.filter((section) => section.services.length > 0);
   }
 
   global.HomeData = {
     loadServices,
     loadSiteSettings,
+    getHomeSections,
     FALLBACK_SERVICES,
     CATEGORY_META,
     CATEGORY_ORDER

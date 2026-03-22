@@ -2,18 +2,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   const railsContainer = document.getElementById('nflx-rails');
   const heroContent = document.getElementById('hero-content');
   const nav = document.getElementById('nflx-nav');
+  const navLinks = document.getElementById('nflx-nav-links');
+  const footerServiceLinks = document.getElementById('nflx-footer-service-links');
+  const footerBrandCopy = document.getElementById('nflx-footer-brand-copy');
 
   if (!railsContainer || !heroContent || !nav || !window.HomeData || !window.NetflixShell) return;
 
   window.NetflixShell.setupNav(nav);
 
   try {
-    const allServices = await window.HomeData.loadServices();
-    const grouped = groupByCategory(allServices, window.HomeData.CATEGORY_ORDER || []);
+    const [allServices, siteSettings] = await Promise.all([
+      window.HomeData.loadServices(),
+      window.HomeData.loadSiteSettings()
+    ]);
+    const sections = window.HomeData.getHomeSections(allServices, siteSettings);
     const featured = pickFeaturedService(allServices);
 
+    renderNavLinks(sections);
+    renderFooterContent(siteSettings, sections);
     if (featured) updateHero(featured);
-    renderRails(grouped);
+    renderRails(sections);
     window.NetflixShell.bindRailInteractions(railsContainer);
   } catch (error) {
     console.error('Error loading services:', error);
@@ -24,15 +32,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     return [...services].sort((a, b) => (b.trendingScore || 0) - (a.trendingScore || 0))[0] || null;
   }
 
-  function groupByCategory(services, order) {
-    const bucket = new Map();
-    order.forEach((category) => bucket.set(category, []));
-    services.forEach((service) => {
-      const key = service.category || 'fun';
-      if (!bucket.has(key)) bucket.set(key, []);
-      bucket.get(key).push(service);
+  function renderNavLinks(sections) {
+    if (!navLinks) return;
+    navLinks.innerHTML = `
+      <li><a href="/" class="cursor-pointer font-bold text-white">홈</a></li>
+      ${sections.map((section, index) => `
+        <li>
+          <button
+            type="button"
+            class="cursor-pointer transition hover:text-gray-400 ${index === 0 ? 'text-white' : ''}"
+            data-rail-target="rail-${index}"
+          >${window.NetflixShell.escapeHtml(section.label || (index === 0 ? '전체 보기' : section.key))}</button>
+        </li>
+      `).join('')}
+    `;
+    navLinks.querySelectorAll('[data-rail-target]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.railTarget);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     });
-    return Array.from(bucket.entries()).filter(([, items]) => items.length > 0);
+  }
+
+  function renderFooterContent(siteSettings, sections) {
+    if (footerServiceLinks) {
+      footerServiceLinks.innerHTML = sections
+        .filter((section) => section.key !== 'all')
+        .map((section) => `
+          <a href="/category/${window.NetflixShell.escapeHtml(section.key)}/" class="nflx-footer__link">
+            ${window.NetflixShell.escapeHtml(section.label)}
+          </a>
+        `).join('');
+    }
+
+    if (footerBrandCopy) {
+      const footer = ((siteSettings || {}).home || {}).footer || {};
+      const fallback = '도파민 공작소는 운세, 심리테스트, 게임형 콘텐츠를 가볍고 빠르게 탐색하는 실험실입니다.';
+      footerBrandCopy.textContent = footer.brandCopy || fallback;
+    }
   }
 
   function updateHero(service) {
@@ -65,14 +102,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
   }
 
-  function renderRails(groupedCategories) {
-    railsContainer.innerHTML = groupedCategories.map(([category, items], railIndex) => {
+  function renderRails(sections) {
+    railsContainer.innerHTML = sections.map((section, railIndex) => {
       return window.NetflixShell.renderRailSection({
-        title: window.NetflixShell.getCategoryLabel(category),
-        services: items,
+        title: section.label || (section.key === 'all' ? '전체 보기' : window.NetflixShell.getCategoryLabel(section.key)),
+        services: section.services,
         railId: `rail-${railIndex}`,
         moreLabel: '모두 보기',
-        moreHref: `/category/${category}/`,
+        moreHref: section.key === 'all' ? null : `/category/${section.key}/`,
+        tone: section.tone,
         topBadgeResolver: (_service, index) => index === 0,
         subtitleResolver: (service) => (service.tags || []).slice(0, 3).join(' · '),
         hrefResolver: (service) => service.url
